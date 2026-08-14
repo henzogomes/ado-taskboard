@@ -25,7 +25,6 @@ if (!ADO_ORG || !ADO_PROJECT || !ADO_PAT) {
 }
 
 const auth = 'Basic ' + Buffer.from(':' + ADO_PAT).toString('base64');
-const root = `${ADO_BASE_URL}/${ADO_ORG}/${ADO_PROJECT}`;
 
 const get = async (url) => {
   const res = await fetch(url, { headers: { Authorization: auth } });

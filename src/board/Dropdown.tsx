@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent, PointerEvent } from 'react'
 import { createPortal } from 'react-dom'
 
@@ -99,11 +99,16 @@ export function Dropdown({
   const menuRef = useRef<HTMLDivElement>(null)
   const itemEls = useRef<Array<HTMLDivElement | null>>([])
 
-  /** `cancelled` = closed without a selection (Escape/outside/scroll) → revert any preview. */
-  const close = (cancelled: boolean) => {
-    setOpen(false)
-    if (cancelled) onCancel?.()
-  }
+  /** `cancelled` = closed without a selection (Escape/outside/scroll) → revert any preview.
+   * `useCallback` so the outside-click/scroll/resize effect can list it as a dep
+   * (stable unless `onCancel` changes) rather than capturing a stale closure. */
+  const close = useCallback(
+    (cancelled: boolean) => {
+      setOpen(false)
+      if (cancelled) onCancel?.()
+    },
+    [onCancel],
+  )
 
   // Indexes (into `items`) of the rows a user can land on — skips headings and disabled rows.
   const selectableIndexes = items
@@ -181,7 +186,7 @@ export function Dropdown({
       window.removeEventListener('scroll', handleScroll, true)
       window.removeEventListener('resize', handleResize)
     }
-  }, [open])
+  }, [open, close])
 
   const handleMenuKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Escape') {
