@@ -97,6 +97,13 @@ export function listConnections(): Connection[] { return load().connections }
 export function addConnection(conn: Connection): void {
   save(setActive(upsert(load(), conn), conn.id)) // add + activate
 }
+// Update an existing connection in place (matched by id). Unlike
+// addConnection, this does NOT touch activeId — editing a connection never
+// changes which one is active. Appends if the id somehow isn't found (upsert),
+// but the intended use is editing a stored connection.
+export function updateConnection(conn: Connection): void {
+  save(upsert(load(), conn))
+}
 export function setActiveConnection(id: string): void { save(setActive(load(), id)) }
 export function removeConnection(id: string): void { save(remove(load(), id)) }
 export function logoutAll(): void { save(clearAll()) }

@@ -198,6 +198,13 @@ function App() {
               queryClient.clear()
               localStorage.removeItem('ado-taskboard-cache')
             }}
+            onConnectionEdited={() => {
+              // The active connection's org/project changed but its id (the board
+              // query key) didn't — invalidate the board query to force a reload
+              // and drop the persisted cache so it can't rehydrate stale.
+              queryClient.invalidateQueries({ queryKey: ['board'] })
+              localStorage.removeItem('ado-taskboard-cache')
+            }}
           />
 
           <LevelPicker levels={levels} levelId={levelId} onChange={setLevel} />
