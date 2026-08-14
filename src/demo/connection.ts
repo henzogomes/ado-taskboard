@@ -16,8 +16,8 @@ export const DEMO_CONNECTION_ID = 'demo'
 /**
  * The synthetic connection that backs Demo mode. Everything here is generic and
  * fake: no real org/project/person. `me` names one of the demo assignees so the
- * "Highlight mine" toggle is exercisable; `pat: ''` matches the dual-mode shape
- * of a real seed, but no request ever leaves the browser in demo mode.
+ * "Highlight mine" toggle is exercisable; `pat: ''` is fine because demo mode
+ * short-circuits to synthetic data — no request ever leaves the browser.
  */
 export const DEMO_CONNECTION: Connection = {
   id: DEMO_CONNECTION_ID,

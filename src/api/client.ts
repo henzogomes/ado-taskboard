@@ -13,7 +13,7 @@ const j = async (url: string, init?: RequestInit) => {
   const active = getActive()
   const headers = new Headers(init?.headers)
   if (active?.org) headers.set('X-ADO-Org', active.org)
-  if (active?.pat) headers.set('X-ADO-PAT', active.pat) // '' → omit → proxy uses env PAT
+  if (active?.pat) headers.set('X-ADO-PAT', active.pat) // '' → omit → proxy sends no auth (ADO 401)
   const r = await fetch(url, { ...init, headers })
   if (r.status === 401) throw new AuthError(`ADO 401 ${url}`)
   if (!r.ok) throw new Error(`ADO ${r.status} ${url}`)

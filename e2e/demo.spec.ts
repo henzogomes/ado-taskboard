@@ -1,20 +1,14 @@
 import { test, expect } from '@playwright/test'
 import type { Page } from '@playwright/test'
 
-// Demo mode e2e: with NOTHING configured (bootstrap names no project) and no
-// stored connection, the app must auto-open on the synthetic demo board — no
-// login wall, and crucially NO /api/ado network at all. Also covers the
-// explicit exit ("Connect your ADO" → login) and re-entry ("View demo").
+// Demo mode e2e: with no stored connection, the app must auto-open on the
+// synthetic demo board — no login wall, and crucially NO /api/ado network at
+// all. Also covers the explicit exit ("Connect your ADO" → login) and re-entry
+// ("View demo").
 //
-// The bootstrap is mocked in-page to a no-project response (mirroring the
-// in-page ADO mocking in support.ts) so the spec is hermetic — independent of
-// whatever env the reused dev server happens to carry. `/api/ado` is routed to
-// 404 as a guard: demo must never call it, and a stray call fails loudly rather
-// than reaching a real proxy.
+// `/api/ado` is routed to 404 as a guard: demo must never call it, and a stray
+// call fails loudly rather than reaching a real proxy.
 async function gotoDemo(page: Page): Promise<void> {
-  await page.route('**/api/config/bootstrap', (route) =>
-    route.fulfill({ status: 200, contentType: 'application/json', body: '{"org":"","project":"","team":"","me":""}' }),
-  )
   await page.route('**/api/ado/**', (route) => route.fulfill({ status: 404, contentType: 'application/json', body: '{}' }))
   await page.goto('/')
 }
@@ -35,7 +29,7 @@ test.describe('demo mode', () => {
     await expect(page.getByText('Active', { exact: true }).first()).toBeVisible()
 
     // From here on, demo mode must be fully networkless. (Reset the tally: the
-    // board query fires once at mount BEFORE the bootstrap seeds the demo
+    // board query fires once at mount BEFORE the first-run effect seeds the demo
     // connection — a pre-existing eager query with an empty project, guarded to
     // 404 above and unrelated to the demo data path.)
     adoCalls.length = 0

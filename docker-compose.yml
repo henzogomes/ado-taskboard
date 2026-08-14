@@ -2,13 +2,10 @@ services:
   taskboard:
     build:
       context: .
-      args:
-        ADO_ORG: ${ADO_ORG}
-        ADO_PROJECT: ${ADO_PROJECT}
-        ADO_TEAM: ${ADO_TEAM}
-        ADO_ME: ${ADO_ME}
-    # ADO_PAT (and ADO_BASE_URL) are runtime-only: read from .env into the
-    # container's environment, never baked into the image.
-    env_file: .env
+    # No ADO config: the container just serves the app. Users connect from the
+    # in-app login screen (org/project/PAT stored in their browser). PORT is the
+    # only runtime env, defaulted below.
+    environment:
+      PORT: 5280
     ports:
       - '5280:5280'

@@ -45,19 +45,13 @@ ADO before it's saved, then kept in your browser. Add more connections and
 switch between them from the **Connection** dropdown in the header; "Log out"
 clears one or all of them.
 
+The PAT you enter in the login screen is the only way in — it's stored in your
+browser and sent with each request. There is no server-side token or `.env`
+fallback.
+
 Team-admin permissions are **not** required — iterations come from the project's
 classification nodes rather than the team's sprint subscription, so every
 project sprint shows up even if the team was never configured to see it.
-
-### Optional: `.env` for a zero-login start
-
-```bash
-cp .env.example .env   # fill in ADO_ORG / ADO_PROJECT / ADO_PAT (see the file)
-```
-
-Not required. If present, the app auto-seeds a default connection on first run
-and goes straight to the board with no login step. Handy for a personal
-quick-start or for hosting a shared instance.
 
 ## Running the built app
 
@@ -79,9 +73,10 @@ Open `http://localhost:5280` (or `$PORT`).
 docker compose up --build
 ```
 
-`.env` is optional and read at container start (via `env_file`) — set it to
-auto-seed a connection for every visitor, or leave it out and let each visitor
-add their own from the login screen. Open `http://localhost:5280`.
+The container just serves the app — no ADO config is baked in or read from the
+environment. Each visitor connects from the in-app login screen (their PAT stays
+in their own browser). Open `http://localhost:5280` (override the port with
+`PORT`).
 
 ## Features
 
@@ -140,10 +135,10 @@ switch) are deterministic and self-contained.
   active. The client (`src/api/client.ts`) sends the active connection's
   org/token as headers on every `/api/ado` call; the browser never calls
   `dev.azure.com` directly.
-- **Proxy** (`vite.config.ts` dev / `server/index.mjs` prod) — relays the
-  connection's org/token per request, or falls back to `.env` when a connection
-  leaves them blank. This is the one place the `Authorization` header is
-  attached.
+- **Proxy** (`vite.config.ts` dev / `server/index.mjs` prod) — a pure relay of
+  the active connection's org/token per request (`X-ADO-Org` / `X-ADO-PAT`). No
+  server-side config, no `.env`, no fallback. This is the one place the
+  `Authorization` header is attached; with no PAT header, ADO returns 401.
 - **Pure domain** (`src/domain/`) — transforms raw ADO work items into sprint
   sections → lanes → columns, independent of any UI or fetching. Drag-and-drop
   runs through a pure `performMove` / `moveCard` reducer that computes the

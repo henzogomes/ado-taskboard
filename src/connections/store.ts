@@ -5,7 +5,12 @@ export interface Connection {
   project: string
   team?: string
   me?: string
-  /** '' = use the proxy's server-side env PAT (dual-mode). */
+  /**
+   * The PAT sent to the proxy as `X-ADO-PAT` for this connection. An empty
+   * string means no credential — the proxy sends no `Authorization` and ADO
+   * replies 401. The only legitimate empty PAT is the demo sentinel, which
+   * short-circuits to synthetic data before any request reaches the proxy.
+   */
   pat: string
 }
 export interface Stored {

@@ -5,38 +5,44 @@ Story-per-row taskboard (stories pinned in a fixed left column; child tasks plac
 board-state columns under their parent), with drag-and-drop **and** a per-card dropdown
 to move a card (which writes its new state back to ADO). Project-agnostic — connect via
 the in-app login screen (`src/connections/`), switch between multiple stored
-connections; `.env` is an optional server-side fallback / demo seed, not required.
+connections. There is no `.env` / server-side PAT; the browser connection is the sole
+source of credentials.
 
 ## Commands
 
 - `npm install` — deps.
-- `npm run dev` — single-process dev server (Vite). The dev-server **proxy holds the
-  PAT** and forwards `/api/ado/*` → ADO with auth attached.
+- `npm run dev` — single-process dev server (Vite). The dev-server **proxy relays the
+  active connection's `X-ADO-Org` / `X-ADO-PAT`** headers to `/api/ado/*` → ADO with auth
+  attached per request.
 - `npm test` — Vitest (unit tests; run before every commit).
 - `npm run build` — typecheck + production build.
-- `node scripts/capture-fixtures.mjs` — regenerate test fixtures from the live board
-  (needs a valid `.env`).
+- `ADO_ORG=.. ADO_PROJECT=.. ADO_PAT=.. node scripts/capture-fixtures.mjs` — regenerate
+  test fixtures from the live board. Credentials are passed as inline env vars (no `.env`,
+  no dotenv).
 
 ## Setup
 
-`npm run dev` and use the in-app login screen (org + project + PAT) — no `.env`
-required. Optionally copy `.env.example` → `.env` (gitignored) and fill it to
-auto-seed a default connection on first run with the PAT held server-side
-instead of in the browser. See the README for the full reference and the PAT
-storage trade-off.
+`npm run dev` and use the in-app login screen (org + project + PAT). The PAT is
+stored in the browser and sent with each request — it's the only way in. There
+is no `.env` / server-side PAT. On first run with no stored connection, the app
+auto-seeds a synthetic **demo** connection so it opens on a working demo board;
+"Connect your ADO" removes it and shows the login screen.
 
 ## Architecture / invariants (do not break)
 
-- **PAT handling is dual-mode.** The active browser `Connection`
-  (`src/connections/store.ts`) may hold its own PAT (sent as `X-ADO-PAT`/
-  `X-ADO-Org` headers, `src/api/client.ts`), and is never logged/echoed
-  elsewhere. The proxy
-  (`vite.config.ts` dev / `server/index.mjs` prod) relays those headers when
-  present, else falls back to `.env`'s `ADO_ORG`/`ADO_PAT` — a connection with
-  an **empty** stored PAT always means "use the server-side PAT instead". The
-  client talks **only** to relative `/api/ado/*` URLs, never `dev.azure.com`
-  directly (the one exception: `Card.tsx`'s human work-item hyperlink, which
-  reads the active connection's non-secret org/project).
+- **The active connection's PAT is the sole credential.** The active browser
+  `Connection` (`src/connections/store.ts`) holds its own PAT, sent as
+  `X-ADO-PAT` / `X-ADO-Org` headers (`src/api/client.ts`), never logged/echoed
+  elsewhere. The proxy (`vite.config.ts` dev / `server/index.mjs` prod) is a
+  **pure relay**: it forwards those headers per request and attaches
+  `Authorization` from the PAT header only — there is **no** server-side/`.env`
+  fallback and **no** bootstrap seed endpoint. With no PAT header, no
+  `Authorization` is set and ADO returns 401 (which the app surfaces). An empty
+  stored PAT means no credential; the only legitimate empty PAT is the demo
+  sentinel, which short-circuits to synthetic data before any request reaches
+  the proxy. The client talks **only** to relative `/api/ado/*` URLs, never
+  `dev.azure.com` directly (the one exception: `Card.tsx`'s human work-item
+  hyperlink, which reads the active connection's non-secret org/project).
 - **Writes are state/column moves only** — the sole write is `patchState` (sets
   `System.State`, with an optimistic-concurrency `test /rev` guard). No title/body/tag/
   assignee writes.
@@ -76,8 +82,8 @@ person:
 - No real work-item data, coworker names, or `@company` emails. Fixtures
   (`src/api/__fixtures__/`, `e2e/fixtures/`) are **synthetic** only
   (`Dev One`…, `me@demo`, made-up titles/GUIDs).
-- No PATs, tokens, connection strings, or `.env` contents. `.env` is gitignored
-  (`.env*`, with `!.env.example`); `.env.example` holds placeholders only.
+- No PATs, tokens, connection strings, or `.env` contents. `.env*` is gitignored;
+  the app reads no `.env` at all (credentials live only in the browser connection).
 
 Before every commit, sweep the diff for the above. When in doubt, invent a
 placeholder — never paste a real value.

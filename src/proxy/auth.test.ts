@@ -6,6 +6,6 @@ describe('buildAuthHeader', () => {
   });
 
   it('throws a clear error when the PAT is empty', () => {
-    expect(() => buildAuthHeader('')).toThrow('ADO_PAT is not set — add it to .env (see .env.example).');
+    expect(() => buildAuthHeader('')).toThrow('No PAT provided — the active connection must carry one.');
   });
 });

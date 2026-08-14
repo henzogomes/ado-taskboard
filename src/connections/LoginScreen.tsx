@@ -84,8 +84,8 @@ export function LoginScreen({ onCancel }: LoginScreenProps) {
         </h2>
         <p className="mb-4 text-xs text-content-muted">
           Enter your ADO organization, project, and a Personal Access Token. The PAT is stored in
-          this browser (localStorage) — acceptable for a local single-user tool. Leave the PAT blank
-          to use the server's PAT (dual-mode / demo hosting).
+          this browser (localStorage) — acceptable for a local single-user tool — and sent with each
+          request; it is the only way in.
         </p>
 
         {error && (
@@ -144,11 +144,12 @@ export function LoginScreen({ onCancel }: LoginScreenProps) {
 
           <div>
             <label htmlFor="conn-pat" className={labelClass}>
-              Personal Access Token <span className="font-normal text-content-subtle">(blank = server PAT)</span>
+              Personal Access Token
             </label>
             <input
               id="conn-pat"
               type="password"
+              required
               value={pat}
               onChange={(e) => setPat(e.target.value)}
               autoComplete="off"

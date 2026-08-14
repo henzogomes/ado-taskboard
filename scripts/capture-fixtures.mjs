@@ -1,13 +1,13 @@
 // scripts/capture-fixtures.mjs
 //
-// Spike/data-capture script (Task 3). Run OUTSIDE the browser (plain Node) so
-// it can hit dev.azure.com directly without CORS. Reads ADO credentials from
-// .env (never printed) and writes raw JSON fixtures used by Task 4 (API
-// client) and Task 5 (domain transforms / column mapping).
+// Spike/data-capture script. Run OUTSIDE the browser (plain Node) so it can hit
+// dev.azure.com directly without CORS. Reads ADO credentials from inline
+// environment variables (never printed) and writes raw JSON fixtures used by
+// the API client and the domain transforms / column mapping.
 //
-// Usage: npm i -D dotenv && node scripts/capture-fixtures.mjs
+// Usage:
+//   ADO_ORG=.. ADO_PROJECT=.. ADO_PAT=.. node scripts/capture-fixtures.mjs
 import fs from 'node:fs';
-import 'dotenv/config';
 
 const {
   ADO_ORG,
@@ -18,7 +18,10 @@ const {
 } = process.env;
 
 if (!ADO_ORG || !ADO_PROJECT || !ADO_PAT) {
-  throw new Error('Missing ADO_ORG, ADO_PROJECT, or ADO_PAT in .env');
+  throw new Error(
+    'Missing ADO_ORG, ADO_PROJECT, or ADO_PAT — pass them inline, e.g.\n' +
+      '  ADO_ORG=.. ADO_PROJECT=.. ADO_PAT=.. node scripts/capture-fixtures.mjs',
+  );
 }
 
 const auth = 'Basic ' + Buffer.from(':' + ADO_PAT).toString('base64');
