@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { addConnection } from './store'
+import { DEMO_CONNECTION } from '../demo/connection'
 
 interface LoginScreenProps {
   /** Optional cancel affordance — shown as a "Cancel" button when the screen is
@@ -202,6 +203,19 @@ export function LoginScreen({ onCancel }: LoginScreenProps) {
               Cancel
             </button>
           )}
+        </div>
+
+        <div className="mt-5 border-t border-line pt-4">
+          <p className="mb-2 text-xs text-content-muted">
+            Just want to look around? Explore a synthetic board — no ADO, no PAT.
+          </p>
+          <button
+            type="button"
+            onClick={() => addConnection(DEMO_CONNECTION)}
+            className="rounded-md border border-line bg-surface px-4 py-2 text-sm font-medium text-content hover:bg-surface-raised"
+          >
+            View demo
+          </button>
         </div>
       </form>
     </div>

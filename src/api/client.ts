@@ -1,5 +1,8 @@
 import { CONFIG } from '../config'
 import { getActive } from '../connections/store'
+import { isDemoActive } from '../demo/connection'
+import { DEMO_FIELDS, demoWorkItemDetail } from '../demo/dataset'
+import { demoApplyMove } from '../demo/runtime'
 import type { WorkItem, WorkItemDetail, WorkItemRelation, Iteration, Board, BacklogLevels, StateCategory, FieldMeta } from './types'
 
 const V = 'api-version=7.1'
@@ -56,6 +59,7 @@ function toDetail(w: any): WorkItemDetail {
 }
 
 export async function getWorkItemDetail(id: number): Promise<WorkItemDetail> {
+  if (isDemoActive()) return demoWorkItemDetail(id)
   const d = await j(`${CONFIG.baseUrl}/${CONFIG.project}/_apis/wit/workitems/${id}?$expand=all&${V}`)
   return toDetail(d)
 }
@@ -67,6 +71,7 @@ export async function getWorkItemDetail(id: number): Promise<WorkItemDetail> {
  * with this to know which are rich text worth rendering.
  */
 export async function fetchFields(): Promise<FieldMeta[]> {
+  if (isDemoActive()) return DEMO_FIELDS
   const d = await j(`${CONFIG.baseUrl}/${CONFIG.project}/_apis/wit/fields?${V}`)
   return (d.value ?? []).map((f: any) => ({
     referenceName: f.referenceName,
@@ -243,6 +248,9 @@ export async function patchState(
   boardColumn: string | null,
   rev: number,
 ): Promise<WorkItem> {
+  // Demo mode: mutate the in-memory item and resolve locally — nothing leaves
+  // the browser, and the optimistic move sticks across the follow-up refresh.
+  if (isDemoActive()) return demoApplyMove(id, state, rev)
   const ops: any[] = [
     { op: 'test', path: '/rev', value: rev },
     { op: 'add', path: '/fields/System.State', value: state },
