@@ -27,7 +27,7 @@ import { CONFIG } from './config'
 import { useConnections } from './connections/useConnections'
 import { LoginScreen } from './connections/LoginScreen'
 import { ConnectionSwitcher } from './connections/ConnectionSwitcher'
-import { DEMO_CONNECTION, DEMO_CONNECTION_ID } from './demo/connection'
+import { DEMO_CONNECTION_ID } from './demo/connection'
 import { DemoBanner } from './demo/DemoBanner'
 
 function pickerValueToScope(value: string): BoardScope {
@@ -45,20 +45,12 @@ interface DropToast {
 
 function App() {
   const queryClient = useQueryClient()
-  const { connections, active, add, remove } = useConnections()
+  const { active, remove } = useConnections()
 
-  // First-run seed: with no stored connections, auto-seed the synthetic
-  // `DEMO_CONNECTION` and activate it, so the app opens on a working demo board
-  // instead of the login wall. Synchronous — no network, no spinner. Guarded by
-  // a ref so it runs at most once (a ref, not state, so it never re-renders):
-  // after the user leaves demo ("Connect your ADO"), the list is empty again but
-  // this must NOT re-seed — it falls through to the login screen instead.
-  const seededRef = useRef(false)
-  useEffect(() => {
-    if (seededRef.current) return
-    seededRef.current = true
-    if (connections.length === 0) add(DEMO_CONNECTION)
-  }, [connections.length, add])
+  // No auto-seed: on first run (no stored connection) the app shows the login
+  // screen, where the user enters org/project/PAT — the browser connection is the
+  // sole source of truth, nothing is presented until they choose it. The
+  // synthetic demo board is opt-in from there via LoginScreen's "View demo".
 
   const [scope, setScope] = useState<BoardScope>('current')
 
@@ -177,9 +169,10 @@ function App() {
   )
 
   // Login gate: with no active connection, render the login screen instead of
-  // the board (keeping the theme toggle available). On the very first run the
-  // demo connection is seeded synchronously, so this only shows after the user
-  // explicitly leaves demo ("Connect your ADO") or logs out.
+  // the board (keeping the theme toggle available). This is the first-run
+  // experience now — the user enters org/project/PAT here, or opts into the
+  // synthetic demo via "View demo"; it also shows after leaving demo
+  // ("Connect your ADO") or logging out.
   if (active === null) {
     return (
       <div className="flex h-screen flex-col bg-app text-content">

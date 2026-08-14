@@ -39,8 +39,8 @@ export async function mockAdo(page: Page): Promise<void> {
 }
 
 /** A single ready-to-use connection, seeded into localStorage before load so
- * the app skips the login gate and the first-run demo seed (both keyed off an
- * empty connection list). The PAT is a dummy — every `/api/ado` call is mocked
+ * the app skips the login gate (which an empty connection list would show) and
+ * opens straight on a board. The PAT is a dummy — every `/api/ado` call is mocked
  * in-page, so the proxy is never hit. */
 const SEED_CONNECTIONS = {
   connections: [

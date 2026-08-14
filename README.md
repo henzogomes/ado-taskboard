@@ -10,8 +10,8 @@ between multiple connections without restarting.
 
 ## Screenshots
 
-Run `npm run dev` and — with nothing configured — it opens on a built-in **demo
-board** (synthetic data, no network), which is what's shown here.
+Run `npm run dev`, then hit **"View demo"** on the login screen for a built-in
+**demo board** (synthetic data, no network) — which is what's shown here.
 
 ![The board](docs/screenshots/board-light.png)
 

@@ -25,8 +25,9 @@ source of credentials.
 `npm run dev` and use the in-app login screen (org + project + PAT). The PAT is
 stored in the browser and sent with each request — it's the only way in. There
 is no `.env` / server-side PAT. On first run with no stored connection, the app
-auto-seeds a synthetic **demo** connection so it opens on a working demo board;
-"Connect your ADO" removes it and shows the login screen.
+shows the **login screen** (nothing is auto-presented); the synthetic **demo**
+board is opt-in from there via "View demo", and "Connect your ADO" returns to the
+login screen.
 
 ## Architecture / invariants (do not break)
 
