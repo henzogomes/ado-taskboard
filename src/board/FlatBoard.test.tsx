@@ -2,10 +2,15 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { FlatBoard } from './FlatBoard'
-import type { BoardColumn, WorkItem } from '../api/types'
+import type { Board, BoardColumn, WorkItem } from '../api/types'
 import type { FlatColumn } from '../domain/board'
 
-const col = (name: string): BoardColumn => ({ name, columnType: 'inProgress', isSplit: false, stateMappings: {} })
+const col = (name: string, stateMappings: Record<string, string> = {}): BoardColumn => ({
+  name,
+  columnType: 'inProgress',
+  isSplit: false,
+  stateMappings,
+})
 const item = (id: number, over: Partial<WorkItem> = {}): WorkItem => ({
   id,
   type: 'Epic',
@@ -52,5 +57,37 @@ describe('FlatBoard', () => {
   it('shows a friendly empty state when the level has no items', () => {
     render(<FlatBoard flatColumns={[{ column: col('New'), cards: [] }]} showAll={false} />)
     expect(screen.getByText(/no work items/i)).toBeInTheDocument()
+  })
+
+  it('renders no Move menu when read-only (no board / no drop handler)', () => {
+    render(<FlatBoard flatColumns={flatColumns} showAll={false} />)
+    expect(screen.queryByRole('button', { name: 'Move…' })).not.toBeInTheDocument()
+  })
+
+  it('renders a Move menu and routes a pick through onMoveCard when movable', async () => {
+    const board: Board = {
+      columns: [col('Backlog', { Epic: 'New' }), col('Shipped', { Epic: 'Done' })],
+    }
+    const onMoveCard = vi.fn()
+    const user = userEvent.setup()
+    render(
+      <FlatBoard
+        flatColumns={flatColumns}
+        board={board}
+        showAll
+        onDropCard={vi.fn()}
+        onMoveCard={onMoveCard}
+      />,
+    )
+
+    // Each movable card carries a "Move…" trigger (exact name — the draggable
+    // card itself is role="button" via dnd-kit's attributes, so a loose match
+    // would grab the card, not the menu trigger); open the first and pick a column.
+    const triggers = screen.getAllByRole('button', { name: 'Move…' })
+    expect(triggers.length).toBe(2) // one per card in the Backlog column
+    await user.click(triggers[0])
+    await user.click(screen.getByRole('menuitem', { name: /Shipped/ }))
+
+    expect(onMoveCard).toHaveBeenCalledWith(1, 'Shipped')
   })
 })

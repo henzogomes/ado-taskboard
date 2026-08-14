@@ -9,6 +9,7 @@ import { LevelPicker } from './board/LevelPicker'
 import { useLevel } from './board/useLevel'
 import type { LevelView } from './board/level'
 import { performMove } from './board/performMove'
+import { performFlatMove } from './board/performFlatMove'
 import { Toast } from './board/Toast'
 import { TicketModal } from './board/TicketModal'
 import { ThemePicker } from './theme/ThemePicker'
@@ -114,6 +115,7 @@ function App() {
     lastUpdated,
     refresh,
     applyLocal,
+    applyLocalFlat,
     stateCategory,
   } = useBoardData(scope, levelId)
 
@@ -155,6 +157,15 @@ function App() {
     sectionsRef.current = sections
   }, [sections])
 
+  // Same discipline for the flat (portfolio / Stories) move path: operate on
+  // the current, unfiltered `flatColumns` via a ref, never the filtered
+  // `visibleFlat` (a filter could be hiding cards an optimistic apply would
+  // then drop from the cache).
+  const flatColumnsRef = useRef(flatColumns)
+  useEffect(() => {
+    flatColumnsRef.current = flatColumns
+  }, [flatColumns])
+
   // Serializes writes: while a move's patchState is in flight, any further
   // drop is ignored ('noop') rather than starting a second optimistic move.
   // This keeps the whole-board `undo` snapshot performMove takes safe to
@@ -177,6 +188,26 @@ function App() {
       })
     },
     [columns, applyLocal, refresh],
+  )
+
+  // Flat-view move: mirrors `handleDropCard` but on the `FlatColumn[]` shape,
+  // sharing the SAME `pendingRef` so a lane move and a flat move can never be
+  // in flight at once (and one view's rollback can't stomp the other).
+  const handleFlatMove = useCallback(
+    (cardId: number, toColumn: string) => {
+      void performFlatMove({
+        flatColumns: flatColumnsRef.current,
+        cardId,
+        toColumn,
+        board: { columns },
+        applyLocalFlat,
+        patchState,
+        refresh,
+        onToast: (message) => setDropToast({ message }),
+        pendingRef,
+      })
+    },
+    [columns, applyLocalFlat, refresh],
   )
 
   // Login gate: with no active connection, render the login screen instead of
@@ -297,9 +328,12 @@ function App() {
           ) : isFlat ? (
             <FlatBoard
               flatColumns={visibleFlat}
+              board={{ columns }}
               showAll={showAll}
               highlightMine={highlightMine}
               onOpenCard={setOpenItem}
+              onDropCard={handleFlatMove}
+              onMoveCard={handleFlatMove}
             />
           ) : (
             <Board
