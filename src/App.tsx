@@ -26,6 +26,8 @@ import { CONFIG } from './config'
 import { useConnections } from './connections/useConnections'
 import { LoginScreen } from './connections/LoginScreen'
 import { ConnectionSwitcher } from './connections/ConnectionSwitcher'
+import { DEMO_CONNECTION, DEMO_CONNECTION_ID } from './demo/connection'
+import { DemoBanner } from './demo/DemoBanner'
 
 function pickerValueToScope(value: string): BoardScope {
   if (value === 'all' || value === 'current') return value
@@ -42,15 +44,19 @@ interface DropToast {
 
 function App() {
   const queryClient = useQueryClient()
-  const { connections, active, add } = useConnections()
+  const { connections, active, add, remove } = useConnections()
 
   // First-run bootstrap seed: when there are no stored connections, ask the
   // proxy for its non-secret env config (`/api/config/bootstrap`) and, if it
   // names a project, seed a default connection with an EMPTY pat (dual-mode →
-  // the proxy uses its server-side env PAT). Guarded by a ref so it runs at
-  // most once (a ref, not state, so flipping the flag never itself re-renders).
-  // `seeding` gates the login screen so it doesn't flash before bootstrap
-  // settles.
+  // the proxy uses its server-side env PAT). When NOTHING is configured (no
+  // project, or the bootstrap is unreachable), fall into Demo mode — auto-seed
+  // the synthetic `DEMO_CONNECTION` so the app opens on a working demo board
+  // instead of the login wall. A hosted instance that DOES set `.env` still
+  // seeds its real connection; demo only fills the "nothing configured" gap.
+  // Guarded by a ref so it runs at most once (a ref, not state, so flipping the
+  // flag never itself re-renders). `seeding` gates the login screen so it
+  // doesn't flash before bootstrap settles.
   const seededRef = useRef(false)
   const [seeding, setSeeding] = useState(connections.length === 0)
   useEffect(() => {
@@ -79,8 +85,10 @@ function App() {
           }
         }
       } catch {
-        // Bootstrap unreachable → fall through to the login screen.
+        // Bootstrap unreachable → fall through to Demo mode below.
       }
+      // Nothing configured: open on the demo board rather than the login wall.
+      add(DEMO_CONNECTION)
       setSeeding(false)
     })()
   }, [connections.length, add])
@@ -115,6 +123,7 @@ function App() {
     if (levels.length > 0) setDiscoveredLevels(levels)
   }, [levels])
 
+  const isDemo = active?.id === DEMO_CONNECTION_ID
   const isFlat = view?.kind === 'flat'
   // Portfolio views span sprints, so the iteration picker is hidden for them.
   const showIterationPicker = view?.iterationScoped ?? true
@@ -258,6 +267,16 @@ function App() {
 
           <ThemePicker />
         </header>
+
+        {isDemo && (
+          <DemoBanner
+            onConnect={() => {
+              queryClient.clear()
+              localStorage.removeItem('ado-taskboard-cache')
+              remove(DEMO_CONNECTION_ID)
+            }}
+          />
+        )}
 
         <FilterBar facets={facets} value={filters} onChange={setFilters} />
 

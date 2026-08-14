@@ -17,6 +17,8 @@ import type { FlatColumn, SprintSection } from '../domain/board'
 import { buildLevels } from '../board/level'
 import type { LevelView } from '../board/level'
 import { currentIterationId } from '../domain/currentIteration'
+import { isDemoActive } from '../demo/connection'
+import { buildDemoBoardData } from '../demo/board'
 
 /**
  * What slice of the board to load:
@@ -95,7 +97,7 @@ function buildWiql(project: string, paths: string[], types: string[]): string {
   return `${base} AND (${iterationClause}) ORDER BY [System.Id]`
 }
 
-interface BoardData {
+export interface BoardData {
   levelId: string
   view: LevelView
   levels: LevelView[]
@@ -130,6 +132,10 @@ const EMPTY_STATE_CATEGORY: Record<string, StateCategory> = {}
  * appear as a pickable option.
  */
 async function loadBoardData(scope: BoardScope, levelId: string): Promise<BoardData> {
+  // Demo mode short-circuits the entire network load: build the board from the
+  // synthetic in-memory dataset via the same domain builders.
+  if (isDemoActive()) return buildDemoBoardData(scope, levelId)
+
   const team = await resolveTeam()
   const backlogs = await fetchBacklogs(team)
   const levels = buildLevels(backlogs)
