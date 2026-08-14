@@ -8,6 +8,24 @@ to move it**, writing the new state straight back to ADO.
 Point it at any org / project / team from an in-app login screen, and switch
 between multiple connections without restarting.
 
+## Screenshots
+
+Run `npm run dev` and — with nothing configured — it opens on a built-in **demo
+board** (synthetic data, no network), which is what's shown here.
+
+![The board](docs/screenshots/board-light.png)
+
+The ticket modal renders each work-item type's real fields — here a Bug's
+description and repro steps:
+
+![Ticket modal](docs/screenshots/ticket-modal.png)
+
+21 built-in light & dark themes — a few:
+
+| Girly Girl | Goth Girl | Dracula |
+|---|---|---|
+| ![Girly Girl](docs/screenshots/board-girly-girl.png) | ![Goth Girl](docs/screenshots/board-goth-girl.png) | ![Dracula](docs/screenshots/board-dracula.png) |
+
 ## Requirements
 
 - Node.js 20+ and npm.
