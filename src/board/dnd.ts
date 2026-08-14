@@ -49,7 +49,7 @@ export function findCardColumn(sections: SprintSection[], cardId: number): strin
  * `columnForItem`'s reverse-mapping tiers in `domain/board.ts`, without
  * hardcoding which story type the board uses.
  */
-function resolveTargetState(column: BoardColumn, cardType: string): string | null {
+export function resolveTargetState(column: BoardColumn, cardType: string): string | null {
   return column.stateMappings[cardType] ?? Object.values(column.stateMappings).find(Boolean) ?? null
 }
 

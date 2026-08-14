@@ -48,6 +48,7 @@ export interface UseBoardDataResult {
   lastUpdated: Date | null
   refresh: () => void
   applyLocal: (next: SprintSection[]) => void
+  applyLocalFlat: (next: FlatColumn[]) => void
   stateCategory: Record<string, StateCategory>
 }
 
@@ -224,6 +225,17 @@ export function useBoardData(scope: BoardScope, levelId: string): UseBoardDataRe
     [queryClient, activeId, scopeKey, levelId],
   )
 
+  // Flat sibling of `applyLocal`: swaps in an optimistic `FlatColumn[]` for the
+  // flat (portfolio / Stories) move path (`performFlatMove`).
+  const applyLocalFlat = useCallback(
+    (next: FlatColumn[]) => {
+      queryClient.setQueryData<BoardData>(['board', activeId, scopeKey, levelId], (old) =>
+        old ? { ...old, flatColumns: next } : old,
+      )
+    },
+    [queryClient, activeId, scopeKey, levelId],
+  )
+
   return {
     levelId: data?.levelId ?? levelId,
     view: data?.view ?? null,
@@ -237,6 +249,7 @@ export function useBoardData(scope: BoardScope, levelId: string): UseBoardDataRe
     lastUpdated: dataUpdatedAt ? new Date(dataUpdatedAt) : null,
     refresh,
     applyLocal,
+    applyLocalFlat,
     stateCategory: data?.stateCategory ?? EMPTY_STATE_CATEGORY,
   }
 }
