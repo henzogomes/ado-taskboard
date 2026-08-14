@@ -19,7 +19,11 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+# --ignore-scripts: the runtime image installs prod deps only, so the `prepare`
+# lifecycle script (husky, a devDep omitted here) must not run — it isn't
+# present, and this stage has no git hooks to set up anyway. Without this,
+# `npm ci --omit=dev` fails with `husky: not found` (exit 127).
+RUN npm ci --omit=dev --ignore-scripts
 
 COPY server ./server
 COPY --from=build /app/dist ./dist
