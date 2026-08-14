@@ -40,11 +40,13 @@ interface SectionBodyProps {
  */
 function SectionBody({ section, board, showAll, onMoveCard, highlightMine, onOpenCard }: SectionBodyProps) {
   const columns = sectionColumns(section, board.columns, showAll)
-  // Fixed 14rem tracks (not `minmax(14rem, 1fr)`): with the section sized to its
-  // content (min-w-max, so its border wraps every column), a `1fr` max track has
-  // no definite width to resolve against and blows up to each column's unwrapped
-  // content width. Fixed tracks keep every column a steady 14rem.
-  const gridTemplateColumns = `14rem repeat(${columns.length}, 14rem)`
+  // Story column fixed at 14rem; state columns are `minmax(14rem, 1fr)` so they
+  // FILL the width when the board is narrower than the viewport, yet never
+  // shrink below 14rem. The section (see SprintSection) carries a definite
+  // min-width equal to the full track sum, so `1fr` resolves against a real
+  // width (no `max-content` balloon) and the board just scrolls once the
+  // columns no longer fit.
+  const gridTemplateColumns = `14rem repeat(${columns.length}, minmax(14rem, 1fr))`
 
   return (
     <div className="px-2 pb-2">
@@ -98,7 +100,7 @@ function SectionBody({ section, board, showAll, onMoveCard, highlightMine, onOpe
  * jsdom, so the skeleton-first state isn't observable through the full render).
  */
 export function SectionSkeleton({ columns }: { columns: BoardColumn[] }) {
-  const gridTemplateColumns = `14rem repeat(${columns.length}, 14rem)`
+  const gridTemplateColumns = `14rem repeat(${columns.length}, minmax(14rem, 1fr))`
   return (
     <div className="px-2 pb-2" data-testid="section-skeleton" aria-hidden="true">
       <div className="grid gap-px" style={{ gridTemplateColumns }}>
@@ -140,13 +142,22 @@ export function SprintSection({ section, board, onMoveCard, showAll, highlightMi
     if (e.currentTarget.open !== expanded) onToggle()
   }
 
+  // Definite min-width = the full track sum (story 14rem + one 14rem per state
+  // column) plus the body's horizontal padding (px-2 = 1rem). It anchors the
+  // grid's `1fr` tracks to a real width (no `max-content` balloon) and lets the
+  // section grow past the viewport — border + header wrapping every column — once
+  // the columns can't fit.
+  const columns = sectionColumns(section, board.columns, showAll)
+  const minWidth = `calc(${(columns.length + 1) * 14}rem + 1rem)`
+
   return (
     <details
-      // min-w-max: grow to the grid's full width when the board is wider than
-      // the viewport, so the border + summary header wrap ALL columns (the last
-      // column no longer spills past the rounded container on horizontal
-      // scroll). Still fills the viewport when the board is narrower.
-      className="group min-w-max rounded-lg border border-line bg-surface"
+      // A block <details> fills the viewport width; `minWidth` grows it past the
+      // viewport when the columns can't fit, so the border + summary header wrap
+      // ALL columns on horizontal scroll. Below that width the state columns
+      // (minmax(14rem, 1fr)) stretch to fill rather than leaving dead space.
+      className="group rounded-lg border border-line bg-surface"
+      style={{ minWidth }}
       open={expanded}
       onToggle={handleToggle}
     >
@@ -183,7 +194,7 @@ export function SprintSection({ section, board, onMoveCard, showAll, highlightMi
             onOpenCard={onOpenCard}
           />
         ) : (
-          <SectionSkeleton columns={sectionColumns(section, board.columns, showAll)} />
+          <SectionSkeleton columns={columns} />
         ))}
     </details>
   )
