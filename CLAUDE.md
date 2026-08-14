@@ -29,9 +29,8 @@ storage trade-off.
 
 - **PAT handling is dual-mode.** The active browser `Connection`
   (`src/connections/store.ts`) may hold its own PAT (sent as `X-ADO-PAT`/
-  `X-ADO-Org` headers, `src/api/client.ts`) — that PAT DOES reach the browser
-  by design (accepted trade-off for a local tool, see the design spec's
-  security section) and is never logged/echoed elsewhere. The proxy
+  `X-ADO-Org` headers, `src/api/client.ts`), and is never logged/echoed
+  elsewhere. The proxy
   (`vite.config.ts` dev / `server/index.mjs` prod) relays those headers when
   present, else falls back to `.env`'s `ADO_ORG`/`ADO_PAT` — a connection with
   an **empty** stored PAT always means "use the server-side PAT instead". The
