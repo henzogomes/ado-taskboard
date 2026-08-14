@@ -248,7 +248,7 @@ describe('j header injection (via a client call)', () => {
     expect(headers.get('X-ADO-PAT')).toBe('tok')
   })
 
-  it('omits X-ADO-PAT when the connection pat is empty (dual-mode → env PAT)', async () => {
+  it('omits X-ADO-PAT when the connection pat is empty (e.g. the demo sentinel)', async () => {
     vi.spyOn(store, 'getActive').mockReturnValue({ id: '1', label: 'x', org: 'contoso', project: 'P', pat: '' })
     const fetchMock = vi.fn(async () => asResp({ value: [] }))
     vi.stubGlobal('fetch', fetchMock)

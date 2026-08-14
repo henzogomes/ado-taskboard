@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { LoginScreen } from './LoginScreen'
 import * as store from './store'
+import type { Connection } from './store'
 
 async function fillAndSubmit() {
   const user = userEvent.setup()
@@ -86,5 +87,66 @@ describe('LoginScreen', () => {
     const alert = await screen.findByRole('alert')
     expect(alert).toHaveTextContent(/reach the proxy/i)
     expect(addSpy).not.toHaveBeenCalled()
+  })
+})
+
+describe('LoginScreen — edit mode', () => {
+  let addSpy: ReturnType<typeof vi.spyOn>
+  let updateSpy: ReturnType<typeof vi.spyOn>
+
+  const existing: Connection = {
+    id: 'conn-1',
+    label: 'Old label',
+    org: 'contoso',
+    project: 'MyProject',
+    team: 'MyTeam',
+    me: 'me@demo',
+    pat: 'tok123',
+  }
+
+  beforeEach(() => {
+    addSpy = vi.spyOn(store, 'addConnection').mockImplementation(() => {})
+    updateSpy = vi.spyOn(store, 'updateConnection').mockImplementation(() => {})
+  })
+  afterEach(() => vi.restoreAllMocks())
+
+  it('pre-fills the form from editConnection (including the PAT) and hides "View demo"', () => {
+    render(<LoginScreen editConnection={existing} onCancel={vi.fn()} />)
+
+    expect(screen.getByRole('heading', { name: /edit connection/i })).toBeInTheDocument()
+    expect(screen.getByLabelText(/label/i)).toHaveValue('Old label')
+    expect(screen.getByLabelText(/organization/i)).toHaveValue('contoso')
+    expect(screen.getByLabelText(/project/i)).toHaveValue('MyProject')
+    expect(screen.getByLabelText(/team/i)).toHaveValue('MyTeam')
+    expect(screen.getByLabelText(/^me/i)).toHaveValue('me@demo')
+    expect(screen.getByLabelText(/personal access token/i)).toHaveValue('tok123')
+    expect(screen.queryByRole('button', { name: /view demo/i })).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /save changes/i })).toBeInTheDocument()
+  })
+
+  it('on Save validates then calls updateConnection (not addConnection), keeping the same id, and closes', async () => {
+    vi.stubGlobal('fetch', mockFetch({ status: 200 }))
+    const onCancel = vi.fn()
+    const user = userEvent.setup()
+    render(<LoginScreen editConnection={existing} onCancel={onCancel} />)
+
+    // Edit a field, then save.
+    const meInput = screen.getByLabelText(/^me/i)
+    await user.clear(meInput)
+    await user.type(meInput, 'new@demo')
+    await user.click(screen.getByRole('button', { name: /save changes/i }))
+
+    await waitFor(() => expect(updateSpy).toHaveBeenCalledTimes(1))
+    expect(addSpy).not.toHaveBeenCalled()
+    expect(updateSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: 'conn-1',
+        org: 'contoso',
+        project: 'MyProject',
+        me: 'new@demo',
+        pat: 'tok123',
+      }),
+    )
+    await waitFor(() => expect(onCancel).toHaveBeenCalledTimes(1))
   })
 })

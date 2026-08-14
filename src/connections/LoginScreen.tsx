@@ -1,12 +1,18 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { addConnection } from './store'
+import { addConnection, updateConnection } from './store'
+import type { Connection } from './store'
 import { DEMO_CONNECTION } from '../demo/connection'
 
 interface LoginScreenProps {
   /** Optional cancel affordance — shown as a "Cancel" button when the screen is
    *  used as an overlay (e.g. "+ Add connection…"), omitted on the first-run gate. */
   onCancel?: () => void
+  /** When set, the form edits this existing connection in place instead of adding
+   *  a new one: the fields pre-fill from it, the heading/submit label change, the
+   *  "View demo" section is hidden, and submit calls `updateConnection` (keeping
+   *  the same id) then `onCancel` to close. Absent → normal add mode. */
+  editConnection?: Connection
 }
 
 /**
@@ -16,13 +22,16 @@ interface LoginScreenProps {
  * connection is added and activated (via `addConnection`), which flips `App`'s
  * `active === null` gate and renders the board.
  */
-export function LoginScreen({ onCancel }: LoginScreenProps) {
-  const [label, setLabel] = useState('')
-  const [org, setOrg] = useState('')
-  const [project, setProject] = useState('')
-  const [pat, setPat] = useState('')
-  const [team, setTeam] = useState('')
-  const [me, setMe] = useState('')
+export function LoginScreen({ onCancel, editConnection }: LoginScreenProps) {
+  const isEditing = editConnection !== undefined
+  const [label, setLabel] = useState(editConnection?.label ?? '')
+  const [org, setOrg] = useState(editConnection?.org ?? '')
+  const [project, setProject] = useState(editConnection?.project ?? '')
+  // The PAT is already stored plaintext for this connection, so pre-fill it in
+  // edit mode — the user shouldn't be forced to re-type it just to fix a typo.
+  const [pat, setPat] = useState(editConnection?.pat ?? '')
+  const [team, setTeam] = useState(editConnection?.team ?? '')
+  const [me, setMe] = useState(editConnection?.me ?? '')
   const [error, setError] = useState<string | null>(null)
   const [validating, setValidating] = useState(false)
 
@@ -46,15 +55,29 @@ export function LoginScreen({ onCancel }: LoginScreenProps) {
         return
       }
       if (response.ok) {
-        addConnection({
-          id: crypto.randomUUID(),
-          label: label || `${org} / ${project}`,
-          org,
-          project,
-          team: team || undefined,
-          me: me || undefined,
-          pat,
-        })
+        if (editConnection) {
+          updateConnection({
+            ...editConnection,
+            id: editConnection.id, // keep the same id
+            label: label || `${org} / ${project}`,
+            org,
+            project,
+            team: team || undefined,
+            me: me || undefined,
+            pat,
+          })
+          onCancel?.()
+        } else {
+          addConnection({
+            id: crypto.randomUUID(),
+            label: label || `${org} / ${project}`,
+            org,
+            project,
+            team: team || undefined,
+            me: me || undefined,
+            pat,
+          })
+        }
         return
       }
       if (response.status === 401) {
@@ -80,12 +103,12 @@ export function LoginScreen({ onCancel }: LoginScreenProps) {
         className="w-full max-w-md rounded-lg border border-line bg-surface p-6 shadow-sm"
       >
         <h2 className="mb-1 text-lg font-semibold text-content">
-          Connect to Azure DevOps
+          {isEditing ? 'Edit connection' : 'Connect to Azure DevOps'}
         </h2>
         <p className="mb-4 text-xs text-content-muted">
           Enter your ADO organization, project, and a Personal Access Token. The PAT is stored in
-          this browser (localStorage) — acceptable for a local single-user tool. Leave the PAT blank
-          to use the server's PAT (dual-mode / demo hosting).
+          this browser (localStorage) — acceptable for a local single-user tool — and sent with each
+          request; it is the only way in.
         </p>
 
         {error && (
@@ -144,11 +167,12 @@ export function LoginScreen({ onCancel }: LoginScreenProps) {
 
           <div>
             <label htmlFor="conn-pat" className={labelClass}>
-              Personal Access Token <span className="font-normal text-content-subtle">(blank = server PAT)</span>
+              Personal Access Token
             </label>
             <input
               id="conn-pat"
               type="password"
+              required
               value={pat}
               onChange={(e) => setPat(e.target.value)}
               autoComplete="off"
@@ -192,7 +216,7 @@ export function LoginScreen({ onCancel }: LoginScreenProps) {
             disabled={validating}
             className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-fg hover:bg-accent disabled:opacity-50"
           >
-            {validating ? 'Validating…' : 'Add connection'}
+            {validating ? 'Validating…' : isEditing ? 'Save changes' : 'Add connection'}
           </button>
           {onCancel && (
             <button
@@ -205,18 +229,20 @@ export function LoginScreen({ onCancel }: LoginScreenProps) {
           )}
         </div>
 
-        <div className="mt-5 border-t border-line pt-4">
-          <p className="mb-2 text-xs text-content-muted">
-            Just want to look around? Explore a synthetic board — no ADO, no PAT.
-          </p>
-          <button
-            type="button"
-            onClick={() => addConnection(DEMO_CONNECTION)}
-            className="rounded-md border border-line bg-surface px-4 py-2 text-sm font-medium text-content hover:bg-surface-raised"
-          >
-            View demo
-          </button>
-        </div>
+        {!isEditing && (
+          <div className="mt-5 border-t border-line pt-4">
+            <p className="mb-2 text-xs text-content-muted">
+              Just want to look around? Explore a synthetic board — no ADO, no PAT.
+            </p>
+            <button
+              type="button"
+              onClick={() => addConnection(DEMO_CONNECTION)}
+              className="rounded-md border border-line bg-surface px-4 py-2 text-sm font-medium text-content hover:bg-surface-raised"
+            >
+              View demo
+            </button>
+          </div>
+        )}
       </form>
     </div>
   )

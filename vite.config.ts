@@ -1,15 +1,17 @@
 /// <reference types="vitest/config" />
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig } from 'vite'
 import { configDefaults } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 import { buildAuthHeader } from './src/proxy/auth.ts'
 import { sanitizeOrg } from './src/connections/sanitize.ts'
 
+// ADO host only — org is appended per request from the connection's
+// X-ADO-Org header. There is no server-side/.env ADO config.
+const ADO_BASE_URL = 'https://dev.azure.com'
+
 // https://vite.dev/config/
-export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), 'ADO_') // load ADO_* from .env (server-side fallback)
-  const base = env.ADO_BASE_URL || 'https://dev.azure.com'
+export default defineConfig(() => {
   return {
     plugins: [
       react(),
@@ -22,28 +24,20 @@ export default defineConfig(({ mode }) => {
         // directly via http-proxy-middleware instead — the same library and
         // config shape server/index.mjs uses in prod, where it works.
         configureServer(server) {
-          // Non-secret runtime env → JSON for the client bootstrap. PAT excluded.
-          server.middlewares.use('/api/config/bootstrap', (_req, res) => {
-            res.setHeader('Content-Type', 'application/json')
-            res.end(
-              JSON.stringify({
-                org: env.ADO_ORG || '',
-                project: env.ADO_PROJECT || '',
-                team: env.ADO_TEAM || '',
-                me: env.ADO_ME || '',
-              }),
-            )
-          })
+          // Pure relay: org + PAT come ONLY from the active connection's
+          // X-ADO-Org / X-ADO-PAT headers. No .env, no fallback, no bootstrap.
           server.middlewares.use(
             '/api/ado',
             createProxyMiddleware({
-              target: base, // host only; org appended per request below
+              target: ADO_BASE_URL, // host only; org appended per request below
               changeOrigin: true,
               pathRewrite: { '^/api/ado': '' },
-              router: (req) => `${base}/${sanitizeOrg(req.headers['x-ado-org']) || env.ADO_ORG || ''}`,
+              router: (req) => `${ADO_BASE_URL}/${sanitizeOrg(req.headers['x-ado-org'])}`,
               on: {
                 proxyReq: (proxyReq, req) => {
-                  const pat = req.headers['x-ado-pat'] || env.ADO_PAT
+                  const pat = req.headers['x-ado-pat']
+                  // No PAT header → don't set Authorization; ADO returns 401,
+                  // which the app surfaces as an auth error.
                   if (pat) proxyReq.setHeader('Authorization', buildAuthHeader(String(pat)))
                   proxyReq.removeHeader('x-ado-pat')
                   proxyReq.removeHeader('x-ado-org')
@@ -68,7 +62,8 @@ export default defineConfig(({ mode }) => {
       },
     ],
     define: {
-      // org/project/team/me are runtime now (per Task 3); never define ADO_PAT.
+      // org/project/team/me are runtime (from the active connection); there is
+      // no build-time or server-side ADO config to define.
     },
     server: {
       // Off Vite's default 5173 to avoid clashing with other local Vite apps.

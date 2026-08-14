@@ -1,8 +1,8 @@
 # Task 3 spike: how child Tasks map onto the Stories board columns
 
-Captured against the real `contoso` org, `Contoso.MyProject` project,
+Captured against the `contoso` org, `Contoso.MyProject` project,
 team **`Contoso.MyProject Team`** (resolved as the default team — `ADO_TEAM`
-was blank in `.env`), board **`Stories`** (the literal name worked on the first
+was left unset), board **`Stories`** (the literal name worked on the first
 try — no need to fall back to `GET .../_apis/work/boards` and pick a candidate).
 
 Fixtures captured by `scripts/capture-fixtures.mjs` into `src/api/__fixtures__/`:

@@ -75,4 +75,42 @@ describe('ConnectionSwitcher', () => {
     expect(store.logoutAll).not.toHaveBeenCalled()
     expect(onLogoutAll).not.toHaveBeenCalled()
   })
+
+  it('shows "Edit this connection" when there is an active connection', async () => {
+    withStore('a')
+    const user = userEvent.setup()
+    render(<ConnectionSwitcher onLogoutAll={vi.fn()} />)
+
+    await user.click(screen.getByRole('button', { name: /connection/i }))
+
+    expect(screen.getByRole('menuitem', { name: /Edit this connection/ })).toBeInTheDocument()
+  })
+
+  it('hides "Edit this connection" when there is no active connection', async () => {
+    // No active id → the active-only items (Edit / Log out of this) are absent.
+    const stored: Stored = { connections: conns, activeId: '' }
+    vi.spyOn(store, 'load').mockReturnValue(stored)
+    vi.spyOn(store, 'subscribe').mockReturnValue(() => {})
+    const user = userEvent.setup()
+    render(<ConnectionSwitcher onLogoutAll={vi.fn()} />)
+
+    await user.click(screen.getByRole('button', { name: /connection/i }))
+
+    expect(screen.queryByRole('menuitem', { name: /Edit this connection/ })).not.toBeInTheDocument()
+  })
+
+  it('opens the edit overlay pre-filled from the active connection when "Edit this connection" is picked', async () => {
+    withStore('b')
+    const user = userEvent.setup()
+    render(<ConnectionSwitcher onLogoutAll={vi.fn()} />)
+
+    await user.click(screen.getByRole('button', { name: /connection/i }))
+    await user.click(screen.getByRole('menuitem', { name: /Edit this connection/ }))
+
+    // The edit LoginScreen overlay is shown, pre-filled from connection 'b'.
+    expect(screen.getByRole('heading', { name: /edit connection/i })).toBeInTheDocument()
+    expect(screen.getByLabelText(/organization/i)).toHaveValue('orgB')
+    expect(screen.getByLabelText(/project/i)).toHaveValue('P2')
+    expect(screen.getByRole('button', { name: /save changes/i })).toBeInTheDocument()
+  })
 })

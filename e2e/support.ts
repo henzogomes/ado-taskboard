@@ -39,12 +39,12 @@ export async function mockAdo(page: Page): Promise<void> {
 }
 
 /** A single ready-to-use connection, seeded into localStorage before load so
- * the app skips the login gate and the bootstrap fetch (both keyed off an
- * empty connection list). `pat: ''` = dual-mode, but every call is mocked so
- * the proxy is never hit. */
+ * the app skips the login gate (which an empty connection list would show) and
+ * opens straight on a board. The PAT is a dummy — every `/api/ado` call is mocked
+ * in-page, so the proxy is never hit. */
 const SEED_CONNECTIONS = {
   connections: [
-    { id: 'e2e-conn', label: 'Demo', org: 'demo', project: 'Demo', team: 'Demo Team', me: 'me@demo', pat: '' },
+    { id: 'e2e-conn', label: 'Demo', org: 'demo', project: 'Demo', team: 'Demo Team', me: 'me@demo', pat: 'e2e-pat' },
   ],
   activeId: 'e2e-conn',
 }

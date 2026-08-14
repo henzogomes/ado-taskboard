@@ -27,7 +27,7 @@ import { CONFIG } from './config'
 import { useConnections } from './connections/useConnections'
 import { LoginScreen } from './connections/LoginScreen'
 import { ConnectionSwitcher } from './connections/ConnectionSwitcher'
-import { DEMO_CONNECTION, DEMO_CONNECTION_ID } from './demo/connection'
+import { DEMO_CONNECTION_ID } from './demo/connection'
 import { DemoBanner } from './demo/DemoBanner'
 
 function pickerValueToScope(value: string): BoardScope {
@@ -45,54 +45,12 @@ interface DropToast {
 
 function App() {
   const queryClient = useQueryClient()
-  const { connections, active, add, remove } = useConnections()
+  const { active, remove } = useConnections()
 
-  // First-run bootstrap seed: when there are no stored connections, ask the
-  // proxy for its non-secret env config (`/api/config/bootstrap`) and, if it
-  // names a project, seed a default connection with an EMPTY pat (dual-mode →
-  // the proxy uses its server-side env PAT). When NOTHING is configured (no
-  // project, or the bootstrap is unreachable), fall into Demo mode — auto-seed
-  // the synthetic `DEMO_CONNECTION` so the app opens on a working demo board
-  // instead of the login wall. A hosted instance that DOES set `.env` still
-  // seeds its real connection; demo only fills the "nothing configured" gap.
-  // Guarded by a ref so it runs at most once (a ref, not state, so flipping the
-  // flag never itself re-renders). `seeding` gates the login screen so it
-  // doesn't flash before bootstrap settles.
-  const seededRef = useRef(false)
-  const [seeding, setSeeding] = useState(connections.length === 0)
-  useEffect(() => {
-    if (seededRef.current) return
-    seededRef.current = true
-    if (connections.length > 0) {
-      setSeeding(false)
-      return
-    }
-    void (async () => {
-      try {
-        const r = await fetch('/api/config/bootstrap')
-        if (r.ok) {
-          const cfg = (await r.json()) as { org?: string; project?: string; team?: string; me?: string }
-          if (cfg.project) {
-            add({
-              id: crypto.randomUUID(),
-              label: `${cfg.org ?? ''} / ${cfg.project}`,
-              org: cfg.org ?? '',
-              project: cfg.project,
-              team: cfg.team || undefined,
-              me: cfg.me || undefined,
-              pat: '',
-            })
-            return
-          }
-        }
-      } catch {
-        // Bootstrap unreachable → fall through to Demo mode below.
-      }
-      // Nothing configured: open on the demo board rather than the login wall.
-      add(DEMO_CONNECTION)
-      setSeeding(false)
-    })()
-  }, [connections.length, add])
+  // No auto-seed: on first run (no stored connection) the app shows the login
+  // screen, where the user enters org/project/PAT — the browser connection is the
+  // sole source of truth, nothing is presented until they choose it. The
+  // synthetic demo board is opt-in from there via LoginScreen's "View demo".
 
   const [scope, setScope] = useState<BoardScope>('current')
 
@@ -211,9 +169,10 @@ function App() {
   )
 
   // Login gate: with no active connection, render the login screen instead of
-  // the board (keeping the theme toggle available). While the first-run
-  // bootstrap seed is still in flight, show a spinner rather than flashing the
-  // login form.
+  // the board (keeping the theme toggle available). This is the first-run
+  // experience now — the user enters org/project/PAT here, or opts into the
+  // synthetic demo via "View demo"; it also shows after leaving demo
+  // ("Connect your ADO") or logging out.
   if (active === null) {
     return (
       <div className="flex h-screen flex-col bg-app text-content">
@@ -223,17 +182,7 @@ function App() {
             <ThemePicker />
           </div>
         </header>
-        {seeding ? (
-          <div className="flex flex-1 items-center justify-center text-sm text-content-muted">
-            <span
-              aria-hidden="true"
-              className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-line border-t-accent"
-            />
-            Loading connection…
-          </div>
-        ) : (
-          <LoginScreen />
-        )}
+        <LoginScreen />
       </div>
     )
   }
@@ -247,6 +196,13 @@ function App() {
           <ConnectionSwitcher
             onLogoutAll={() => {
               queryClient.clear()
+              localStorage.removeItem('ado-taskboard-cache')
+            }}
+            onConnectionEdited={() => {
+              // The active connection's org/project changed but its id (the board
+              // query key) didn't — invalidate the board query to force a reload
+              // and drop the persisted cache so it can't rehydrate stale.
+              queryClient.invalidateQueries({ queryKey: ['board'] })
               localStorage.removeItem('ado-taskboard-cache')
             }}
           />

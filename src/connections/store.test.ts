@@ -63,6 +63,40 @@ describe('redact', () => {
   })
 })
 
+describe('updateConnection', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    vi.resetModules()
+  })
+
+  it('updates an existing connection by id and preserves the active id', async () => {
+    const { save, updateConnection, load } = await import('./store')
+    save({ connections: [conn('a', { label: 'old', me: '' }), conn('b')], activeId: 'a' })
+
+    updateConnection(conn('a', { label: 'new', me: 'me@demo', org: 'o2', project: 'p2' }))
+
+    const after = load()
+    expect(after.activeId).toBe('a')
+    expect(after.connections).toHaveLength(2)
+    const updated = after.connections.find((c) => c.id === 'a')!
+    expect(updated.label).toBe('new')
+    expect(updated.me).toBe('me@demo')
+    expect(updated.org).toBe('o2')
+    expect(updated.project).toBe('p2')
+    // The other connection is untouched.
+    expect(after.connections.find((c) => c.id === 'b')!.label).toBe('Lb')
+  })
+
+  it('does not change the active id even when a non-active connection is edited', async () => {
+    const { save, updateConnection, load } = await import('./store')
+    save({ connections: [conn('a'), conn('b')], activeId: 'b' })
+
+    updateConnection(conn('a', { label: 'edited' }))
+
+    expect(load().activeId).toBe('b')
+  })
+})
+
 // Regression coverage for a real bug caught live in the browser: load() used
 // to re-parse localStorage on every call, returning a fresh object reference
 // each time. useConnections.ts passes load as useSyncExternalStore's

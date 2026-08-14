@@ -2,16 +2,16 @@
 //
 // Production server for the built app. Standalone on purpose (no imports
 // from src/): it serves the Vite production build (dist/) and proxies
-// /api/ado/* to Azure DevOps with the PAT attached server-side, mirroring
-// the dev-time Vite proxy in vite.config.ts + src/proxy/auth.ts.
+// /api/ado/* to Azure DevOps, mirroring the dev-time Vite proxy in
+// vite.config.ts + src/proxy/auth.ts.
 //
-// The PAT is read from process.env at RUNTIME only. It is never baked into
-// the client bundle and never touches the browser.
+// Pure relay: org + PAT come ONLY from the active connection's X-ADO-Org /
+// X-ADO-PAT headers, per request. There is no server-side/.env ADO config,
+// no fallback PAT, and no bootstrap endpoint.
 //
 // Usage:
 //   node server/index.mjs        (after `npm run build`)
 //   npm run serve                (build + start, one command)
-import 'dotenv/config';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import express from 'express';
@@ -20,22 +20,11 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const distDir = path.join(__dirname, '..', 'dist');
 
-const {
-  PORT = 5280,
-  ADO_ORG,
-  ADO_PAT,
-  ADO_PROJECT,
-  ADO_TEAM,
-  ADO_ME,
-  ADO_BASE_URL = 'https://dev.azure.com',
-} = process.env;
+// A port is not ADO config — keep reading it from the environment.
+const PORT = process.env.PORT || 5280;
 
-if (!ADO_ORG || !ADO_PAT) {
-  console.warn(
-    'No ADO_ORG/ADO_PAT env fallback set — the app can still supply a browser connection.\n' +
-      'Set them in .env (local) or as runtime environment variables (Docker) — see .env.example.',
-  );
-}
+// ADO host only — org is appended per request from the X-ADO-Org header.
+const ADO_BASE_URL = 'https://dev.azure.com';
 
 // Same header shape as src/proxy/auth.ts's buildAuthHeader — duplicated
 // (not imported) so this server has no dependency on the client source tree.
@@ -59,10 +48,12 @@ app.use(
     target: ADO_BASE_URL, // host only; org appended per request via router
     changeOrigin: true,
     pathRewrite: { '^/api/ado': '' },
-    router: (req) => `${ADO_BASE_URL}/${sanitizeOrg(req.headers['x-ado-org']) || ADO_ORG || ''}`,
+    router: (req) => `${ADO_BASE_URL}/${sanitizeOrg(req.headers['x-ado-org'])}`,
     on: {
       proxyReq: (proxyReq, req) => {
-        const pat = req.headers['x-ado-pat'] || ADO_PAT;
+        const pat = req.headers['x-ado-pat'];
+        // No PAT header → don't set Authorization; ADO returns 401,
+        // which the app surfaces as an auth error.
         if (pat) proxyReq.setHeader('Authorization', authHeader(String(pat)));
         proxyReq.removeHeader('x-ado-pat');
         proxyReq.removeHeader('x-ado-org');
@@ -80,17 +71,6 @@ app.use(
         }
       },
     },
-  }),
-);
-
-// Non-secret runtime env → JSON for the client bootstrap. PAT excluded.
-// Registered before the SPA fallback so it isn't shadowed by index.html.
-app.get('/api/config/bootstrap', (_req, res) =>
-  res.json({
-    org: ADO_ORG || '',
-    project: ADO_PROJECT || '',
-    team: ADO_TEAM || '',
-    me: ADO_ME || '',
   }),
 );
 

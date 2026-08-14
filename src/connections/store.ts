@@ -5,7 +5,12 @@ export interface Connection {
   project: string
   team?: string
   me?: string
-  /** '' = use the proxy's server-side env PAT (dual-mode). */
+  /**
+   * The PAT sent to the proxy as `X-ADO-PAT` for this connection. An empty
+   * string means no credential — the proxy sends no `Authorization` and ADO
+   * replies 401. The only legitimate empty PAT is the demo sentinel, which
+   * short-circuits to synthetic data before any request reaches the proxy.
+   */
   pat: string
 }
 export interface Stored {
@@ -91,6 +96,13 @@ export function getActive(): Connection | null {
 export function listConnections(): Connection[] { return load().connections }
 export function addConnection(conn: Connection): void {
   save(setActive(upsert(load(), conn), conn.id)) // add + activate
+}
+// Update an existing connection in place (matched by id). Unlike
+// addConnection, this does NOT touch activeId — editing a connection never
+// changes which one is active. Appends if the id somehow isn't found (upsert),
+// but the intended use is editing a stored connection.
+export function updateConnection(conn: Connection): void {
+  save(upsert(load(), conn))
 }
 export function setActiveConnection(id: string): void { save(setActive(load(), id)) }
 export function removeConnection(id: string): void { save(remove(load(), id)) }
