@@ -5,9 +5,11 @@ import DOMPurify from 'dompurify'
 import type { WorkItem } from '../api/types'
 import { adoWorkItemUrl, initialsOf } from './cardUtils'
 import { useWorkItemDetail } from '../hooks/useWorkItemDetail'
+import { useWorkItemComments } from '../hooks/useWorkItemComments'
 import { useFieldMeta } from '../hooks/useFieldMeta'
 import { richTextFields } from '../domain/detailFields'
 import { relationLabel } from './relationLabel'
+import { relativeTime } from './relativeTime'
 import { useStateColor } from '../theme/StateCategoryContext'
 
 export interface TicketModalProps {
@@ -46,6 +48,14 @@ export function TicketModal({ item, onClose }: TicketModalProps) {
   const dialogRef = useRef<HTMLDivElement>(null)
   const previouslyFocusedRef = useRef<HTMLElement | null>(null)
   const { detail, isLoading, error } = useWorkItemDetail(item?.id ?? null)
+  const {
+    comments,
+    isLoading: commentsLoading,
+    error: commentsError,
+    hasNextPage: hasMoreComments,
+    fetchNextPage: fetchMoreComments,
+    isFetchingNextPage: fetchingMoreComments,
+  } = useWorkItemComments(item?.id ?? null)
   const { meta, isLoading: metaLoading } = useFieldMeta()
   const color = useStateColor(item?.state ?? '')
 
@@ -242,6 +252,61 @@ export function TicketModal({ item, onClose }: TicketModalProps) {
                         ))}
                       </div>
                     </div>
+                  )}
+                </>
+              )}
+            </div>
+
+            <div data-testid="ticket-comments" className="mt-4 border-t border-line pt-3">
+              <h3 className="text-sm font-semibold text-content-muted">Comments</h3>
+
+              {commentsLoading && (
+                <div role="status" aria-label="Loading comments…" className="mt-2 space-y-2">
+                  <div className="h-3 w-3/4 animate-pulse rounded bg-surface-muted" />
+                  <div className="h-3 w-full animate-pulse rounded bg-surface-muted" />
+                  <div className="h-3 w-5/6 animate-pulse rounded bg-surface-muted" />
+                </div>
+              )}
+              {commentsError && !commentsLoading && (
+                <p className="mt-1 text-sm text-danger">Couldn't load comments.</p>
+              )}
+
+              {!commentsLoading && !commentsError && (
+                <>
+                  {comments.length === 0 ? (
+                    <p className="mt-2 text-sm italic text-content-subtle">No comments.</p>
+                  ) : (
+                    <ul className="mt-2 space-y-3">
+                      {comments.map((comment) => (
+                        <li key={comment.id}>
+                          <div className="flex items-center gap-1.5 text-xs text-content-muted">
+                            <span
+                              aria-hidden="true"
+                              className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-accent-muted text-[9px] font-semibold text-accent"
+                            >
+                              {initialsOf(comment.createdBy.displayName)}
+                            </span>
+                            <span className="font-medium text-content">{comment.createdBy.displayName}</span>
+                            <span className="text-content-subtle">{relativeTime(comment.createdDate)}</span>
+                          </div>
+                          <div
+                            className={`mt-1 text-sm text-content ${PROSE_CLASS}`}
+                            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(comment.text) }}
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {hasMoreComments && (
+                    <button
+                      type="button"
+                      onClick={() => fetchMoreComments()}
+                      disabled={fetchingMoreComments}
+                      className="mt-3 rounded border border-line px-2 py-1 text-xs font-medium text-content-muted hover:bg-surface-raised disabled:opacity-60"
+                    >
+                      {fetchingMoreComments ? 'Loading…' : 'Load more comments'}
+                    </button>
                   )}
                 </>
               )}

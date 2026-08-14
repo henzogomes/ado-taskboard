@@ -1,9 +1,9 @@
 import { CONFIG } from '../config'
 import { getActive } from '../connections/store'
 import { isDemoActive } from '../demo/connection'
-import { DEMO_FIELDS, demoWorkItemDetail } from '../demo/dataset'
+import { DEMO_FIELDS, demoWorkItemDetail, demoWorkItemComments } from '../demo/dataset'
 import { demoApplyMove } from '../demo/runtime'
-import type { WorkItem, WorkItemDetail, WorkItemRelation, Iteration, Board, BacklogLevels, StateCategory, FieldMeta } from './types'
+import type { WorkItem, WorkItemDetail, WorkItemComment, WorkItemCommentsPage, WorkItemRelation, Iteration, Board, BacklogLevels, StateCategory, FieldMeta } from './types'
 
 const V = 'api-version=7.1'
 
@@ -62,6 +62,39 @@ export async function getWorkItemDetail(id: number): Promise<WorkItemDetail> {
   if (isDemoActive()) return demoWorkItemDetail(id)
   const d = await j(`${CONFIG.baseUrl}/${CONFIG.project}/_apis/wit/workitems/${id}?$expand=all&${V}`)
   return toDetail(d)
+}
+
+function toComment(c: any): WorkItemComment {
+  return {
+    id: c.id,
+    text: c.text ?? '',
+    createdBy: {
+      displayName: c.createdBy?.displayName ?? '',
+      uniqueName: c.createdBy?.uniqueName ?? '',
+    },
+    createdDate: c.createdDate ?? '',
+    modifiedDate: c.modifiedDate,
+  }
+}
+
+/**
+ * One page of a work item's discussion comments, oldest→newest (ADO's default
+ * ordering — we don't pass an `order` param, so we ship what ADO returns).
+ * Paginated via `continuationToken`: pass the previous page's token to fetch the
+ * next page; ADO omits it on the final page, so we pass `undefined` through
+ * (never invent one) to stop pagination. Demo mode routes to the in-memory seed.
+ */
+export async function getWorkItemComments(id: number, continuationToken?: string): Promise<WorkItemCommentsPage> {
+  if (isDemoActive()) return demoWorkItemComments(id, continuationToken)
+  // Comments live behind a preview api-version, distinct from the `V` constant.
+  let url = `${CONFIG.baseUrl}/${CONFIG.project}/_apis/wit/workItems/${id}/comments?api-version=7.1-preview.4&$top=50`
+  if (continuationToken !== undefined) url += `&continuationToken=${continuationToken}`
+  const d = await j(url)
+  return {
+    comments: (d.comments ?? []).map(toComment),
+    continuationToken: d.continuationToken,
+    totalCount: d.totalCount,
+  }
 }
 
 /**

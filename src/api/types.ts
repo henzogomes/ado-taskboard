@@ -67,6 +67,23 @@ export interface DetailField {
   html: string
 }
 
+export interface WorkItemComment {
+  id: number
+  /** Raw ADO comment HTML (sanitize before render). */
+  text: string
+  createdBy: Identity
+  /** ISO 8601. */
+  createdDate: string
+  modifiedDate?: string
+}
+
+export interface WorkItemCommentsPage {
+  comments: WorkItemComment[]
+  /** Present when more pages remain; feeds the next request's continuationToken. */
+  continuationToken?: string
+  totalCount?: number
+}
+
 export type StateCategory = 'Proposed' | 'InProgress' | 'Resolved' | 'Completed' | 'Removed' | (string & {})
 
 export interface BacklogLevels {

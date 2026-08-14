@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { fetchWorkItems, patchState, fetchProjectIterations, getWorkItemDetail, fetchFields, resolveTeam, toBacklogLevels, mergeStates } from './client'
+import { fetchWorkItems, patchState, fetchProjectIterations, getWorkItemDetail, getWorkItemComments, fetchFields, resolveTeam, toBacklogLevels, mergeStates } from './client'
 import * as store from '../connections/store'
+import * as demoConnection from '../demo/connection'
 import { AuthError } from './client'
 
 const asResp = (json: unknown) => ({ ok: true, json: async () => json }) as Response
@@ -189,6 +190,102 @@ describe('api client', () => {
       { referenceName: 'System.Description', displayName: 'Description', type: 'html' },
       { referenceName: 'System.Title', displayName: 'Title', type: 'string' },
     ])
+  })
+
+  it('getWorkItemComments hits the preview comments endpoint with $top=50 and maps the response', async () => {
+    const spy = vi.fn(async () =>
+      asResp({
+        totalCount: 2,
+        count: 2,
+        comments: [
+          {
+            id: 1,
+            text: '<div>First</div>',
+            createdBy: { displayName: 'Jane Doe', uniqueName: 'jane@x' },
+            createdDate: '2025-07-01T09:00:00Z',
+            modifiedDate: '2025-07-01T10:00:00Z',
+          },
+          {
+            id: 2,
+            text: '<div>Second</div>',
+            createdBy: { displayName: 'John Roe', uniqueName: 'john@x' },
+            createdDate: '2025-07-02T09:00:00Z',
+          },
+        ],
+        continuationToken: 'tok-2',
+      }),
+    )
+    vi.stubGlobal('fetch', spy)
+
+    const page = await getWorkItemComments(819099)
+
+    const [url] = spy.mock.calls[0] as unknown as [string]
+    expect(String(url)).toContain('/api/ado/')
+    expect(String(url)).toContain('/_apis/wit/workItems/819099/comments')
+    expect(String(url)).toContain('api-version=7.1-preview.4')
+    expect(String(url)).toContain('$top=50')
+    expect(String(url)).not.toContain('continuationToken')
+
+    expect(page).toEqual({
+      totalCount: 2,
+      continuationToken: 'tok-2',
+      comments: [
+        {
+          id: 1,
+          text: '<div>First</div>',
+          createdBy: { displayName: 'Jane Doe', uniqueName: 'jane@x' },
+          createdDate: '2025-07-01T09:00:00Z',
+          modifiedDate: '2025-07-01T10:00:00Z',
+        },
+        {
+          id: 2,
+          text: '<div>Second</div>',
+          createdBy: { displayName: 'John Roe', uniqueName: 'john@x' },
+          createdDate: '2025-07-02T09:00:00Z',
+          modifiedDate: undefined,
+        },
+      ],
+    })
+  })
+
+  it('getWorkItemComments appends continuationToken when passed', async () => {
+    const spy = vi.fn(async () => asResp({ totalCount: 0, comments: [] }))
+    vi.stubGlobal('fetch', spy)
+
+    await getWorkItemComments(1, 'tok-2')
+
+    const [url] = spy.mock.calls[0] as unknown as [string]
+    expect(String(url)).toContain('continuationToken=tok-2')
+  })
+
+  it('getWorkItemComments defends against missing fields and omits continuationToken on the final page', async () => {
+    const spy = vi.fn(async () => asResp({ comments: [{ id: 5, createdDate: '2025-07-03T09:00:00Z' }] }))
+    vi.stubGlobal('fetch', spy)
+
+    const page = await getWorkItemComments(1)
+
+    expect(page.continuationToken).toBeUndefined()
+    expect(page.totalCount).toBeUndefined()
+    expect(page.comments[0]).toEqual({
+      id: 5,
+      text: '',
+      createdBy: { displayName: '', uniqueName: '' },
+      createdDate: '2025-07-03T09:00:00Z',
+      modifiedDate: undefined,
+    })
+  })
+
+  it('getWorkItemComments routes to the demo dataset in demo mode (no fetch)', async () => {
+    vi.spyOn(demoConnection, 'isDemoActive').mockReturnValue(true)
+    const spy = vi.fn()
+    vi.stubGlobal('fetch', spy)
+
+    const page = await getWorkItemComments(101)
+
+    expect(spy).not.toHaveBeenCalled()
+    expect(page.totalCount).toBe(5)
+    expect(page.comments.length).toBe(3) // demo page size
+    expect(page.continuationToken).toBe('3')
   })
 })
 

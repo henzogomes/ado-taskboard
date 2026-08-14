@@ -1,20 +1,36 @@
 import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, within } from '@testing-library/react'
 import { TicketModal } from './TicketModal'
 import type { FieldMeta, StateCategory, WorkItem, WorkItemDetail } from '../api/types'
+import type { WorkItemComment } from '../api/types'
 import { useWorkItemDetail } from '../hooks/useWorkItemDetail'
+import { useWorkItemComments } from '../hooks/useWorkItemComments'
 import { useFieldMeta } from '../hooks/useFieldMeta'
 import { StateCategoryContext } from '../theme/StateCategoryContext'
 
 vi.mock('../hooks/useWorkItemDetail', () => ({
   useWorkItemDetail: vi.fn(),
 }))
+vi.mock('../hooks/useWorkItemComments', () => ({
+  useWorkItemComments: vi.fn(),
+}))
 vi.mock('../hooks/useFieldMeta', () => ({
   useFieldMeta: vi.fn(),
 }))
 
 const mockedUseWorkItemDetail = vi.mocked(useWorkItemDetail)
+const mockedUseWorkItemComments = vi.mocked(useWorkItemComments)
 const mockedUseFieldMeta = vi.mocked(useFieldMeta)
+
+const NO_COMMENTS = {
+  comments: [] as WorkItemComment[],
+  isLoading: false,
+  error: null,
+  hasNextPage: false,
+  fetchNextPage: vi.fn(),
+  isFetchingNextPage: false,
+  totalCount: 0,
+}
 
 const META: Record<string, FieldMeta> = {
   'System.Description': { referenceName: 'System.Description', displayName: 'Description', type: 'html' },
@@ -33,6 +49,8 @@ const META: Record<string, FieldMeta> = {
 beforeEach(() => {
   // Default: field metadata already loaded (individual tests override).
   mockedUseFieldMeta.mockReturnValue({ meta: META, isLoading: false })
+  // Default: no comments (comments-specific tests override this).
+  mockedUseWorkItemComments.mockReturnValue(NO_COMMENTS)
 })
 
 function renderModal(
@@ -216,5 +234,99 @@ describe('TicketModal', () => {
 
     expect(screen.getByText('SomeCustomState')).toHaveClass('bg-content-subtle/15')
     expect(screen.getByRole('dialog')).toHaveClass('border-t-content-subtle')
+  })
+
+  describe('Comments section', () => {
+    it('renders comments with author and sanitized body, stripping a <script> tag', () => {
+      mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
+      mockedUseWorkItemComments.mockReturnValue({
+        ...NO_COMMENTS,
+        comments: [
+          {
+            id: 1,
+            text: '<div>Looks good — merging.</div><script>alert(1)</script>',
+            createdBy: { displayName: 'Jane Doe', uniqueName: 'jane@example.com' },
+            createdDate: '2025-07-01T09:00:00Z',
+          },
+        ],
+        totalCount: 1,
+      })
+      render(<TicketModal item={item} onClose={vi.fn()} />)
+
+      expect(screen.getByRole('heading', { name: 'Comments' })).toBeInTheDocument()
+      // Author appears in both the assignee chip and the comment; scope to the comments list.
+      const section = screen.getByTestId('ticket-comments')
+      expect(within(section).getByText('Jane Doe')).toBeInTheDocument()
+      expect(screen.getByText('Looks good — merging.')).toBeInTheDocument()
+      expect(document.querySelector('script')).not.toBeInTheDocument()
+      expect(document.body.innerHTML).not.toContain('alert(1)')
+    })
+
+    it('shows the empty state when there are no comments', () => {
+      mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
+      mockedUseWorkItemComments.mockReturnValue(NO_COMMENTS)
+      render(<TicketModal item={item} onClose={vi.fn()} />)
+      expect(screen.getByText('No comments.')).toBeInTheDocument()
+    })
+
+    it('shows the loading skeleton while comments are loading', () => {
+      mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
+      mockedUseWorkItemComments.mockReturnValue({ ...NO_COMMENTS, isLoading: true })
+      render(<TicketModal item={item} onClose={vi.fn()} />)
+      expect(screen.getByRole('status', { name: 'Loading comments…' })).toBeInTheDocument()
+    })
+
+    it("shows a couldn't-load note when comments error", () => {
+      mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
+      mockedUseWorkItemComments.mockReturnValue({ ...NO_COMMENTS, error: new Error('boom') })
+      render(<TicketModal item={item} onClose={vi.fn()} />)
+      expect(screen.getByText("Couldn't load comments.")).toBeInTheDocument()
+    })
+
+    it('shows "Load more comments" when hasNextPage and calls fetchNextPage on click', () => {
+      const fetchNextPage = vi.fn()
+      mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
+      mockedUseWorkItemComments.mockReturnValue({
+        ...NO_COMMENTS,
+        comments: [
+          {
+            id: 1,
+            text: '<div>First</div>',
+            createdBy: { displayName: 'Jane Doe', uniqueName: 'jane@example.com' },
+            createdDate: '2025-07-01T09:00:00Z',
+          },
+        ],
+        hasNextPage: true,
+        fetchNextPage,
+        totalCount: 4,
+      })
+      render(<TicketModal item={item} onClose={vi.fn()} />)
+
+      const button = screen.getByRole('button', { name: 'Load more comments' })
+      fireEvent.click(button)
+      expect(fetchNextPage).toHaveBeenCalledTimes(1)
+    })
+
+    it('disables the button and shows a loading label while fetching the next page', () => {
+      mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
+      mockedUseWorkItemComments.mockReturnValue({
+        ...NO_COMMENTS,
+        comments: [
+          {
+            id: 1,
+            text: '<div>First</div>',
+            createdBy: { displayName: 'Jane Doe', uniqueName: 'jane@example.com' },
+            createdDate: '2025-07-01T09:00:00Z',
+          },
+        ],
+        hasNextPage: true,
+        isFetchingNextPage: true,
+        totalCount: 4,
+      })
+      render(<TicketModal item={item} onClose={vi.fn()} />)
+
+      const button = screen.getByRole('button', { name: 'Loading…' })
+      expect(button).toBeDisabled()
+    })
   })
 })

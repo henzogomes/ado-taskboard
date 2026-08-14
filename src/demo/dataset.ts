@@ -15,6 +15,8 @@ import type {
   Iteration,
   StateCategory,
   WorkItem,
+  WorkItemComment,
+  WorkItemCommentsPage,
   WorkItemDetail,
 } from '../api/types'
 
@@ -229,4 +231,40 @@ export const DEMO_DETAILS: Record<number, WorkItemDetail> = {
  *  erroring. */
 export function demoWorkItemDetail(id: number): WorkItemDetail {
   return DEMO_DETAILS[id] ?? { id, fields: {}, relations: [] }
+}
+
+// ---- per-item discussion comments (synthetic) ----
+// Authors reuse the demo people above (never real addresses). #101 carries
+// enough comments to span multiple demo pages (exercising "Load more"); #102
+// has a single comment; every other id falls back to the empty list.
+const day = (d: string): string => `2025-07-${d}T09:00:00Z`
+export const DEMO_COMMENTS: Record<number, WorkItemComment[]> = {
+  101: [
+    { id: 1, text: '<div>Started wiring the form — should have a draft up shortly.</div>', createdBy: ALEX, createdDate: day('01') },
+    { id: 2, text: '<div>Nice. Remember the password field needs to be masked.</div>', createdBy: SAM, createdDate: day('02') },
+    { id: 3, text: '<div>Added masking and the invalid-credentials error state.</div>', createdBy: ALEX, createdDate: day('03') },
+    { id: 4, text: '<div>Reviewed — looks good. One nit on the loading spinner.</div>', createdBy: JORDAN, createdDate: day('04') },
+    { id: 5, text: '<div>Nit addressed. Merging after CI is green.</div>', createdBy: ALEX, createdDate: day('05') },
+  ],
+  102: [
+    { id: 6, text: '<div>Which charting library are we standardizing on?</div>', createdBy: JORDAN, createdDate: day('02') },
+  ],
+}
+
+// Small demo page size purely to exercise the pagination UI in demo mode — a
+// 5-comment seed then yields two pages. Real ADO uses $top=50 (see the client).
+const DEMO_COMMENTS_PAGE_SIZE = 3
+
+/** Paginates a demo item's seeded comments via a numeric offset encoded as the
+ *  string continuationToken (first call: `undefined` → offset 0). Returns
+ *  `continuationToken` only while more remain; unseeded ids yield an empty page. */
+export function demoWorkItemComments(id: number, continuationToken?: string): WorkItemCommentsPage {
+  const all = DEMO_COMMENTS[id] ?? []
+  const offset = continuationToken !== undefined ? Number(continuationToken) : 0
+  const nextOffset = offset + DEMO_COMMENTS_PAGE_SIZE
+  return {
+    comments: all.slice(offset, nextOffset),
+    continuationToken: nextOffset < all.length ? String(nextOffset) : undefined,
+    totalCount: all.length,
+  }
 }
