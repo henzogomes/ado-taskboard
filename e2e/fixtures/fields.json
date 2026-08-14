@@ -1,0 +1,9 @@
+{
+  "value": [
+    { "referenceName": "System.Description", "name": "Description", "type": "html" },
+    { "referenceName": "Microsoft.VSTS.Common.AcceptanceCriteria", "name": "Acceptance Criteria", "type": "html" },
+    { "referenceName": "Microsoft.VSTS.TCM.ReproSteps", "name": "Repro Steps", "type": "html" },
+    { "referenceName": "System.Title", "name": "Title", "type": "string" },
+    { "referenceName": "System.State", "name": "State", "type": "string" }
+  ]
+}

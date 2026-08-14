@@ -1,0 +1,225 @@
+{
+  "id": "ab33c75c-774f-45e4-82e2-bcaab22fb9ee",
+  "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/78846cfc-2f90-42e9-af7c-b5ad6e8f6711/_apis/work/boards/ab33c75c-774f-45e4-82e2-bcaab22fb9ee",
+  "name": "Stories",
+  "revision": 0,
+  "columns": [
+    {
+      "id": "6e41b00e-9c5d-4496-8373-1f99b3949d3c",
+      "name": "New",
+      "itemLimit": 0,
+      "stateMappings": {
+        "User Story": "New",
+        "Bug": "New"
+      },
+      "columnType": "incoming"
+    },
+    {
+      "id": "f55c8889-414e-4f4d-9f50-1fe49c785658",
+      "name": "Prioritized",
+      "itemLimit": 5,
+      "stateMappings": {
+        "User Story": "New",
+        "Bug": "New"
+      },
+      "isSplit": false,
+      "description": "",
+      "columnType": "inProgress"
+    },
+    {
+      "id": "1517017d-42b9-4374-9310-ec97c8d2bd83",
+      "name": "In Refinement",
+      "itemLimit": 5,
+      "stateMappings": {
+        "User Story": "IN REFINEMENT",
+        "Bug": "IN REFINEMENT"
+      },
+      "isSplit": false,
+      "description": "",
+      "columnType": "inProgress"
+    },
+    {
+      "id": "a78b2a42-5ac2-4844-9d06-d3652f8fc1dc",
+      "name": "Ready for Agent",
+      "itemLimit": 5,
+      "stateMappings": {
+        "User Story": "READY FOR DEVELOPMENT",
+        "Bug": "New"
+      },
+      "isSplit": false,
+      "description": "",
+      "columnType": "inProgress"
+    },
+    {
+      "id": "8762b854-fba1-4ffc-961b-27c245a1021f",
+      "name": "Active",
+      "itemLimit": 3,
+      "stateMappings": {
+        "User Story": "Active",
+        "Bug": "New"
+      },
+      "isSplit": false,
+      "description": "",
+      "columnType": "inProgress"
+    },
+    {
+      "id": "8cb46ddd-7b59-4dc9-986f-923cf3afa4e2",
+      "name": "Ready for Review",
+      "itemLimit": 5,
+      "stateMappings": {
+        "User Story": "READY FOR REVIEW",
+        "Bug": "New"
+      },
+      "isSplit": false,
+      "description": "",
+      "columnType": "inProgress"
+    },
+    {
+      "id": "d5dc4e76-ae5a-42c8-a181-4df191fe21e6",
+      "name": "In Review",
+      "itemLimit": 5,
+      "stateMappings": {
+        "User Story": "IN REVIEW",
+        "Bug": "New"
+      },
+      "isSplit": false,
+      "description": "",
+      "columnType": "inProgress"
+    },
+    {
+      "id": "e7b0f270-9cb1-4b83-acc4-81dbd82f6027",
+      "name": "Ready for PO Review",
+      "itemLimit": 5,
+      "stateMappings": {
+        "User Story": "READY FOR PO REVIEW",
+        "Bug": "New"
+      },
+      "isSplit": false,
+      "description": "",
+      "columnType": "inProgress"
+    },
+    {
+      "id": "56cd4681-baf3-4938-a502-39ba37546272",
+      "name": "In PO Review",
+      "itemLimit": 5,
+      "stateMappings": {
+        "User Story": "IN PO REVIEW",
+        "Bug": "New"
+      },
+      "isSplit": false,
+      "description": "",
+      "columnType": "inProgress"
+    },
+    {
+      "id": "d76ae292-c02e-4084-94ae-15fa58f4f59a",
+      "name": "Ready for Release",
+      "itemLimit": 5,
+      "stateMappings": {
+        "User Story": "READY FOR RELEASE",
+        "Bug": "READY FOR RELEASE"
+      },
+      "isSplit": false,
+      "description": "",
+      "columnType": "inProgress"
+    },
+    {
+      "id": "36f3831b-44c8-416d-877b-b15811f38919",
+      "name": "Closed",
+      "itemLimit": 0,
+      "stateMappings": {
+        "User Story": "Closed",
+        "Bug": "Closed"
+      },
+      "columnType": "outgoing"
+    }
+  ],
+  "rows": [
+    {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "name": null,
+      "color": null
+    }
+  ],
+  "isValid": true,
+  "allowedMappings": {
+    "Incoming": {
+      "Bug": [
+        "New"
+      ],
+      "User Story": [
+        "New"
+      ]
+    },
+    "InProgress": {
+      "Bug": [
+        "New",
+        "IN REFINEMENT",
+        "READY FOR DEVELOPMENT",
+        "IN DEVELOPMENT",
+        "READY FOR CODE REVIEW",
+        "IN CODE REVIEW",
+        "READY FOR RELEASE",
+        "BLOCKED",
+        "READY FOR RETEST",
+        "IN RETEST"
+      ],
+      "User Story": [
+        "Active",
+        "New",
+        "Resolved",
+        "IN REFINEMENT",
+        "READY FOR DEVELOPMENT",
+        "IN DEVELOPMENT",
+        "READY FOR PO REVIEW",
+        "IN PO REVIEW",
+        "READY FOR RELEASE",
+        "BLOCKED",
+        "READY FOR REVIEW",
+        "IN REVIEW"
+      ]
+    },
+    "Outgoing": {
+      "Bug": [
+        "Closed"
+      ],
+      "User Story": [
+        "Closed"
+      ]
+    }
+  },
+  "canEdit": false,
+  "fields": {
+    "columnField": {
+      "referenceName": "WEF_0918198900BC482687EC881DC2B8E88B_Kanban.Column",
+      "url": "https://dev.azure.com/contoso/_apis/wit/fields/WEF_0918198900BC482687EC881DC2B8E88B_Kanban.Column"
+    },
+    "rowField": {
+      "referenceName": "WEF_0918198900BC482687EC881DC2B8E88B_Kanban.Lane",
+      "url": "https://dev.azure.com/contoso/_apis/wit/fields/WEF_0918198900BC482687EC881DC2B8E88B_Kanban.Lane"
+    },
+    "doneField": {
+      "referenceName": "WEF_0918198900BC482687EC881DC2B8E88B_Kanban.Column.Done",
+      "url": "https://dev.azure.com/contoso/_apis/wit/fields/WEF_0918198900BC482687EC881DC2B8E88B_Kanban.Column.Done"
+    }
+  },
+  "_links": {
+    "self": {
+      "href": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/78846cfc-2f90-42e9-af7c-b5ad6e8f6711/_apis/work/boards/ab33c75c-774f-45e4-82e2-bcaab22fb9ee"
+    },
+    "project": {
+      "href": "https://dev.azure.com/contoso/_apis/projects/df6d20db-590c-48b4-a8ae-081b2a846696"
+    },
+    "team": {
+      "href": "https://dev.azure.com/contoso/_apis/projects/df6d20db-590c-48b4-a8ae-081b2a846696/teams/78846cfc-2f90-42e9-af7c-b5ad6e8f6711"
+    },
+    "charts": {
+      "href": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/78846cfc-2f90-42e9-af7c-b5ad6e8f6711/_apis/work/boards/ab33c75c-774f-45e4-82e2-bcaab22fb9ee/charts"
+    },
+    "columns": {
+      "href": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/78846cfc-2f90-42e9-af7c-b5ad6e8f6711/_apis/work/boards/ab33c75c-774f-45e4-82e2-bcaab22fb9ee/columns"
+    },
+    "rows": {
+      "href": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/78846cfc-2f90-42e9-af7c-b5ad6e8f6711/_apis/work/boards/ab33c75c-774f-45e4-82e2-bcaab22fb9ee/rows"
+    }
+  }
+}

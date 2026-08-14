@@ -1,0 +1,22 @@
+{
+  "columns": [
+    {
+      "name": "New",
+      "columnType": "incoming",
+      "isSplit": false,
+      "stateMappings": { "User Story": "New", "Task": "To Do" }
+    },
+    {
+      "name": "Active",
+      "columnType": "inProgress",
+      "isSplit": false,
+      "stateMappings": { "User Story": "Active", "Task": "In Progress" }
+    },
+    {
+      "name": "Closed",
+      "columnType": "outgoing",
+      "isSplit": false,
+      "stateMappings": { "User Story": "Closed", "Task": "Done" }
+    }
+  ]
+}

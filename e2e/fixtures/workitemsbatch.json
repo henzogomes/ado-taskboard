@@ -1,0 +1,50 @@
+{
+  "value": [
+    {
+      "id": 101,
+      "rev": 3,
+      "fields": {
+        "System.WorkItemType": "User Story",
+        "System.Title": "Story in Sprint Two",
+        "System.State": "Active",
+        "System.BoardColumn": "Active",
+        "System.Tags": "frontend; priority",
+        "System.IterationPath": "Demo\\Sprint 2"
+      }
+    },
+    {
+      "id": 201,
+      "rev": 2,
+      "fields": {
+        "System.WorkItemType": "Task",
+        "System.Title": "Wire up the login form",
+        "System.State": "In Progress",
+        "System.AssignedTo": { "displayName": "Demo User", "uniqueName": "me@demo" },
+        "System.Parent": 101,
+        "System.IterationPath": "Demo\\Sprint 2"
+      }
+    },
+    {
+      "id": 202,
+      "rev": 1,
+      "fields": {
+        "System.WorkItemType": "Task",
+        "System.Title": "Add unit tests",
+        "System.State": "To Do",
+        "System.Parent": 101,
+        "System.IterationPath": "Demo\\Sprint 2"
+      }
+    },
+    {
+      "id": 102,
+      "rev": 1,
+      "fields": {
+        "System.WorkItemType": "User Story",
+        "System.Title": "Story in Sprint One",
+        "System.State": "New",
+        "System.BoardColumn": "New",
+        "System.IterationPath": "Demo\\Sprint 1"
+      }
+    }
+  ]
+}

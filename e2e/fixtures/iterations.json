@@ -1,0 +1,22 @@
+{
+  "name": "Demo",
+  "identifier": "root-node",
+  "structureType": "iteration",
+  "path": "\\Demo\\Iteration",
+  "children": [
+    {
+      "name": "Sprint 1",
+      "identifier": "sprint-1",
+      "structureType": "iteration",
+      "path": "\\Demo\\Iteration\\Sprint 1",
+      "attributes": { "startDate": "2024-01-01T00:00:00Z", "finishDate": "2024-12-31T00:00:00Z" }
+    },
+    {
+      "name": "Sprint 2",
+      "identifier": "sprint-2",
+      "structureType": "iteration",
+      "path": "\\Demo\\Iteration\\Sprint 2",
+      "attributes": { "startDate": "2025-01-01T00:00:00Z", "finishDate": "2099-12-31T00:00:00Z" }
+    }
+  ]
+}

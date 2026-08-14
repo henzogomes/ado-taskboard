@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ADO Taskboard</title>
+    <script>
+      // Pre-paint: set data-theme + color-scheme + a base background BEFORE React
+      // (and the injected token stylesheet) run, so a reload doesn't flash the
+      // wrong appearance. Reads only the persisted id + appearance — no per-theme
+      // data — so adding a theme never touches this script.
+      ;(function () {
+        try {
+          var id = localStorage.getItem('ado-taskboard-theme') || 'light'
+          var appearance =
+            localStorage.getItem('ado-taskboard-appearance') || (id === 'light' ? 'light' : 'dark')
+          document.documentElement.dataset.theme = id
+          document.documentElement.style.colorScheme = appearance
+          document.documentElement.style.backgroundColor = appearance === 'dark' ? '#030712' : '#f9fafb'
+        } catch (e) {}
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

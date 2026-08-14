@@ -1,0 +1,12 @@
+.env*
+!.env.example
+node_modules/
+dist/
+.DS_Store
+test-results/
+playwright-report/
+
+# Internal dev-tooling artifacts — kept out of this public repo
+.claude/
+.superpowers/
+docs/superpowers/

@@ -1,0 +1,38 @@
+{
+  "count": 3,
+  "value": [
+    {
+      "id": "1709285d-cfce-4667-8a32-fc48bcccdca8",
+      "name": "Sprint 1",
+      "path": "Contoso.MyProject\\Sprint 1",
+      "attributes": {
+        "startDate": "2026-06-29T00:00:00Z",
+        "finishDate": "2026-07-10T00:00:00Z",
+        "timeFrame": "past"
+      },
+      "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/78846cfc-2f90-42e9-af7c-b5ad6e8f6711/_apis/work/teamsettings/iterations/1709285d-cfce-4667-8a32-fc48bcccdca8"
+    },
+    {
+      "id": "a6d89704-90d0-4a20-87e8-549e05dca60f",
+      "name": "Sprint 2",
+      "path": "Contoso.MyProject\\Sprint 2",
+      "attributes": {
+        "startDate": "2026-07-13T00:00:00Z",
+        "finishDate": "2026-07-24T00:00:00Z",
+        "timeFrame": "past"
+      },
+      "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/78846cfc-2f90-42e9-af7c-b5ad6e8f6711/_apis/work/teamsettings/iterations/a6d89704-90d0-4a20-87e8-549e05dca60f"
+    },
+    {
+      "id": "5233aeef-b231-493a-bf39-def4c2142fc0",
+      "name": "Sprint 3",
+      "path": "Contoso.MyProject\\Sprint 3",
+      "attributes": {
+        "startDate": "2026-07-27T00:00:00Z",
+        "finishDate": "2026-08-07T00:00:00Z",
+        "timeFrame": "current"
+      },
+      "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/78846cfc-2f90-42e9-af7c-b5ad6e8f6711/_apis/work/teamsettings/iterations/5233aeef-b231-493a-bf39-def4c2142fc0"
+    }
+  ]
+}

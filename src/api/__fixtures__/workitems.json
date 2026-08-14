@@ -1,0 +1,4012 @@
+{
+  "count": 200,
+  "value": [
+    {
+      "id": 807084,
+      "rev": 43,
+      "fields": {
+        "System.Id": 807084,
+        "System.Rev": 43,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.AssignedTo": {
+          "displayName": "_Dev One.AZ",
+          "uniqueName": "dev1@example.com"
+        },
+        "System.Parent": 818292,
+        "System.Title": "User Story placeholder #1",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Baseline"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807084"
+    },
+    {
+      "id": 807095,
+      "rev": 40,
+      "fields": {
+        "System.Id": 807095,
+        "System.Rev": 40,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.AssignedTo": {
+          "displayName": "_Dev One.AZ",
+          "uniqueName": "dev1@example.com"
+        },
+        "System.Parent": 818293,
+        "System.Title": "User Story placeholder #2",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Baseline"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807095"
+    },
+    {
+      "id": 807097,
+      "rev": 40,
+      "fields": {
+        "System.Id": 807097,
+        "System.Rev": 40,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.Parent": 818294,
+        "System.Title": "User Story placeholder #3",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Baseline"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807097"
+    },
+    {
+      "id": 807098,
+      "rev": 20,
+      "fields": {
+        "System.Id": 807098,
+        "System.Rev": 20,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.Parent": 818294,
+        "System.Title": "User Story placeholder #4",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Baseline"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807098"
+    },
+    {
+      "id": 807099,
+      "rev": 24,
+      "fields": {
+        "System.Id": 807099,
+        "System.Rev": 24,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.Parent": 818295,
+        "System.Title": "User Story placeholder #5",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Baseline"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807099"
+    },
+    {
+      "id": 807101,
+      "rev": 23,
+      "fields": {
+        "System.Id": 807101,
+        "System.Rev": 23,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.Parent": 818295,
+        "System.Title": "User Story placeholder #6",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Baseline; Carryover"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807101"
+    },
+    {
+      "id": 807102,
+      "rev": 17,
+      "fields": {
+        "System.Id": 807102,
+        "System.Rev": 17,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR DEVELOPMENT",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 818295,
+        "System.Title": "User Story placeholder #7",
+        "System.BoardColumn": "Ready for Agent",
+        "System.Tags": "Baseline; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807102"
+    },
+    {
+      "id": 807103,
+      "rev": 29,
+      "fields": {
+        "System.Id": 807103,
+        "System.Rev": 29,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.Parent": 818295,
+        "System.Title": "User Story placeholder #8",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Baseline; Carryover"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807103"
+    },
+    {
+      "id": 807104,
+      "rev": 23,
+      "fields": {
+        "System.Id": 807104,
+        "System.Rev": 23,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR DEVELOPMENT",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 818295,
+        "System.Title": "User Story placeholder #9",
+        "System.BoardColumn": "Ready for Agent",
+        "System.Tags": "Baseline; BE Dev; Data Dev; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807104"
+    },
+    {
+      "id": 807105,
+      "rev": 18,
+      "fields": {
+        "System.Id": 807105,
+        "System.Rev": 18,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR DEVELOPMENT",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 818295,
+        "System.Title": "User Story placeholder #10",
+        "System.BoardColumn": "Ready for Agent",
+        "System.Tags": "Baseline; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807105"
+    },
+    {
+      "id": 807106,
+      "rev": 19,
+      "fields": {
+        "System.Id": 807106,
+        "System.Rev": 19,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR DEVELOPMENT",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 818295,
+        "System.Title": "User Story placeholder #11",
+        "System.BoardColumn": "Ready for Agent",
+        "System.Tags": "Baseline; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807106"
+    },
+    {
+      "id": 807107,
+      "rev": 16,
+      "fields": {
+        "System.Id": 807107,
+        "System.Rev": 16,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR DEVELOPMENT",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 818295,
+        "System.Title": "User Story placeholder #12",
+        "System.BoardColumn": "Ready for Agent",
+        "System.Tags": "Baseline; BE Dev; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807107"
+    },
+    {
+      "id": 807108,
+      "rev": 14,
+      "fields": {
+        "System.Id": 807108,
+        "System.Rev": 14,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR DEVELOPMENT",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 818295,
+        "System.Title": "User Story placeholder #13",
+        "System.BoardColumn": "Ready for Agent",
+        "System.Tags": "Baseline; BE Dev; Data Dev; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807108"
+    },
+    {
+      "id": 807109,
+      "rev": 19,
+      "fields": {
+        "System.Id": 807109,
+        "System.Rev": 19,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR DEVELOPMENT",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 818295,
+        "System.Title": "User Story placeholder #14",
+        "System.BoardColumn": "Ready for Agent",
+        "System.Tags": "Baseline; BE Dev; Data Dev; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807109"
+    },
+    {
+      "id": 807110,
+      "rev": 13,
+      "fields": {
+        "System.Id": 807110,
+        "System.Rev": 13,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR DEVELOPMENT",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 818295,
+        "System.Title": "User Story placeholder #15",
+        "System.BoardColumn": "Ready for Agent",
+        "System.Tags": "Baseline; BE Dev; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807110"
+    },
+    {
+      "id": 807111,
+      "rev": 49,
+      "fields": {
+        "System.Id": 807111,
+        "System.Rev": 49,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.Parent": 818296,
+        "System.Title": "User Story placeholder #16",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Baseline; Carryover"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807111"
+    },
+    {
+      "id": 807112,
+      "rev": 22,
+      "fields": {
+        "System.Id": 807112,
+        "System.Rev": 22,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.AssignedTo": {
+          "displayName": "_Dev One.AZ",
+          "uniqueName": "dev1@example.com"
+        },
+        "System.Parent": 818296,
+        "System.Title": "User Story placeholder #17",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Baseline; Carryover"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807112"
+    },
+    {
+      "id": 807113,
+      "rev": 36,
+      "fields": {
+        "System.Id": 807113,
+        "System.Rev": 36,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.Parent": 818296,
+        "System.Title": "User Story placeholder #18",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Baseline; Carryover"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807113"
+    },
+    {
+      "id": 807114,
+      "rev": 18,
+      "fields": {
+        "System.Id": 807114,
+        "System.Rev": 18,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.AssignedTo": {
+          "displayName": "_Dev One.AZ",
+          "uniqueName": "dev1@example.com"
+        },
+        "System.Parent": 818296,
+        "System.Title": "User Story placeholder #19",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Baseline"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807114"
+    },
+    {
+      "id": 807115,
+      "rev": 18,
+      "fields": {
+        "System.Id": 807115,
+        "System.Rev": 18,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.AssignedTo": {
+          "displayName": "_Dev One.AZ",
+          "uniqueName": "dev1@example.com"
+        },
+        "System.Parent": 818297,
+        "System.Title": "User Story placeholder #20",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Baseline"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807115"
+    },
+    {
+      "id": 807116,
+      "rev": 18,
+      "fields": {
+        "System.Id": 807116,
+        "System.Rev": 18,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.AssignedTo": {
+          "displayName": "_Dev One.AZ",
+          "uniqueName": "dev1@example.com"
+        },
+        "System.Parent": 818297,
+        "System.Title": "User Story placeholder #21",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Baseline"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807116"
+    },
+    {
+      "id": 807117,
+      "rev": 14,
+      "fields": {
+        "System.Id": 807117,
+        "System.Rev": 14,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.Parent": 818297,
+        "System.Title": "User Story placeholder #22",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Baseline"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807117"
+    },
+    {
+      "id": 807118,
+      "rev": 18,
+      "fields": {
+        "System.Id": 807118,
+        "System.Rev": 18,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.AssignedTo": {
+          "displayName": "_Dev One.AZ",
+          "uniqueName": "dev1@example.com"
+        },
+        "System.Parent": 818297,
+        "System.Title": "User Story placeholder #23",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Baseline"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807118"
+    },
+    {
+      "id": 807119,
+      "rev": 20,
+      "fields": {
+        "System.Id": 807119,
+        "System.Rev": 20,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.AssignedTo": {
+          "displayName": "_Dev One.AZ",
+          "uniqueName": "dev1@example.com"
+        },
+        "System.Parent": 818298,
+        "System.Title": "User Story placeholder #24",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Baseline; BE Dev; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807119"
+    },
+    {
+      "id": 807120,
+      "rev": 18,
+      "fields": {
+        "System.Id": 807120,
+        "System.Rev": 18,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.AssignedTo": {
+          "displayName": "_Dev One.AZ",
+          "uniqueName": "dev1@example.com"
+        },
+        "System.Parent": 818298,
+        "System.Title": "User Story placeholder #25",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Baseline; BE Dev; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807120"
+    },
+    {
+      "id": 807121,
+      "rev": 18,
+      "fields": {
+        "System.Id": 807121,
+        "System.Rev": 18,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.AssignedTo": {
+          "displayName": "_Dev One.AZ",
+          "uniqueName": "dev1@example.com"
+        },
+        "System.Parent": 818298,
+        "System.Title": "User Story placeholder #26",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Baseline; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807121"
+    },
+    {
+      "id": 807122,
+      "rev": 9,
+      "fields": {
+        "System.Id": 807122,
+        "System.Rev": 9,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "User Story",
+        "System.State": "New",
+        "System.Parent": 818298,
+        "System.Title": "User Story placeholder #27",
+        "System.BoardColumn": "New",
+        "System.Tags": "Baseline; Out of Scope - Wave 1"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807122"
+    },
+    {
+      "id": 807123,
+      "rev": 8,
+      "fields": {
+        "System.Id": 807123,
+        "System.Rev": 8,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "User Story",
+        "System.State": "New",
+        "System.Parent": 818299,
+        "System.Title": "User Story placeholder #28",
+        "System.BoardColumn": "Prioritized",
+        "System.Tags": "Baseline"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/807123"
+    },
+    {
+      "id": 808151,
+      "rev": 33,
+      "fields": {
+        "System.Id": 808151,
+        "System.Rev": 33,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Three.AZ",
+          "uniqueName": "dev3@example.com"
+        },
+        "System.Parent": 807095,
+        "System.Title": "Task placeholder #1",
+        "System.Tags": "agentic; BE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/808151"
+    },
+    {
+      "id": 808154,
+      "rev": 15,
+      "fields": {
+        "System.Id": 808154,
+        "System.Rev": 15,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807084,
+        "System.Title": "Task placeholder #2",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/808154"
+    },
+    {
+      "id": 808155,
+      "rev": 21,
+      "fields": {
+        "System.Id": 808155,
+        "System.Rev": 21,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807084,
+        "System.Title": "Task placeholder #3",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/808155"
+    },
+    {
+      "id": 808156,
+      "rev": 18,
+      "fields": {
+        "System.Id": 808156,
+        "System.Rev": 18,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Four.AZ",
+          "uniqueName": "dev4@example.com"
+        },
+        "System.Parent": 807084,
+        "System.Title": "Task placeholder #4",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/808156"
+    },
+    {
+      "id": 808158,
+      "rev": 16,
+      "fields": {
+        "System.Id": 808158,
+        "System.Rev": 16,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807084,
+        "System.Title": "Task placeholder #5",
+        "System.Tags": "agentic; Frontend; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/808158"
+    },
+    {
+      "id": 808159,
+      "rev": 13,
+      "fields": {
+        "System.Id": 808159,
+        "System.Rev": 13,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807084,
+        "System.Title": "Task placeholder #6",
+        "System.Tags": "agentic; Frontend; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20475541,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/808159/comments/20475541/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/808159"
+    },
+    {
+      "id": 808160,
+      "rev": 12,
+      "fields": {
+        "System.Id": 808160,
+        "System.Rev": 12,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Four.AZ",
+          "uniqueName": "dev4@example.com"
+        },
+        "System.Parent": 807084,
+        "System.Title": "Task placeholder #7",
+        "System.Tags": "FE Dev; human; Strapi"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/808160"
+    },
+    {
+      "id": 808161,
+      "rev": 22,
+      "fields": {
+        "System.Id": 808161,
+        "System.Rev": 22,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807084,
+        "System.Title": "Task placeholder #8",
+        "System.Tags": "agentic; Frontend; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/808161"
+    },
+    {
+      "id": 808334,
+      "rev": 12,
+      "fields": {
+        "System.Id": 808334,
+        "System.Rev": 12,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Four.AZ",
+          "uniqueName": "dev4@example.com"
+        },
+        "System.Parent": 807084,
+        "System.Title": "Task placeholder #9",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/808334"
+    },
+    {
+      "id": 808724,
+      "rev": 28,
+      "fields": {
+        "System.Id": 808724,
+        "System.Rev": 28,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Three.AZ",
+          "uniqueName": "dev3@example.com"
+        },
+        "System.Parent": 807095,
+        "System.Title": "Task placeholder #10",
+        "System.Tags": "agentic; BE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/808724"
+    },
+    {
+      "id": 808732,
+      "rev": 14,
+      "fields": {
+        "System.Id": 808732,
+        "System.Rev": 14,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Four.AZ",
+          "uniqueName": "dev4@example.com"
+        },
+        "System.Parent": 807095,
+        "System.Title": "Task placeholder #11",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/808732"
+    },
+    {
+      "id": 808883,
+      "rev": 12,
+      "fields": {
+        "System.Id": 808883,
+        "System.Rev": 12,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807084,
+        "System.Title": "Task placeholder #12",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/808883"
+    },
+    {
+      "id": 808916,
+      "rev": 12,
+      "fields": {
+        "System.Id": 808916,
+        "System.Rev": 12,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807084,
+        "System.Title": "Task placeholder #13",
+        "System.Tags": "agentic; FE Dev; tech-debt"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/808916"
+    },
+    {
+      "id": 810062,
+      "rev": 17,
+      "fields": {
+        "System.Id": 810062,
+        "System.Rev": 17,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807097,
+        "System.Title": "Task placeholder #14",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/810062"
+    },
+    {
+      "id": 810068,
+      "rev": 14,
+      "fields": {
+        "System.Id": 810068,
+        "System.Rev": 14,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807097,
+        "System.Title": "Task placeholder #15"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/810068"
+    },
+    {
+      "id": 810074,
+      "rev": 17,
+      "fields": {
+        "System.Id": 810074,
+        "System.Rev": 17,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 807097,
+        "System.Title": "Task placeholder #16",
+        "System.Tags": "agentic; Enabler; human"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/810074"
+    },
+    {
+      "id": 810075,
+      "rev": 19,
+      "fields": {
+        "System.Id": 810075,
+        "System.Rev": 19,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Three.AZ",
+          "uniqueName": "dev3@example.com"
+        },
+        "System.Parent": 807097,
+        "System.Title": "Task placeholder #17",
+        "System.Tags": "agentic; BE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/810075"
+    },
+    {
+      "id": 810076,
+      "rev": 31,
+      "fields": {
+        "System.Id": 810076,
+        "System.Rev": 31,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Three.AZ",
+          "uniqueName": "dev3@example.com"
+        },
+        "System.Parent": 807097,
+        "System.Title": "Task placeholder #18",
+        "System.Tags": "agentic; BE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20711623,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/810076/comments/20711623/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/810076"
+    },
+    {
+      "id": 810128,
+      "rev": 10,
+      "fields": {
+        "System.Id": 810128,
+        "System.Rev": 10,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Four.AZ",
+          "uniqueName": "dev4@example.com"
+        },
+        "System.Parent": 807097,
+        "System.Title": "Task placeholder #19",
+        "System.Tags": "agentic"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/810128"
+    },
+    {
+      "id": 810367,
+      "rev": 13,
+      "fields": {
+        "System.Id": 810367,
+        "System.Rev": 13,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807097,
+        "System.Title": "Task placeholder #20",
+        "System.Tags": "agentic; Enabler; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/810367"
+    },
+    {
+      "id": 810369,
+      "rev": 8,
+      "fields": {
+        "System.Id": 810369,
+        "System.Rev": 8,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Three.AZ",
+          "uniqueName": "dev3@example.com"
+        },
+        "System.Parent": 807099,
+        "System.Title": "Task placeholder #21",
+        "System.Tags": "agentic; BE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/810369"
+    },
+    {
+      "id": 810370,
+      "rev": 13,
+      "fields": {
+        "System.Id": 810370,
+        "System.Rev": 13,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807099,
+        "System.Title": "Task placeholder #22",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/810370"
+    },
+    {
+      "id": 810371,
+      "rev": 9,
+      "fields": {
+        "System.Id": 810371,
+        "System.Rev": 9,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Four.AZ",
+          "uniqueName": "dev4@example.com"
+        },
+        "System.Parent": 807098,
+        "System.Title": "Task placeholder #23",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/810371"
+    },
+    {
+      "id": 810551,
+      "rev": 31,
+      "fields": {
+        "System.Id": 810551,
+        "System.Rev": 31,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.AssignedTo": {
+          "displayName": "_Dev Three.AZ",
+          "uniqueName": "dev3@example.com"
+        },
+        "System.Parent": 818300,
+        "System.Title": "Task placeholder #24",
+        "System.Tags": "BE Dev; Enabler"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/810551"
+    },
+    {
+      "id": 810980,
+      "rev": 12,
+      "fields": {
+        "System.Id": 810980,
+        "System.Rev": 12,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Title": "Task placeholder #25",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/810980"
+    },
+    {
+      "id": 810981,
+      "rev": 8,
+      "fields": {
+        "System.Id": 810981,
+        "System.Rev": 8,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 810980,
+        "System.Title": "Task placeholder #26",
+        "System.Tags": "agentic; FE Dev; old"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/810981"
+    },
+    {
+      "id": 810982,
+      "rev": 34,
+      "fields": {
+        "System.Id": 810982,
+        "System.Rev": 34,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "IN REFINEMENT",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 812454,
+        "System.Title": "Task placeholder #27",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20964990,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/810982/comments/20964990/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/810982"
+    },
+    {
+      "id": 810983,
+      "rev": 39,
+      "fields": {
+        "System.Id": 810983,
+        "System.Rev": 39,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 818292,
+        "System.Title": "User Story placeholder #29",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Enabler; Scope-New"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/810983"
+    },
+    {
+      "id": 812067,
+      "rev": 13,
+      "fields": {
+        "System.Id": 812067,
+        "System.Rev": 13,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 1",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807097,
+        "System.Title": "Task placeholder #28",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812067"
+    },
+    {
+      "id": 812079,
+      "rev": 16,
+      "fields": {
+        "System.Id": 812079,
+        "System.Rev": 16,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 810983,
+        "System.Title": "Task placeholder #29",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812079"
+    },
+    {
+      "id": 812080,
+      "rev": 13,
+      "fields": {
+        "System.Id": 812080,
+        "System.Rev": 13,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 810983,
+        "System.Title": "Task placeholder #30",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20647201,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/812080/comments/20647201/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812080"
+    },
+    {
+      "id": 812081,
+      "rev": 20,
+      "fields": {
+        "System.Id": 812081,
+        "System.Rev": 20,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 810983,
+        "System.Title": "Task placeholder #31",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812081"
+    },
+    {
+      "id": 812082,
+      "rev": 15,
+      "fields": {
+        "System.Id": 812082,
+        "System.Rev": 15,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 810983,
+        "System.Title": "Task placeholder #32",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812082"
+    },
+    {
+      "id": 812083,
+      "rev": 19,
+      "fields": {
+        "System.Id": 812083,
+        "System.Rev": 19,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 810983,
+        "System.Title": "Task placeholder #33",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812083"
+    },
+    {
+      "id": 812092,
+      "rev": 13,
+      "fields": {
+        "System.Id": 812092,
+        "System.Rev": 13,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.Parent": 807097,
+        "System.Title": "Task placeholder #34",
+        "System.Tags": "BE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812092"
+    },
+    {
+      "id": 812093,
+      "rev": 21,
+      "fields": {
+        "System.Id": 812093,
+        "System.Rev": 21,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807097,
+        "System.Title": "Task placeholder #35",
+        "System.Tags": "FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812093"
+    },
+    {
+      "id": 812403,
+      "rev": 6,
+      "fields": {
+        "System.Id": 812403,
+        "System.Rev": 6,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.Parent": 807099,
+        "System.Title": "Task placeholder #36",
+        "System.Tags": "FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812403"
+    },
+    {
+      "id": 812449,
+      "rev": 26,
+      "fields": {
+        "System.Id": 812449,
+        "System.Rev": 26,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.AssignedTo": {
+          "displayName": "_Dev One.AZ",
+          "uniqueName": "dev1@example.com"
+        },
+        "System.Parent": 818292,
+        "System.Title": "User Story placeholder #30",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Scope-New"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20974047,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/812449/comments/20974047/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812449"
+    },
+    {
+      "id": 812450,
+      "rev": 20,
+      "fields": {
+        "System.Id": 812450,
+        "System.Rev": 20,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.AssignedTo": {
+          "displayName": "_Dev One.AZ",
+          "uniqueName": "dev1@example.com"
+        },
+        "System.Parent": 818292,
+        "System.Title": "User Story placeholder #31",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Scope-New"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812450"
+    },
+    {
+      "id": 812451,
+      "rev": 28,
+      "fields": {
+        "System.Id": 812451,
+        "System.Rev": 28,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.AssignedTo": {
+          "displayName": "_Dev One.AZ",
+          "uniqueName": "dev1@example.com"
+        },
+        "System.Parent": 818292,
+        "System.Title": "User Story placeholder #32",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Scope-New"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812451"
+    },
+    {
+      "id": 812453,
+      "rev": 20,
+      "fields": {
+        "System.Id": 812453,
+        "System.Rev": 20,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.AssignedTo": {
+          "displayName": "_Dev One.AZ",
+          "uniqueName": "dev1@example.com"
+        },
+        "System.Parent": 818292,
+        "System.Title": "User Story placeholder #33",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Scope-New"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812453"
+    },
+    {
+      "id": 812454,
+      "rev": 24,
+      "fields": {
+        "System.Id": 812454,
+        "System.Rev": 24,
+        "System.IterationPath": "Contoso.MyProject\\Sprint MyProject Sprint 5",
+        "System.WorkItemType": "User Story",
+        "System.State": "New",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 818292,
+        "System.Title": "User Story placeholder #34",
+        "System.BoardColumn": "New",
+        "System.Tags": "Scope-New"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812454"
+    },
+    {
+      "id": 812461,
+      "rev": 51,
+      "fields": {
+        "System.Id": 812461,
+        "System.Rev": 51,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.AssignedTo": {
+          "displayName": "_Dev One.AZ",
+          "uniqueName": "dev1@example.com"
+        },
+        "System.Parent": 818293,
+        "System.Title": "User Story placeholder #35",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Carryover; Scope-New"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20974049,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/812461/comments/20974049/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812461"
+    },
+    {
+      "id": 812726,
+      "rev": 28,
+      "fields": {
+        "System.Id": 812726,
+        "System.Rev": 28,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Three.AZ",
+          "uniqueName": "dev3@example.com"
+        },
+        "System.Parent": 807111,
+        "System.Title": "Task placeholder #37",
+        "System.Tags": "BE Dev; Enabler"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812726"
+    },
+    {
+      "id": 812727,
+      "rev": 18,
+      "fields": {
+        "System.Id": 812727,
+        "System.Rev": 18,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Three.AZ",
+          "uniqueName": "dev3@example.com"
+        },
+        "System.Parent": 807112,
+        "System.Title": "Task placeholder #38",
+        "System.Tags": "BE Dev; Enabler"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20781495,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/812727/comments/20781495/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812727"
+    },
+    {
+      "id": 812728,
+      "rev": 26,
+      "fields": {
+        "System.Id": 812728,
+        "System.Rev": 26,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Three.AZ",
+          "uniqueName": "dev3@example.com"
+        },
+        "System.Parent": 807113,
+        "System.Title": "Task placeholder #39",
+        "System.Tags": "BE Dev; Enabler"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812728"
+    },
+    {
+      "id": 812729,
+      "rev": 15,
+      "fields": {
+        "System.Id": 812729,
+        "System.Rev": 15,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Six.AZ",
+          "uniqueName": "dev6@example.com"
+        },
+        "System.Parent": 807101,
+        "System.Title": "Task placeholder #40",
+        "System.Tags": "BE Dev; Enabler"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812729"
+    },
+    {
+      "id": 812739,
+      "rev": 12,
+      "fields": {
+        "System.Id": 812739,
+        "System.Rev": 12,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Seven.AZ",
+          "uniqueName": "dev7@example.com"
+        },
+        "System.Parent": 807101,
+        "System.Title": "Task placeholder #41",
+        "System.Tags": "DevOps; Enabler"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812739"
+    },
+    {
+      "id": 812740,
+      "rev": 13,
+      "fields": {
+        "System.Id": 812740,
+        "System.Rev": 13,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Four.AZ",
+          "uniqueName": "dev4@example.com"
+        },
+        "System.Parent": 807103,
+        "System.Title": "Task placeholder #42",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812740"
+    },
+    {
+      "id": 812741,
+      "rev": 11,
+      "fields": {
+        "System.Id": 812741,
+        "System.Rev": 11,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Four.AZ",
+          "uniqueName": "dev4@example.com"
+        },
+        "System.Parent": 807103,
+        "System.Title": "Task placeholder #43",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812741"
+    },
+    {
+      "id": 812742,
+      "rev": 12,
+      "fields": {
+        "System.Id": 812742,
+        "System.Rev": 12,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Four.AZ",
+          "uniqueName": "dev4@example.com"
+        },
+        "System.Parent": 807103,
+        "System.Title": "Task placeholder #44",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812742"
+    },
+    {
+      "id": 812808,
+      "rev": 15,
+      "fields": {
+        "System.Id": 812808,
+        "System.Rev": 15,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 812461,
+        "System.Title": "Task placeholder #45",
+        "System.Tags": "Enabler"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812808"
+    },
+    {
+      "id": 812814,
+      "rev": 17,
+      "fields": {
+        "System.Id": 812814,
+        "System.Rev": 17,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 812449,
+        "System.Title": "Task placeholder #46",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812814"
+    },
+    {
+      "id": 812815,
+      "rev": 23,
+      "fields": {
+        "System.Id": 812815,
+        "System.Rev": 23,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 812450,
+        "System.Title": "Task placeholder #47",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812815"
+    },
+    {
+      "id": 812816,
+      "rev": 14,
+      "fields": {
+        "System.Id": 812816,
+        "System.Rev": 14,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 812451,
+        "System.Title": "Task placeholder #48",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812816"
+    },
+    {
+      "id": 812817,
+      "rev": 13,
+      "fields": {
+        "System.Id": 812817,
+        "System.Rev": 13,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 812451,
+        "System.Title": "Task placeholder #49",
+        "System.Tags": "agentic; Enabler; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812817"
+    },
+    {
+      "id": 812838,
+      "rev": 12,
+      "fields": {
+        "System.Id": 812838,
+        "System.Rev": 12,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 812461,
+        "System.Title": "Task placeholder #50"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812838"
+    },
+    {
+      "id": 812841,
+      "rev": 16,
+      "fields": {
+        "System.Id": 812841,
+        "System.Rev": 16,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Three.AZ",
+          "uniqueName": "dev3@example.com"
+        },
+        "System.Parent": 807103,
+        "System.Title": "Task placeholder #51",
+        "System.Tags": "agentic; BE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812841"
+    },
+    {
+      "id": 812842,
+      "rev": 12,
+      "fields": {
+        "System.Id": 812842,
+        "System.Rev": 12,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Four.AZ",
+          "uniqueName": "dev4@example.com"
+        },
+        "System.Parent": 807103,
+        "System.Title": "Task placeholder #52",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/812842"
+    },
+    {
+      "id": 813663,
+      "rev": 11,
+      "fields": {
+        "System.Id": 813663,
+        "System.Rev": 11,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 812453,
+        "System.Title": "Task placeholder #53",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/813663"
+    },
+    {
+      "id": 813733,
+      "rev": 13,
+      "fields": {
+        "System.Id": 813733,
+        "System.Rev": 13,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Four.AZ",
+          "uniqueName": "dev4@example.com"
+        },
+        "System.Parent": 807111,
+        "System.Title": "Task placeholder #54",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/813733"
+    },
+    {
+      "id": 813734,
+      "rev": 14,
+      "fields": {
+        "System.Id": 813734,
+        "System.Rev": 14,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Four.AZ",
+          "uniqueName": "dev4@example.com"
+        },
+        "System.Parent": 807111,
+        "System.Title": "Task placeholder #55",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/813734"
+    },
+    {
+      "id": 813742,
+      "rev": 13,
+      "fields": {
+        "System.Id": 813742,
+        "System.Rev": 13,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Four.AZ",
+          "uniqueName": "dev4@example.com"
+        },
+        "System.Parent": 807111,
+        "System.Title": "Task placeholder #56",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/813742"
+    },
+    {
+      "id": 813744,
+      "rev": 20,
+      "fields": {
+        "System.Id": 813744,
+        "System.Rev": 20,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 810983,
+        "System.Title": "Task placeholder #57",
+        "System.Tags": "agentic; FE Dev; migration"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/813744"
+    },
+    {
+      "id": 813828,
+      "rev": 20,
+      "fields": {
+        "System.Id": 813828,
+        "System.Rev": 20,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 810983,
+        "System.Title": "Task placeholder #58",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/813828"
+    },
+    {
+      "id": 813829,
+      "rev": 22,
+      "fields": {
+        "System.Id": 813829,
+        "System.Rev": 22,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 810983,
+        "System.Title": "Task placeholder #59",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20647285,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/813829/comments/20647285/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/813829"
+    },
+    {
+      "id": 813830,
+      "rev": 26,
+      "fields": {
+        "System.Id": 813830,
+        "System.Rev": 26,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 810983,
+        "System.Title": "Task placeholder #60",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/813830"
+    },
+    {
+      "id": 813832,
+      "rev": 9,
+      "fields": {
+        "System.Id": 813832,
+        "System.Rev": 9,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Four.AZ",
+          "uniqueName": "dev4@example.com"
+        },
+        "System.Parent": 807112,
+        "System.Title": "Task placeholder #61",
+        "System.Tags": "FE"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/813832"
+    },
+    {
+      "id": 813833,
+      "rev": 9,
+      "fields": {
+        "System.Id": 813833,
+        "System.Rev": 9,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Four.AZ",
+          "uniqueName": "dev4@example.com"
+        },
+        "System.Parent": 807112,
+        "System.Title": "Task placeholder #62",
+        "System.Tags": "FE"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/813833"
+    },
+    {
+      "id": 814330,
+      "rev": 8,
+      "fields": {
+        "System.Id": 814330,
+        "System.Rev": 8,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 818300,
+        "System.Title": "Task placeholder #63"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20951216,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/814330/comments/20951216/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/814330"
+    },
+    {
+      "id": 814360,
+      "rev": 10,
+      "fields": {
+        "System.Id": 814360,
+        "System.Rev": 10,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Four.AZ",
+          "uniqueName": "dev4@example.com"
+        },
+        "System.Parent": 807113,
+        "System.Title": "Task placeholder #64",
+        "System.Tags": "FE"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/814360"
+    },
+    {
+      "id": 814361,
+      "rev": 41,
+      "fields": {
+        "System.Id": 814361,
+        "System.Rev": 41,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Four.AZ",
+          "uniqueName": "dev4@example.com"
+        },
+        "System.Parent": 807113,
+        "System.Title": "Task placeholder #65",
+        "System.Tags": "FE"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20845202,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/814361/comments/20845202/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/814361"
+    },
+    {
+      "id": 815711,
+      "rev": 20,
+      "fields": {
+        "System.Id": 815711,
+        "System.Rev": 20,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Four.AZ",
+          "uniqueName": "dev4@example.com"
+        },
+        "System.Parent": 807101,
+        "System.Title": "Task placeholder #66",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/815711"
+    },
+    {
+      "id": 815732,
+      "rev": 21,
+      "fields": {
+        "System.Id": 815732,
+        "System.Rev": 21,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Three.AZ",
+          "uniqueName": "dev3@example.com"
+        },
+        "System.Parent": 807111,
+        "System.Title": "Task placeholder #67",
+        "System.Tags": "BE Dev; Enabler"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/815732"
+    },
+    {
+      "id": 815740,
+      "rev": 15,
+      "fields": {
+        "System.Id": 815740,
+        "System.Rev": 15,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 812461,
+        "System.Title": "Task placeholder #68",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20683080,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/815740/comments/20683080/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/815740"
+    },
+    {
+      "id": 815741,
+      "rev": 12,
+      "fields": {
+        "System.Id": 815741,
+        "System.Rev": 12,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 812461,
+        "System.Title": "Task placeholder #69",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20683082,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/815741/comments/20683082/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/815741"
+    },
+    {
+      "id": 815742,
+      "rev": 9,
+      "fields": {
+        "System.Id": 815742,
+        "System.Rev": 9,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 812461,
+        "System.Title": "Task placeholder #70",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20683084,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/815742/comments/20683084/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/815742"
+    },
+    {
+      "id": 815743,
+      "rev": 12,
+      "fields": {
+        "System.Id": 815743,
+        "System.Rev": 12,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 812461,
+        "System.Title": "Task placeholder #71",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20683085,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/815743/comments/20683085/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/815743"
+    },
+    {
+      "id": 815744,
+      "rev": 8,
+      "fields": {
+        "System.Id": 815744,
+        "System.Rev": 8,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 812461,
+        "System.Title": "Task placeholder #72",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/815744"
+    },
+    {
+      "id": 815745,
+      "rev": 17,
+      "fields": {
+        "System.Id": 815745,
+        "System.Rev": 17,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 812461,
+        "System.Title": "Task placeholder #73",
+        "System.Tags": "agentic; BE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20830750,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/815745/comments/20830750/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/815745"
+    },
+    {
+      "id": 815746,
+      "rev": 29,
+      "fields": {
+        "System.Id": 815746,
+        "System.Rev": 29,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 812461,
+        "System.Title": "Task placeholder #74",
+        "System.Tags": "agentic; BE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/815746"
+    },
+    {
+      "id": 815809,
+      "rev": 10,
+      "fields": {
+        "System.Id": 815809,
+        "System.Rev": 10,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 812461,
+        "System.Title": "Task placeholder #75"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20781496,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/815809/comments/20781496/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/815809"
+    },
+    {
+      "id": 816210,
+      "rev": 27,
+      "fields": {
+        "System.Id": 816210,
+        "System.Rev": 27,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.AssignedTo": {
+          "displayName": "_Dev Six.AZ",
+          "uniqueName": "dev6@example.com"
+        },
+        "System.Parent": 819705,
+        "System.Title": "User Story placeholder #36",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Carryover; Data; Enabler"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816210"
+    },
+    {
+      "id": 816211,
+      "rev": 94,
+      "fields": {
+        "System.Id": 816211,
+        "System.Rev": 94,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR PO REVIEW",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 819705,
+        "System.Title": "User Story placeholder #37",
+        "System.BoardColumn": "Ready for PO Review",
+        "System.Tags": "Carryover; Data; Enabler"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816211"
+    },
+    {
+      "id": 816215,
+      "rev": 25,
+      "fields": {
+        "System.Id": 816215,
+        "System.Rev": 25,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 816210,
+        "System.Title": "Task placeholder #76"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816215"
+    },
+    {
+      "id": 816216,
+      "rev": 22,
+      "fields": {
+        "System.Id": 816216,
+        "System.Rev": 22,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 816210,
+        "System.Title": "Task placeholder #77"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816216"
+    },
+    {
+      "id": 816217,
+      "rev": 18,
+      "fields": {
+        "System.Id": 816217,
+        "System.Rev": 18,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 816210,
+        "System.Title": "Task placeholder #78"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816217"
+    },
+    {
+      "id": 816223,
+      "rev": 11,
+      "fields": {
+        "System.Id": 816223,
+        "System.Rev": 11,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 816210,
+        "System.Title": "Task placeholder #79"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816223"
+    },
+    {
+      "id": 816224,
+      "rev": 14,
+      "fields": {
+        "System.Id": 816224,
+        "System.Rev": 14,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 816210,
+        "System.Title": "Task placeholder #80"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816224"
+    },
+    {
+      "id": 816225,
+      "rev": 28,
+      "fields": {
+        "System.Id": 816225,
+        "System.Rev": 28,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 816210,
+        "System.Title": "Task placeholder #81"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816225"
+    },
+    {
+      "id": 816226,
+      "rev": 21,
+      "fields": {
+        "System.Id": 816226,
+        "System.Rev": 21,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 816210,
+        "System.Title": "Task placeholder #82"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816226"
+    },
+    {
+      "id": 816227,
+      "rev": 10,
+      "fields": {
+        "System.Id": 816227,
+        "System.Rev": 10,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 818300,
+        "System.Title": "Task placeholder #83"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20885385,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/816227/comments/20885385/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816227"
+    },
+    {
+      "id": 816228,
+      "rev": 9,
+      "fields": {
+        "System.Id": 816228,
+        "System.Rev": 9,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 816210,
+        "System.Title": "Task placeholder #84"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816228"
+    },
+    {
+      "id": 816229,
+      "rev": 20,
+      "fields": {
+        "System.Id": 816229,
+        "System.Rev": 20,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 816210,
+        "System.Title": "Task placeholder #85"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816229"
+    },
+    {
+      "id": 816230,
+      "rev": 10,
+      "fields": {
+        "System.Id": 816230,
+        "System.Rev": 10,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 819705,
+        "System.Title": "Task placeholder #86"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20885383,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/816230/comments/20885383/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816230"
+    },
+    {
+      "id": 816231,
+      "rev": 9,
+      "fields": {
+        "System.Id": 816231,
+        "System.Rev": 9,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 816210,
+        "System.Title": "Task placeholder #87"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816231"
+    },
+    {
+      "id": 816232,
+      "rev": 7,
+      "fields": {
+        "System.Id": 816232,
+        "System.Rev": 7,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 819705,
+        "System.Title": "Task placeholder #88"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20885384,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/816232/comments/20885384/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816232"
+    },
+    {
+      "id": 816234,
+      "rev": 22,
+      "fields": {
+        "System.Id": 816234,
+        "System.Rev": 22,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 816211,
+        "System.Title": "Task placeholder #89"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816234"
+    },
+    {
+      "id": 816235,
+      "rev": 16,
+      "fields": {
+        "System.Id": 816235,
+        "System.Rev": 16,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 816211,
+        "System.Title": "Task placeholder #90"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816235"
+    },
+    {
+      "id": 816236,
+      "rev": 18,
+      "fields": {
+        "System.Id": 816236,
+        "System.Rev": 18,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 816211,
+        "System.Title": "Task placeholder #91"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816236"
+    },
+    {
+      "id": 816237,
+      "rev": 25,
+      "fields": {
+        "System.Id": 816237,
+        "System.Rev": 25,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 807103,
+        "System.Title": "Task placeholder #92"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816237"
+    },
+    {
+      "id": 816238,
+      "rev": 27,
+      "fields": {
+        "System.Id": 816238,
+        "System.Rev": 27,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 807103,
+        "System.Title": "Task placeholder #93"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816238"
+    },
+    {
+      "id": 816239,
+      "rev": 24,
+      "fields": {
+        "System.Id": 816239,
+        "System.Rev": 24,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 807103,
+        "System.Title": "Task placeholder #94"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816239"
+    },
+    {
+      "id": 816240,
+      "rev": 12,
+      "fields": {
+        "System.Id": 816240,
+        "System.Rev": 12,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 819705,
+        "System.Title": "Task placeholder #95",
+        "System.Tags": "Data Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816240"
+    },
+    {
+      "id": 816241,
+      "rev": 23,
+      "fields": {
+        "System.Id": 816241,
+        "System.Rev": 23,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 807103,
+        "System.Title": "Task placeholder #96"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816241"
+    },
+    {
+      "id": 816242,
+      "rev": 22,
+      "fields": {
+        "System.Id": 816242,
+        "System.Rev": 22,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 807103,
+        "System.Title": "Task placeholder #97"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816242"
+    },
+    {
+      "id": 816243,
+      "rev": 11,
+      "fields": {
+        "System.Id": 816243,
+        "System.Rev": 11,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 807103,
+        "System.Title": "Task placeholder #98"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816243"
+    },
+    {
+      "id": 816244,
+      "rev": 9,
+      "fields": {
+        "System.Id": 816244,
+        "System.Rev": 9,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 819705,
+        "System.Title": "Task placeholder #99",
+        "System.Tags": "Data Dev; Enabler"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816244"
+    },
+    {
+      "id": 816245,
+      "rev": 3,
+      "fields": {
+        "System.Id": 816245,
+        "System.Rev": 3,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 807104,
+        "System.Title": "Task placeholder #100"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816245"
+    },
+    {
+      "id": 816246,
+      "rev": 4,
+      "fields": {
+        "System.Id": 816246,
+        "System.Rev": 4,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 807104,
+        "System.Title": "Task placeholder #101"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816246"
+    },
+    {
+      "id": 816247,
+      "rev": 4,
+      "fields": {
+        "System.Id": 816247,
+        "System.Rev": 4,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 807108,
+        "System.Title": "Task placeholder #102"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816247"
+    },
+    {
+      "id": 816248,
+      "rev": 5,
+      "fields": {
+        "System.Id": 816248,
+        "System.Rev": 5,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 807108,
+        "System.Title": "Task placeholder #103"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816248"
+    },
+    {
+      "id": 816249,
+      "rev": 5,
+      "fields": {
+        "System.Id": 816249,
+        "System.Rev": 5,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 807108,
+        "System.Title": "Task placeholder #104"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816249"
+    },
+    {
+      "id": 816250,
+      "rev": 16,
+      "fields": {
+        "System.Id": 816250,
+        "System.Rev": 16,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 816211,
+        "System.Title": "Task placeholder #105"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816250"
+    },
+    {
+      "id": 816251,
+      "rev": 4,
+      "fields": {
+        "System.Id": 816251,
+        "System.Rev": 4,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 807109,
+        "System.Title": "Task placeholder #106"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816251"
+    },
+    {
+      "id": 816252,
+      "rev": 13,
+      "fields": {
+        "System.Id": 816252,
+        "System.Rev": 13,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 807112,
+        "System.Title": "Task placeholder #107"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816252"
+    },
+    {
+      "id": 816253,
+      "rev": 14,
+      "fields": {
+        "System.Id": 816253,
+        "System.Rev": 14,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 807112,
+        "System.Title": "Task placeholder #108"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816253"
+    },
+    {
+      "id": 816335,
+      "rev": 10,
+      "fields": {
+        "System.Id": 816335,
+        "System.Rev": 10,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 812461,
+        "System.Title": "Task placeholder #109"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816335"
+    },
+    {
+      "id": 816336,
+      "rev": 12,
+      "fields": {
+        "System.Id": 816336,
+        "System.Rev": 12,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Three.AZ",
+          "uniqueName": "dev3@example.com"
+        },
+        "System.Parent": 812461,
+        "System.Title": "Task placeholder #110"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20783803,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/816336/comments/20783803/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816336"
+    },
+    {
+      "id": 816703,
+      "rev": 26,
+      "fields": {
+        "System.Id": 816703,
+        "System.Rev": 26,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Three.AZ",
+          "uniqueName": "dev3@example.com"
+        },
+        "System.Parent": 807101,
+        "System.Title": "Task placeholder #111",
+        "System.Tags": "BE Dev; Enabler"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816703"
+    },
+    {
+      "id": 816804,
+      "rev": 13,
+      "fields": {
+        "System.Id": 816804,
+        "System.Rev": 13,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 812461,
+        "System.Title": "Task placeholder #112",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20713240,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/816804/comments/20713240/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816804"
+    },
+    {
+      "id": 816805,
+      "rev": 15,
+      "fields": {
+        "System.Id": 816805,
+        "System.Rev": 15,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 812461,
+        "System.Title": "Task placeholder #113",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20713242,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/816805/comments/20713242/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/816805"
+    },
+    {
+      "id": 817164,
+      "rev": 12,
+      "fields": {
+        "System.Id": 817164,
+        "System.Rev": 12,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 810983,
+        "System.Title": "Task placeholder #114",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20733213,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/817164/comments/20733213/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/817164"
+    },
+    {
+      "id": 817525,
+      "rev": 3,
+      "fields": {
+        "System.Id": 817525,
+        "System.Rev": 3,
+        "System.IterationPath": "Contoso.MyProject\\Sprint MyProject Sprint 5",
+        "System.WorkItemType": "User Story",
+        "System.State": "New",
+        "System.Parent": 818293,
+        "System.Title": "User Story placeholder #38",
+        "System.BoardColumn": "New",
+        "System.Tags": "Scope-New"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/817525"
+    },
+    {
+      "id": 817832,
+      "rev": 37,
+      "fields": {
+        "System.Id": 817832,
+        "System.Rev": 37,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 819705,
+        "System.Title": "Task placeholder #115"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/817832"
+    },
+    {
+      "id": 818099,
+      "rev": 9,
+      "fields": {
+        "System.Id": 818099,
+        "System.Rev": 9,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 819705,
+        "System.Title": "Task placeholder #116"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/818099"
+    },
+    {
+      "id": 818200,
+      "rev": 26,
+      "fields": {
+        "System.Id": 818200,
+        "System.Rev": 26,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Three.AZ",
+          "uniqueName": "dev3@example.com"
+        },
+        "System.Parent": 807111,
+        "System.Title": "Task placeholder #117",
+        "System.Tags": "BE Dev; Enabler"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/818200"
+    },
+    {
+      "id": 818201,
+      "rev": 14,
+      "fields": {
+        "System.Id": 818201,
+        "System.Rev": 14,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.Parent": 816210,
+        "System.Title": "Task placeholder #118"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/818201"
+    },
+    {
+      "id": 818202,
+      "rev": 21,
+      "fields": {
+        "System.Id": 818202,
+        "System.Rev": 21,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.Parent": 818300,
+        "System.Title": "Task placeholder #119"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20991706,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/818202/comments/20991706/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/818202"
+    },
+    {
+      "id": 818203,
+      "rev": 18,
+      "fields": {
+        "System.Id": 818203,
+        "System.Rev": 18,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.Parent": 816210,
+        "System.Title": "Task placeholder #120"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/818203"
+    },
+    {
+      "id": 818206,
+      "rev": 26,
+      "fields": {
+        "System.Id": 818206,
+        "System.Rev": 26,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Three.AZ",
+          "uniqueName": "dev3@example.com"
+        },
+        "System.Parent": 807101,
+        "System.Title": "Task placeholder #121",
+        "System.Tags": "BE Dev; Enabler"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/818206"
+    },
+    {
+      "id": 818208,
+      "rev": 11,
+      "fields": {
+        "System.Id": 818208,
+        "System.Rev": 11,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 810983,
+        "System.Title": "Task placeholder #122",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/818208"
+    },
+    {
+      "id": 818223,
+      "rev": 17,
+      "fields": {
+        "System.Id": 818223,
+        "System.Rev": 17,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 810983,
+        "System.Title": "Task placeholder #123",
+        "System.Tags": "agentic; Data Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/818223"
+    },
+    {
+      "id": 818827,
+      "rev": 16,
+      "fields": {
+        "System.Id": 818827,
+        "System.Rev": 16,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807115,
+        "System.Title": "Task placeholder #124",
+        "System.Tags": "agentic; BE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/818827"
+    },
+    {
+      "id": 818828,
+      "rev": 17,
+      "fields": {
+        "System.Id": 818828,
+        "System.Rev": 17,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807115,
+        "System.Title": "Task placeholder #125",
+        "System.Tags": "agentic; BE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/818828"
+    },
+    {
+      "id": 818829,
+      "rev": 15,
+      "fields": {
+        "System.Id": 818829,
+        "System.Rev": 15,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807116,
+        "System.Title": "Task placeholder #126",
+        "System.Tags": "agentic; BE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/818829"
+    },
+    {
+      "id": 818850,
+      "rev": 11,
+      "fields": {
+        "System.Id": 818850,
+        "System.Rev": 11,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "Task",
+        "System.State": "READY FOR DEVELOPMENT",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807104,
+        "System.Title": "Task placeholder #127",
+        "System.Tags": "agentic; BE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/818850"
+    },
+    {
+      "id": 818881,
+      "rev": 10,
+      "fields": {
+        "System.Id": 818881,
+        "System.Rev": 10,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "Task",
+        "System.State": "READY FOR DEVELOPMENT",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807107,
+        "System.Title": "Task placeholder #128",
+        "System.Tags": "agentic; BE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/818881"
+    },
+    {
+      "id": 818958,
+      "rev": 8,
+      "fields": {
+        "System.Id": 818958,
+        "System.Rev": 8,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807109,
+        "System.Title": "Task placeholder #129",
+        "System.Tags": "agentic; BE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/818958"
+    },
+    {
+      "id": 819019,
+      "rev": 9,
+      "fields": {
+        "System.Id": 819019,
+        "System.Rev": 9,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 2",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 810983,
+        "System.Title": "Task placeholder #130",
+        "System.Tags": "agentic; Data Dev"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20764242,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/819019/comments/20764242/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/819019"
+    },
+    {
+      "id": 819099,
+      "rev": 18,
+      "fields": {
+        "System.Id": 819099,
+        "System.Rev": 18,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807119,
+        "System.Title": "Task placeholder #131",
+        "System.Tags": "agentic; BE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/819099"
+    },
+    {
+      "id": 819100,
+      "rev": 10,
+      "fields": {
+        "System.Id": 819100,
+        "System.Rev": 10,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807119,
+        "System.Title": "Task placeholder #132",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/819100"
+    },
+    {
+      "id": 819101,
+      "rev": 25,
+      "fields": {
+        "System.Id": 819101,
+        "System.Rev": 25,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807119,
+        "System.Title": "Task placeholder #133",
+        "System.Tags": "agentic; BE Dev; wiring"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/819101"
+    },
+    {
+      "id": 819102,
+      "rev": 27,
+      "fields": {
+        "System.Id": 819102,
+        "System.Rev": 27,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807119,
+        "System.Title": "Task placeholder #134",
+        "System.Tags": "agentic; FE Dev; wiring"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/819102"
+    },
+    {
+      "id": 819103,
+      "rev": 18,
+      "fields": {
+        "System.Id": 819103,
+        "System.Rev": 18,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807120,
+        "System.Title": "Task placeholder #135",
+        "System.Tags": "agentic; BE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/819103"
+    },
+    {
+      "id": 819104,
+      "rev": 15,
+      "fields": {
+        "System.Id": 819104,
+        "System.Rev": 15,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807120,
+        "System.Title": "Task placeholder #136",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/819104"
+    },
+    {
+      "id": 819105,
+      "rev": 17,
+      "fields": {
+        "System.Id": 819105,
+        "System.Rev": 17,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807120,
+        "System.Title": "Task placeholder #137",
+        "System.Tags": "agentic; FE Dev; wiring"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/819105"
+    },
+    {
+      "id": 819106,
+      "rev": 10,
+      "fields": {
+        "System.Id": 819106,
+        "System.Rev": 10,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 807121,
+        "System.Title": "Task placeholder #138",
+        "System.Tags": "agentic; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/819106"
+    },
+    {
+      "id": 819478,
+      "rev": 11,
+      "fields": {
+        "System.Id": 819478,
+        "System.Rev": 11,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Three.AZ",
+          "uniqueName": "dev3@example.com"
+        },
+        "System.Parent": 807111,
+        "System.Title": "Task placeholder #139",
+        "System.Tags": "BE Dev; Enabler"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/819478"
+    },
+    {
+      "id": 819557,
+      "rev": 11,
+      "fields": {
+        "System.Id": 819557,
+        "System.Rev": 11,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "User Story",
+        "System.State": "READY FOR DEVELOPMENT",
+        "System.AssignedTo": {
+          "displayName": "_Dev Two.AZ",
+          "uniqueName": "dev2@example.com"
+        },
+        "System.Parent": 818295,
+        "System.Title": "User Story placeholder #39",
+        "System.BoardColumn": "Ready for Agent",
+        "System.Tags": "Baseline; BE Dev; FE Dev"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/819557"
+    },
+    {
+      "id": 819627,
+      "rev": 15,
+      "fields": {
+        "System.Id": 819627,
+        "System.Rev": 15,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Five.AZ",
+          "uniqueName": "dev5@example.com"
+        },
+        "System.Parent": 818300,
+        "System.Title": "Task placeholder #140"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/819627"
+    },
+    {
+      "id": 819628,
+      "rev": 8,
+      "fields": {
+        "System.Id": 819628,
+        "System.Rev": 8,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.Parent": 807103,
+        "System.Title": "Task placeholder #141"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/819628"
+    },
+    {
+      "id": 819701,
+      "rev": 11,
+      "fields": {
+        "System.Id": 819701,
+        "System.Rev": 11,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Six.AZ",
+          "uniqueName": "dev6@example.com"
+        },
+        "System.Parent": 819705,
+        "System.Title": "Task placeholder #142",
+        "System.Tags": "Spike"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/819701"
+    },
+    {
+      "id": 819971,
+      "rev": 19,
+      "fields": {
+        "System.Id": 819971,
+        "System.Rev": 19,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "Task",
+        "System.State": "IN CODE REVIEW",
+        "System.Parent": 818300,
+        "System.Title": "Task placeholder #143",
+        "System.Tags": "API Dev; tech-debt"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/819971"
+    },
+    {
+      "id": 819974,
+      "rev": 8,
+      "fields": {
+        "System.Id": 819974,
+        "System.Rev": 8,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "READY FOR CODE REVIEW",
+        "System.Parent": 818300,
+        "System.Title": "Task placeholder #144",
+        "System.Tags": "API Dev; tech-debt"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/819974"
+    },
+    {
+      "id": 820129,
+      "rev": 10,
+      "fields": {
+        "System.Id": 820129,
+        "System.Rev": 10,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.Parent": 818300,
+        "System.Title": "Task placeholder #145",
+        "System.Tags": "API Dev; tech-debt"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20990929,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/820129/comments/20990929/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/820129"
+    },
+    {
+      "id": 820202,
+      "rev": 8,
+      "fields": {
+        "System.Id": 820202,
+        "System.Rev": 8,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.Parent": 816211,
+        "System.Title": "Task placeholder #146"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/820202"
+    },
+    {
+      "id": 820515,
+      "rev": 6,
+      "fields": {
+        "System.Id": 820515,
+        "System.Rev": 6,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.Parent": 816211,
+        "System.Title": "Task placeholder #147"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/820515"
+    },
+    {
+      "id": 820516,
+      "rev": 6,
+      "fields": {
+        "System.Id": 820516,
+        "System.Rev": 6,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.Parent": 816211,
+        "System.Title": "Task placeholder #148"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/820516"
+    },
+    {
+      "id": 820627,
+      "rev": 14,
+      "fields": {
+        "System.Id": 820627,
+        "System.Rev": 14,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Six.AZ",
+          "uniqueName": "dev6@example.com"
+        },
+        "System.Parent": 819705,
+        "System.Title": "Task placeholder #149",
+        "System.Tags": "Data; Enabler"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/820627"
+    },
+    {
+      "id": 820629,
+      "rev": 9,
+      "fields": {
+        "System.Id": 820629,
+        "System.Rev": 9,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Six.AZ",
+          "uniqueName": "dev6@example.com"
+        },
+        "System.Parent": 819705,
+        "System.Title": "Task placeholder #150",
+        "System.Tags": "Data; Enabler"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20901003,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/820629/comments/20901003/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/820629"
+    },
+    {
+      "id": 820630,
+      "rev": 9,
+      "fields": {
+        "System.Id": 820630,
+        "System.Rev": 9,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Six.AZ",
+          "uniqueName": "dev6@example.com"
+        },
+        "System.Parent": 819705,
+        "System.Title": "Task placeholder #151",
+        "System.Tags": "Data"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20901010,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/820630/comments/20901010/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/820630"
+    },
+    {
+      "id": 820631,
+      "rev": 7,
+      "fields": {
+        "System.Id": 820631,
+        "System.Rev": 7,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 3",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.AssignedTo": {
+          "displayName": "_Dev Six.AZ",
+          "uniqueName": "dev6@example.com"
+        },
+        "System.Parent": 819705,
+        "System.Title": "Task placeholder #152",
+        "System.Tags": "Data"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/820631"
+    },
+    {
+      "id": 820642,
+      "rev": 8,
+      "fields": {
+        "System.Id": 820642,
+        "System.Rev": 8,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "Closed",
+        "System.Parent": 807103,
+        "System.Title": "Task placeholder #153"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/820642"
+    },
+    {
+      "id": 820644,
+      "rev": 4,
+      "fields": {
+        "System.Id": 820644,
+        "System.Rev": 4,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.Parent": 818300,
+        "System.Title": "Task placeholder #154",
+        "System.Tags": "tech-debt"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/820644"
+    },
+    {
+      "id": 820646,
+      "rev": 17,
+      "fields": {
+        "System.Id": 820646,
+        "System.Rev": 17,
+        "System.IterationPath": "Contoso.MyProject\\Sprint 4",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.Parent": 818300,
+        "System.Title": "Task placeholder #155",
+        "System.Tags": "Data Dev; EPIC-3; tech-debt"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/820646"
+    },
+    {
+      "id": 820664,
+      "rev": 5,
+      "fields": {
+        "System.Id": 820664,
+        "System.Rev": 5,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.Parent": 818300,
+        "System.Title": "Task placeholder #156",
+        "System.Tags": "tech-debt"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/820664"
+    },
+    {
+      "id": 820748,
+      "rev": 2,
+      "fields": {
+        "System.Id": 820748,
+        "System.Rev": 2,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.Parent": 818300,
+        "System.Title": "Task placeholder #157",
+        "System.Tags": "tech-debt"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/820748"
+    },
+    {
+      "id": 820749,
+      "rev": 1,
+      "fields": {
+        "System.Id": 820749,
+        "System.Rev": 1,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.Parent": 818300,
+        "System.Title": "Task placeholder #158",
+        "System.Tags": "tech-debt"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/820749"
+    },
+    {
+      "id": 820752,
+      "rev": 1,
+      "fields": {
+        "System.Id": 820752,
+        "System.Rev": 1,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.Parent": 818300,
+        "System.Title": "Task placeholder #159",
+        "System.Tags": "tech-debt"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/820752"
+    },
+    {
+      "id": 820760,
+      "rev": 2,
+      "fields": {
+        "System.Id": 820760,
+        "System.Rev": 2,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.Parent": 818300,
+        "System.Title": "Task placeholder #160",
+        "System.Tags": "agentic; BE Dev; tech-debt"
+      },
+      "multilineFieldsFormat": {},
+      "commentVersionRef": {
+        "commentId": 20830753,
+        "version": 1,
+        "url": "https://dev.azure.com/contoso/df6d20db-590c-48b4-a8ae-081b2a846696/_apis/wit/workItems/820760/comments/20830753/versions/1"
+      },
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/820760"
+    },
+    {
+      "id": 820768,
+      "rev": 1,
+      "fields": {
+        "System.Id": 820768,
+        "System.Rev": 1,
+        "System.IterationPath": "Contoso.MyProject",
+        "System.WorkItemType": "Task",
+        "System.State": "New",
+        "System.Parent": 818300,
+        "System.Title": "Task placeholder #161",
+        "System.Tags": "agentic; BE Dev; tech-debt"
+      },
+      "multilineFieldsFormat": {},
+      "url": "https://dev.azure.com/contoso/_apis/wit/workItems/820768"
+    }
+  ]
+}

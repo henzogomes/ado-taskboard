@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Token-driven page base — avoids a flash before the app shell paints and keeps
+   the canvas correct for every theme (data-theme is set pre-paint in index.html). */
+html {
+  background-color: rgb(var(--bg));
+  scrollbar-color: rgb(var(--text-subtle)) transparent;
+}
+
+/* Scrollbars — WebKit. Colored from theme tokens, so every theme themes them. */
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--text-subtle));
+  border-radius: 6px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--text-muted));
+  background-clip: content-box;
+}

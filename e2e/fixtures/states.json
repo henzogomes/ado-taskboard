@@ -1,0 +1,10 @@
+{
+  "value": [
+    { "name": "New", "category": "Proposed", "color": "b2b2b2" },
+    { "name": "To Do", "category": "Proposed", "color": "b2b2b2" },
+    { "name": "Active", "category": "InProgress", "color": "007acc" },
+    { "name": "In Progress", "category": "InProgress", "color": "007acc" },
+    { "name": "Closed", "category": "Completed", "color": "339933" },
+    { "name": "Done", "category": "Completed", "color": "339933" }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "value": [
+    {
+      "type": "requirement",
+      "name": "Stories",
+      "workItemTypes": [{ "name": "User Story" }]
+    },
+    {
+      "type": "task",
+      "name": "Tasks",
+      "workItemTypes": [{ "name": "Task" }]
+    },
+    {
+      "type": "portfolio",
+      "name": "Features",
+      "workItemTypes": [{ "name": "Feature" }]
+    }
+  ]
+}

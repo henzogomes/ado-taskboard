@@ -1,0 +1,12 @@
+{
+  "id": 101,
+  "rev": 3,
+  "fields": {
+    "System.Title": "Story in Sprint Two",
+    "System.Description": "<div>As a user I want a working login form so that I can sign in.</div>",
+    "Microsoft.VSTS.Common.AcceptanceCriteria": "<ul><li>Given valid creds, sign-in succeeds.</li></ul>"
+  },
+  "relations": [
+    { "rel": "System.LinkTypes.Hierarchy-Forward", "url": "https://dev.azure.com/demo/_apis/wit/workItems/201" }
+  ]
+}

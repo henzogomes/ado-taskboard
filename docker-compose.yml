@@ -1,0 +1,14 @@
+services:
+  taskboard:
+    build:
+      context: .
+      args:
+        ADO_ORG: ${ADO_ORG}
+        ADO_PROJECT: ${ADO_PROJECT}
+        ADO_TEAM: ${ADO_TEAM}
+        ADO_ME: ${ADO_ME}
+    # ADO_PAT (and ADO_BASE_URL) are runtime-only: read from .env into the
+    # container's environment, never baked into the image.
+    env_file: .env
+    ports:
+      - '5280:5280'
