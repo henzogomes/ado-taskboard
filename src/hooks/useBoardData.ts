@@ -210,6 +210,10 @@ export function useBoardData(scope: BoardScope, levelId: string): UseBoardDataRe
   const { data, isPending, error, dataUpdatedAt, refetch } = useQuery({
     queryKey,
     queryFn: () => loadBoardData(scope, levelId),
+    // No active connection (logged out / login screen) → don't fetch. Without
+    // this the query would still run and 401 with no credential to send. Demo
+    // has `activeId === 'demo'` ≠ `'none'`, so demo mode still loads.
+    enabled: activeId !== 'none',
   })
 
   const refresh = useCallback(() => {

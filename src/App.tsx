@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { patchState } from './api/client'
+import { AuthError, patchState } from './api/client'
+import { handleBoardAuthFailure } from './connections/handleAuthFailure'
 import type { WorkItem } from './api/types'
 import { Board } from './board/Board'
 import { FlatBoard } from './board/FlatBoard'
@@ -82,6 +83,20 @@ function App() {
     // churning `useLevel` with the pre-load empty list.
     if (levels.length > 0) setDiscoveredLevels(levels)
   }, [levels])
+
+  // A board-load 401 (blank/expired PAT) means the active connection can't
+  // authenticate. Drop it and its cached board rather than paint a stale board:
+  // the store then activates the next connection (which loads normally) or falls
+  // to the login screen. `error` is cast to `Error` by the hook, but the thrown
+  // instance is still an `AuthError`, so `instanceof` holds.
+  const authError = error instanceof AuthError
+  useEffect(() => {
+    // Depend on the boolean, not the error object, so this fires once per
+    // auth-error episode. After the removal, `active`/the query key change and a
+    // fresh query runs — if THAT also 401s, a new episode cascades until a
+    // working connection or the login screen. That cascade is intended.
+    if (authError) handleBoardAuthFailure(queryClient)
+  }, [authError, queryClient])
 
   const isDemo = active?.id === DEMO_CONNECTION_ID
   const isFlat = view?.kind === 'flat'
@@ -268,12 +283,12 @@ function App() {
         <FilterBar facets={facets} value={filters} onChange={setFilters} />
 
         <main className="flex-1 overflow-auto">
-          {error && (
+          {error && !authError && (
             <p className="mb-3 rounded-md border border-danger bg-danger-muted px-3 py-2 text-sm text-danger">
               Failed to load board: {error.message}
             </p>
           )}
-          {loading ? (
+          {loading || authError ? (
             <div className="flex items-center gap-2 text-sm text-content-muted">
               <span
                 aria-hidden="true"

@@ -57,7 +57,9 @@ function createWrapper() {
 
 describe('useBoardData', () => {
   beforeEach(() => {
-    mockGetActive.mockReturnValue(null)
+    // Default to an active connection so the query is enabled; the no-active
+    // cases below override this with `null` to exercise the disabled path.
+    mockGetActive.mockReturnValue({ id: 'conn' })
     vi.mocked(fetchBacklogs).mockResolvedValue(backlogsFixture)
   })
 
@@ -157,13 +159,29 @@ describe('useBoardData', () => {
     const queryClient = createClient()
     const wrapper = wrapperFor(queryClient)
 
-    const { result } = renderHook(() => useBoardData('all', 'tasks'), { wrapper })
-    await waitFor(() => expect(result.current.loading).toBe(false))
+    renderHook(() => useBoardData('all', 'tasks'), { wrapper })
 
     const keys = queryClient
       .getQueryCache()
       .getAll()
       .map((q) => q.queryKey)
     expect(keys).toContainEqual(['board', 'none', 'all', 'tasks'])
+  })
+
+  it('disables the query when there is no active connection (never fetches)', async () => {
+    mockGetActive.mockReturnValue(null)
+    const queryClient = createClient()
+    const wrapper = wrapperFor(queryClient)
+    const backlogsCallsBefore = vi.mocked(fetchBacklogs).mock.calls.length
+
+    const { result } = renderHook(() => useBoardData('all', 'tasks'), { wrapper })
+
+    // A disabled query stays pending but idle — it must never hit the network.
+    await waitFor(() => {
+      const query = queryClient.getQueryCache().find({ queryKey: ['board', 'none', 'all', 'tasks'] })
+      expect(query?.state.fetchStatus).toBe('idle')
+    })
+    expect(result.current.loading).toBe(true)
+    expect(vi.mocked(fetchBacklogs).mock.calls.length).toBe(backlogsCallsBefore)
   })
 })
