@@ -8,7 +8,7 @@ describe('buildDemoBoardData', () => {
   it('tasks (lanes) view: builds sprint sections with lanes, tasks placed in columns, and an orphan lane', () => {
     const data = buildDemoBoardData('all', 'tasks')
     expect(data.view.kind).toBe('lanes')
-    expect(data.columns.map((c) => c.name)).toEqual(['New', 'Active', 'Resolved', 'Closed'])
+    expect(data.columns.map((c) => c.name)).toEqual(['New', 'Active', 'In Review', 'Resolved', 'Closed'])
 
     // Every seeded sprint shows as a section.
     expect(data.sections.map((s) => s.iteration.name).sort()).toEqual(['Sprint 1', 'Sprint 2', 'Sprint 3'])

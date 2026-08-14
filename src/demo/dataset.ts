@@ -65,6 +65,12 @@ export const DEMO_BOARD: Board = {
       stateMappings: { 'User Story': 'Active', Bug: 'Active', Task: 'In Progress', Feature: 'In Progress', Epic: 'In Progress' },
     },
     {
+      name: 'In Review',
+      columnType: 'inProgress',
+      isSplit: false,
+      stateMappings: { 'User Story': 'In Review', Bug: 'In Review', Task: 'In Review' },
+    },
+    {
       name: 'Resolved',
       columnType: 'inProgress',
       isSplit: false,
@@ -85,6 +91,7 @@ export const DEMO_STATE_CATEGORY: Record<string, StateCategory> = {
   'To Do': 'Proposed',
   Active: 'InProgress',
   'In Progress': 'InProgress',
+  'In Review': 'InProgress',
   Resolved: 'Resolved',
   Closed: 'Completed',
   Done: 'Completed',
@@ -117,11 +124,13 @@ const SEEDS: Seed[] = [
   { id: 101, type: 'User Story', title: 'Build the login screen', state: 'Active', boardColumn: 'Active', assignedTo: ALEX, tags: ['frontend', 'auth'], sprint: 'Sprint 2' },
   { id: 201, type: 'Task', title: 'Wire up the login form', state: 'In Progress', assignedTo: ALEX, parent: 101, sprint: 'Sprint 2' },
   { id: 202, type: 'Task', title: 'Add client-side form validation', state: 'To Do', assignedTo: DEV_ONE, parent: 101, sprint: 'Sprint 2' },
-  { id: 203, type: 'Task', title: 'Write unit tests for the form', state: 'Done', assignedTo: ALEX, parent: 101, sprint: 'Sprint 2' },
+  { id: 203, type: 'Task', title: 'Write unit tests for the form', state: 'In Review', assignedTo: ALEX, parent: 101, sprint: 'Sprint 2' },
+  { id: 212, type: 'Task', title: 'Handle expired-session redirect', state: 'Done', assignedTo: DEV_ONE, parent: 101, sprint: 'Sprint 2' },
 
   { id: 102, type: 'User Story', title: 'Dashboard summary charts', state: 'New', boardColumn: 'New', assignedTo: SAM, tags: ['frontend', 'charts'], sprint: 'Sprint 2' },
   { id: 204, type: 'Task', title: 'Design the chart layout', state: 'To Do', assignedTo: SAM, parent: 102, sprint: 'Sprint 2' },
   { id: 205, type: 'Task', title: 'Integrate the charting library', state: 'In Progress', assignedTo: JORDAN, parent: 102, sprint: 'Sprint 2' },
+  { id: 213, type: 'Task', title: 'Review chart contrast in dark themes', state: 'In Review', assignedTo: SAM, parent: 102, sprint: 'Sprint 2' },
 
   { id: 103, type: 'Bug', title: 'App crashes on logout', state: 'Resolved', boardColumn: 'Resolved', assignedTo: JORDAN, tags: ['bug', 'priority'], sprint: 'Sprint 2' },
   { id: 206, type: 'Task', title: 'Reproduce and patch the crash', state: 'Done', assignedTo: JORDAN, parent: 103, sprint: 'Sprint 2' },
