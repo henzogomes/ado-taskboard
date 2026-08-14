@@ -2,8 +2,10 @@ import { describe, it, expect } from 'vitest'
 import { buildLevels } from '../board/level'
 import {
   DEMO_BACKLOGS,
+  DEMO_COMMENTS,
   DEMO_DETAILS,
   DEMO_FIELDS,
+  demoWorkItemComments,
   demoWorkItemDetail,
   makeDemoWorkItems,
 } from './dataset'
@@ -66,5 +68,36 @@ describe('demo dataset', () => {
   it('falls back to an empty (well-formed) detail for an unseeded id', () => {
     const d = demoWorkItemDetail(999)
     expect(d).toEqual({ id: 999, fields: {}, relations: [] })
+  })
+
+  describe('demoWorkItemComments', () => {
+    it('paginates a multi-comment seed into pages via the continuationToken, then terminates', () => {
+      const total = DEMO_COMMENTS[101].length
+      expect(total).toBeGreaterThan(3) // spans more than one demo page
+
+      const first = demoWorkItemComments(101)
+      expect(first.totalCount).toBe(total)
+      expect(first.comments.length).toBe(3) // demo page size
+      expect(first.continuationToken).toBe('3')
+
+      const second = demoWorkItemComments(101, first.continuationToken)
+      expect(second.comments.length).toBe(total - 3)
+      expect(second.continuationToken).toBeUndefined() // final page carries no token
+
+      // The two pages together reconstruct the full seed in order.
+      expect([...first.comments, ...second.comments]).toEqual(DEMO_COMMENTS[101])
+    })
+
+    it('returns a single page (no token) for a seed smaller than the page size', () => {
+      const page = demoWorkItemComments(102)
+      expect(page.comments).toEqual(DEMO_COMMENTS[102])
+      expect(page.continuationToken).toBeUndefined()
+      expect(page.totalCount).toBe(1)
+    })
+
+    it('returns an empty page for an unseeded id', () => {
+      const page = demoWorkItemComments(999)
+      expect(page).toEqual({ comments: [], continuationToken: undefined, totalCount: 0 })
+    })
   })
 })
