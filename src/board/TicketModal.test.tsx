@@ -1,13 +1,22 @@
 import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest'
 import { render, screen, fireEvent, within } from '@testing-library/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { TicketModal } from './TicketModal'
 import type { FieldMeta, StateCategory, WorkItem, WorkItemDetail } from '../api/types'
 import type { WorkItemComment } from '../api/types'
 import { useWorkItemDetail } from '../hooks/useWorkItemDetail'
 import { useWorkItemComments } from '../hooks/useWorkItemComments'
 import { useFieldMeta } from '../hooks/useFieldMeta'
+import { patchFields } from '../api/client'
+import { isDemoActive } from '../demo/connection'
 import { StateCategoryContext } from '../theme/StateCategoryContext'
 
+vi.mock('../api/client', () => ({
+  patchFields: vi.fn(),
+}))
+vi.mock('../demo/connection', () => ({
+  isDemoActive: vi.fn(() => false),
+}))
 vi.mock('../hooks/useWorkItemDetail', () => ({
   useWorkItemDetail: vi.fn(),
 }))
@@ -21,6 +30,7 @@ vi.mock('../hooks/useFieldMeta', () => ({
 const mockedUseWorkItemDetail = vi.mocked(useWorkItemDetail)
 const mockedUseWorkItemComments = vi.mocked(useWorkItemComments)
 const mockedUseFieldMeta = vi.mocked(useFieldMeta)
+const mockedPatchFields = vi.mocked(patchFields)
 
 const NO_COMMENTS = {
   comments: [] as WorkItemComment[],
@@ -58,9 +68,11 @@ function renderModal(
   stateCategory: Record<string, StateCategory> = {},
 ) {
   return render(
-    <StateCategoryContext.Provider value={stateCategory}>
-      <TicketModal {...props} />
-    </StateCategoryContext.Provider>,
+    <QueryClientProvider client={new QueryClient()}>
+      <StateCategoryContext.Provider value={stateCategory}>
+        <TicketModal {...props} />
+      </StateCategoryContext.Provider>
+    </QueryClientProvider>,
   )
 }
 
@@ -84,13 +96,13 @@ describe('TicketModal', () => {
 
   it('renders nothing when item is null', () => {
     mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
-    const { container } = render(<TicketModal item={null} onClose={vi.fn()} />)
+    const { container } = renderModal({ item: null, onClose: vi.fn() })
     expect(container).toBeEmptyDOMElement()
   })
 
   it('renders Tier-1 fields instantly from the given item while details are loading', () => {
     mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: true, error: null })
-    render(<TicketModal item={item} onClose={vi.fn()} />)
+    renderModal({ item, onClose: vi.fn() })
 
     const dialog = screen.getByRole('dialog')
     expect(dialog).toHaveAttribute('aria-modal', 'true')
@@ -116,7 +128,7 @@ describe('TicketModal', () => {
       relations: [],
     }
     mockedUseWorkItemDetail.mockReturnValue({ detail, isLoading: false, error: null })
-    render(<TicketModal item={item} onClose={vi.fn()} />)
+    renderModal({ item, onClose: vi.fn() })
 
     expect(screen.getByRole('heading', { name: 'Description' })).toBeInTheDocument()
     expect(screen.getByText('Safe text')).toBeInTheDocument()
@@ -131,7 +143,7 @@ describe('TicketModal', () => {
       relations: [],
     }
     mockedUseWorkItemDetail.mockReturnValue({ detail, isLoading: false, error: null })
-    render(<TicketModal item={item} onClose={vi.fn()} />)
+    renderModal({ item, onClose: vi.fn() })
 
     expect(screen.getByRole('heading', { name: 'Repro Steps' })).toBeInTheDocument()
     expect(screen.getByText('1. do the thing')).toBeInTheDocument()
@@ -147,7 +159,7 @@ describe('TicketModal', () => {
       relations: [],
     }
     mockedUseWorkItemDetail.mockReturnValue({ detail, isLoading: false, error: null })
-    render(<TicketModal item={item} onClose={vi.fn()} />)
+    renderModal({ item, onClose: vi.fn() })
 
     expect(screen.queryByRole('heading', { name: 'Description' })).not.toBeInTheDocument()
     expect(screen.getByText(/No details/i)).toBeInTheDocument()
@@ -160,7 +172,7 @@ describe('TicketModal', () => {
       isLoading: false,
       error: null,
     })
-    render(<TicketModal item={item} onClose={vi.fn()} />)
+    renderModal({ item, onClose: vi.fn() })
     expect(screen.getByRole('status', { name: 'Loading details…' })).toBeInTheDocument()
   })
 
@@ -171,7 +183,7 @@ describe('TicketModal', () => {
       relations: [{ rel: 'System.LinkTypes.Hierarchy-Reverse', id: 807119, url: 'https://x/807119' }],
     }
     mockedUseWorkItemDetail.mockReturnValue({ detail, isLoading: false, error: null })
-    render(<TicketModal item={item} onClose={vi.fn()} />)
+    renderModal({ item, onClose: vi.fn() })
 
     // Humanized label, not the raw `System.LinkTypes.Hierarchy-Reverse` string.
     expect(screen.getByText('Parent')).toBeInTheDocument()
@@ -181,9 +193,9 @@ describe('TicketModal', () => {
     expect(relationLink).toHaveAttribute('href', expect.stringContaining('/_workitems/edit/807119'))
   })
 
-  it('shows a couldn\'t-load note on error, while Tier 1 still renders', () => {
+  it("shows a couldn't-load note on error, while Tier 1 still renders", () => {
     mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: new Error('boom') })
-    render(<TicketModal item={item} onClose={vi.fn()} />)
+    renderModal({ item, onClose: vi.fn() })
     expect(screen.getByText("Couldn't load details.")).toBeInTheDocument()
     expect(screen.getByText('Copilot ask endpoint')).toBeInTheDocument()
   })
@@ -191,7 +203,7 @@ describe('TicketModal', () => {
   it('calls onClose on Escape', () => {
     mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
     const onClose = vi.fn()
-    render(<TicketModal item={item} onClose={onClose} />)
+    renderModal({ item, onClose })
 
     fireEvent.keyDown(document, { key: 'Escape' })
 
@@ -201,7 +213,7 @@ describe('TicketModal', () => {
   it('calls onClose on backdrop click but not on a click inside the dialog', () => {
     mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
     const onClose = vi.fn()
-    render(<TicketModal item={item} onClose={onClose} />)
+    renderModal({ item, onClose })
 
     fireEvent.click(screen.getByText('Copilot ask endpoint'))
     expect(onClose).not.toHaveBeenCalled()
@@ -213,7 +225,7 @@ describe('TicketModal', () => {
   it('calls onClose when the close button is clicked', () => {
     mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
     const onClose = vi.fn()
-    render(<TicketModal item={item} onClose={onClose} />)
+    renderModal({ item, onClose })
 
     fireEvent.click(screen.getByRole('button', { name: 'Close' }))
 
@@ -236,6 +248,94 @@ describe('TicketModal', () => {
     expect(screen.getByRole('dialog')).toHaveClass('border-t-content-subtle')
   })
 
+  describe('Editing', () => {
+    it('saves an edited title via patchFields with a test /rev guard', () => {
+      mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
+      mockedPatchFields.mockResolvedValue({ ...item, rev: 2, title: 'New title' })
+      renderModal({ item, onClose: vi.fn() })
+
+      fireEvent.click(screen.getByRole('button', { name: 'Edit title' }))
+      fireEvent.change(screen.getByRole('textbox', { name: 'Title' }), { target: { value: 'New title' } })
+      fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+
+      expect(mockedPatchFields).toHaveBeenCalledWith(819099, 1, [
+        { path: '/fields/System.Title', value: 'New title' },
+      ])
+    })
+
+    it('adds a tag via patchFields with a semicolon-joined value', () => {
+      mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
+      mockedPatchFields.mockResolvedValue({ ...item, rev: 2, tags: ['agentic', 'newtag'] })
+      renderModal({ item, onClose: vi.fn() })
+
+      fireEvent.change(screen.getByRole('textbox', { name: 'Add tag' }), { target: { value: 'newtag' } })
+      fireEvent.click(screen.getByRole('button', { name: 'Add' }))
+
+      expect(mockedPatchFields).toHaveBeenCalledWith(819099, 1, [
+        { path: '/fields/System.Tags', value: 'agentic; newtag' },
+      ])
+    })
+
+    it('removes a tag via patchFields', () => {
+      mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
+      mockedPatchFields.mockResolvedValue({ ...item, rev: 2, tags: [] })
+      renderModal({ item, onClose: vi.fn() })
+
+      fireEvent.click(screen.getByRole('button', { name: 'Remove tag agentic' }))
+
+      expect(mockedPatchFields).toHaveBeenCalledWith(819099, 1, [
+        { path: '/fields/System.Tags', value: '' },
+      ])
+    })
+
+    it('saves an edited rich-text field via patchFields with a sanitized value', () => {
+      mockedUseWorkItemDetail.mockReturnValue({
+        detail: { id: 819099, fields: { 'System.Description': '<p>x</p>' }, relations: [] },
+        isLoading: false,
+        error: null,
+      })
+      mockedPatchFields.mockResolvedValue({ ...item, rev: 2 })
+      renderModal({ item, onClose: vi.fn() })
+
+      fireEvent.click(screen.getByRole('button', { name: 'Edit Description' }))
+      fireEvent.change(screen.getByRole('textbox', { name: 'Description' }), {
+        target: { value: '<p>updated</p>' },
+      })
+      fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+
+      expect(mockedPatchFields).toHaveBeenCalledTimes(1)
+      const [id, rev, patches] = mockedPatchFields.mock.calls[0]
+      expect(id).toBe(819099)
+      expect(rev).toBe(1)
+      expect(patches).toHaveLength(1)
+      expect(patches[0].path).toBe('/fields/System.Description')
+      expect(patches[0].value).toBe('<p>updated</p>')
+    })
+
+    it('shows an error message when a save fails and does not crash', async () => {
+      mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
+      mockedPatchFields.mockRejectedValue(new Error('boom'))
+      renderModal({ item, onClose: vi.fn() })
+
+      fireEvent.click(screen.getByRole('button', { name: 'Edit title' }))
+      fireEvent.change(screen.getByRole('textbox', { name: 'Title' }), { target: { value: 'New title' } })
+      fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+
+      expect(await screen.findByRole('alert')).toHaveTextContent('boom')
+    })
+
+    it('hides edit affordances in demo mode', () => {
+      vi.mocked(isDemoActive).mockReturnValueOnce(true)
+      mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
+      renderModal({ item, onClose: vi.fn() })
+
+      expect(screen.queryByRole('button', { name: 'Edit title' })).not.toBeInTheDocument()
+      expect(screen.queryByRole('textbox', { name: 'Add tag' })).not.toBeInTheDocument()
+      expect(screen.queryByRole('button', { name: 'Remove tag agentic' })).not.toBeInTheDocument()
+      expect(screen.getByText('agentic')).toBeInTheDocument()
+    })
+  })
+
   describe('Comments section', () => {
     it('renders comments with author and sanitized body, stripping a <script> tag', () => {
       mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
@@ -251,7 +351,7 @@ describe('TicketModal', () => {
         ],
         totalCount: 1,
       })
-      render(<TicketModal item={item} onClose={vi.fn()} />)
+      renderModal({ item, onClose: vi.fn() })
 
       expect(screen.getByRole('heading', { name: 'Comments' })).toBeInTheDocument()
       // Author appears in both the assignee chip and the comment; scope to the comments list.
@@ -265,21 +365,21 @@ describe('TicketModal', () => {
     it('shows the empty state when there are no comments', () => {
       mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
       mockedUseWorkItemComments.mockReturnValue(NO_COMMENTS)
-      render(<TicketModal item={item} onClose={vi.fn()} />)
+      renderModal({ item, onClose: vi.fn() })
       expect(screen.getByText('No comments.')).toBeInTheDocument()
     })
 
     it('shows the loading skeleton while comments are loading', () => {
       mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
       mockedUseWorkItemComments.mockReturnValue({ ...NO_COMMENTS, isLoading: true })
-      render(<TicketModal item={item} onClose={vi.fn()} />)
+      renderModal({ item, onClose: vi.fn() })
       expect(screen.getByRole('status', { name: 'Loading comments…' })).toBeInTheDocument()
     })
 
     it("shows a couldn't-load note when comments error", () => {
       mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
       mockedUseWorkItemComments.mockReturnValue({ ...NO_COMMENTS, error: new Error('boom') })
-      render(<TicketModal item={item} onClose={vi.fn()} />)
+      renderModal({ item, onClose: vi.fn() })
       expect(screen.getByText("Couldn't load comments.")).toBeInTheDocument()
     })
 
@@ -300,7 +400,7 @@ describe('TicketModal', () => {
         fetchNextPage,
         totalCount: 4,
       })
-      render(<TicketModal item={item} onClose={vi.fn()} />)
+      renderModal({ item, onClose: vi.fn() })
 
       const button = screen.getByRole('button', { name: 'Load more comments' })
       fireEvent.click(button)
@@ -323,7 +423,7 @@ describe('TicketModal', () => {
         isFetchingNextPage: true,
         totalCount: 4,
       })
-      render(<TicketModal item={item} onClose={vi.fn()} />)
+      renderModal({ item, onClose: vi.fn() })
 
       const button = screen.getByRole('button', { name: 'Loading…' })
       expect(button).toBeDisabled()
