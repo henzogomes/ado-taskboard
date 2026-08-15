@@ -5,7 +5,8 @@ name: Electron Linux build
 # the deb target is built — some local Linux distros (e.g. Arch) lack the
 # libcrypt library electron-builder's bundled fpm needs, and a .deb wouldn't
 # install there anyway; ubuntu-latest provides libcrypt and the pacman package
-# is built natively by electron-builder regardless of the host.
+# is built natively by electron-builder regardless of the host. (fpm's pacman
+# backend shells out to `bsdtar`, which Ubuntu ships in libarchive-tools.)
 
 on:
   workflow_dispatch:
@@ -38,6 +39,11 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      # fpm's pacman backend invokes `bsdtar` to build the package; Ubuntu
+      # runners don't ship it, so install it explicitly (libarchive-tools).
+      - name: Install pacman build prerequisites
+        run: sudo apt-get update && sudo apt-get install -y libarchive-tools
 
       - name: Build web app
         run: npm run build
