@@ -17,6 +17,7 @@ import { ThemePicker } from './theme/ThemePicker'
 import { StateCategoryContext } from './theme/StateCategoryContext'
 import { useShowAllColumns } from './board/useShowAllColumns'
 import { useHighlightMine } from './board/useHighlightMine'
+import { usePolling } from './board/usePolling'
 import { useExpandedSections } from './board/useExpandedSections'
 import { currentIterationId } from './domain/currentIteration'
 import { useBoardData } from './hooks/useBoardData'
@@ -105,6 +106,7 @@ function App() {
 
   const { showAll, toggle: toggleShowAll } = useShowAllColumns()
   const { highlightMine, toggle: toggleHighlightMine } = useHighlightMine()
+  const { intervalMs, setIntervalMs, options: pollOptions } = usePolling()
 
   const defaultExpandedId = useMemo(() => currentIterationId(iterations, new Date()), [iterations])
   const { isExpanded, toggle: toggleSection } = useExpandedSections(defaultExpandedId)
@@ -145,6 +147,19 @@ function App() {
   // apply on failure — with only one write ever in flight, no sibling move
   // could have landed on the board in the meantime for that rollback to stomp.
   const pendingRef = useRef(false)
+
+  // Background auto-refresh (opt-in via the header select; off by default so the
+  // board stays staleTime: Infinity unless the user asks for a cadence). Skips a
+  // tick while a write is in flight so a refetch never lands on top of an
+  // optimistic move and clobber its undo snapshot.
+  useEffect(() => {
+    if (intervalMs === 0) return
+    const id = setInterval(() => {
+      if (pendingRef.current) return
+      void refresh()
+    }, intervalMs)
+    return () => clearInterval(id)
+  }, [intervalMs, refresh])
 
   const handleDropCard = useCallback(
     (cardId: number, toColumn: string) => {
@@ -244,6 +259,22 @@ function App() {
           <span className="text-xs text-content-muted">
             {lastUpdated ? `Last updated ${lastUpdated.toLocaleTimeString()}` : 'Not loaded yet'}
           </span>
+
+          <label className="flex items-center gap-1.5 text-sm text-content">
+            <span className="text-xs text-content-muted">Auto-refresh</span>
+            <select
+              aria-label="Auto-refresh"
+              value={intervalMs}
+              onChange={(e) => setIntervalMs(Number(e.target.value))}
+              className="rounded-md border border-line bg-surface px-2 py-1.5 text-sm text-content"
+            >
+              {pollOptions.map((o) => (
+                <option key={o.value} value={o.value}>
+                  {o.label}
+                </option>
+              ))}
+            </select>
+          </label>
 
           <label className="ml-auto flex items-center gap-1.5 text-sm text-content">
             <input
