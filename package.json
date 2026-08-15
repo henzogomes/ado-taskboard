@@ -40,7 +40,8 @@
       "dist/**",
       "server/**",
       "electron/**",
-      "package.json"
+      "package.json",
+      "build/icon.png"
     ],
     "linux": {
       "target": [
@@ -49,7 +50,8 @@
         "pacman"
       ],
       "category": "Development",
-      "syncDesktopName": true
+      "syncDesktopName": true,
+      "icon": "build/icon.png"
     }
   },
   "dependencies": {

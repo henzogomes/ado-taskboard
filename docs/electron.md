@@ -168,8 +168,10 @@ plain web build the bridge is absent and `TitleBar` renders nothing.
 3. Confirm the **HTTP-relay** approach (vs custom protocol) — recommended here.
 4. **macOS/Windows** are deferred to their own milestones (macOS is gated on
    Apple signing credentials).
-5. **Icon** — electron-builder uses the default Electron icon; a real app icon
-   is a follow-up (needs an SVG/PNG asset).
+5. **Icon** — **resolved**: `build/icon.svg` (kanban-mark on an indigo→violet
+   rounded tile) is rasterized to `build/icon.png` (512²); electron-builder
+   picks it up for AppImage/deb/pacman (`linux.icon`) and `main.mjs` sets it on
+   the BrowserWindow (bundled in the asar via `build` "files").
 
 Linux has no signing blocker, so this is no longer `needs-refinement` for the
 Linux target — implementation can proceed and be verified on this machine.
