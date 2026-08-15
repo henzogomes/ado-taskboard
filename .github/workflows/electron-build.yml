@@ -1,0 +1,56 @@
+name: Electron Linux build
+
+# Builds the packaged Electron desktop app for Linux (AppImage + deb) and runs
+# the headed smoke (test:electron) under xvfb. This is the only place the deb
+# target is built — some local Linux distros (e.g. Arch) lack the libcrypt
+# library electron-builder's bundled fpm needs, but ubuntu-latest provides it.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'electron/**'
+      - 'server/**'
+      - 'scripts/electron-smoke.mjs'
+      - 'package.json'
+      - 'package-lock.json'
+  push:
+    branches: [main]
+    paths:
+      - 'electron/**'
+      - 'server/**'
+      - 'scripts/electron-smoke.mjs'
+      - 'package.json'
+      - 'package-lock.json'
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # test:electron uses the global WebSocket (Node 22+).
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build web app
+        run: npm run build
+
+      - name: Build Linux packages (AppImage + deb)
+        run: npx electron-builder --linux
+
+      - name: Run headed Electron smoke
+        run: xvfb-run -a npm run test:electron
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ado-taskboard-linux
+          path: |
+            release/*.AppImage
+            release/*.deb
+          if-no-files-found: error
