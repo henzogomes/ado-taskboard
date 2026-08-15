@@ -1,6 +1,10 @@
 # Electron desktop app — design spec
 
-Status: **spec only** (no implementation yet). Tracks issue #3.
+Status: **v1 (Linux) implemented and verified** — Option A (renderer holds the
+PAT). `electron/main.mjs` boots the existing relay on an ephemeral port; the
+headed smoke (`npm run test:electron`) confirms the login screen renders
+through it. AppImage + deb build via `electron-builder` (deb verified in CI).
+macOS/Windows remain deferred. Tracks issue #3.
 
 ## Goal
 
@@ -74,8 +78,14 @@ electron/
 server/
   index.mjs         # CLI entry (calls createServer)
   createServer.mjs  # extracted: build the express app + proxy (no listen)
+scripts/
+  electron-smoke.mjs  # headed CDP smoke: launches the app, asserts the login screen renders
 package.json        # "main": "electron/main.mjs", "build": { electron-builder config }
 ```
+
+`server/createServer.mjs`, `electron/main.mjs`, and `scripts/electron-smoke.mjs`
+are implemented as of the v1 milestone; `preload.cjs` is intentionally absent
+until v2.
 
 ## Build & packaging
 
@@ -102,25 +112,29 @@ renderer, so v1 ships with **no preload** (v2 adds one for the IPC bridge).
   `http-proxy-middleware`, React, …) are enough; Electron bundles its own
   runtime.
 
-## Scripts (proposed)
+## Scripts
 
-- `dev:electron` — build once, then launch Electron against the dev server.
-- `build:electron` — `npm run build && electron-builder --linux` (per-OS flag
-  for later targets).
+- `dev:electron` — `npm run build && electron .` (launch the desktop app).
+- `build:electron` — `npm run build && electron-builder --linux` (AppImage + deb).
+- `pack:electron` — `npm run build && electron-builder --dir` (unpacked, fast).
+- `test:electron` — headed smoke (`scripts/electron-smoke.mjs`); run under
+  `xvfb-run` in CI.
 
 ## Verification plan
 
-1. `npm run build` → `dist/`, then `npx electron .` on Linux.
-2. Manual smoke with a throwaway PAT: login screen → connect → board loads →
-   drag a card → Move menu → edit title/tags → post a comment → demo mode.
-3. Assert the app still works as a plain web app (`npm run serve`) — no
-   regression from the `createServer` extraction.
-4. `electron-builder --linux` produces an `AppImage` + `.deb`; launch the
-   `AppImage` on a clean Linux box to confirm it runs standalone.
+1. `npm run build` → `dist/`, then `npm run dev:electron` on Linux. ✅ verified
+   on this machine.
+2. `npm run test:electron` asserts the login screen renders through the relay.
+   ✅ verified.
+3. Plain web app unchanged: `npm run serve` + the `createServer` unit tests
+   (`server/createServer.test.mjs`) cover the relay. ✅ verified.
+4. `electron-builder --linux` → AppImage (✅ built and launched locally) + deb
+   (✅ built in CI; local Arch box lacks `libcrypt.so.1` for the bundled fpm).
 
 ## Open decisions / blockers
 
-1. **A vs B** (renderer-PAT vs `safeStorage`/main-PAT) — recommend A then B.
+1. **A vs B** — **resolved**: A (renderer-PAT) is implemented as v1; B
+   (`safeStorage`/main-PAT) is the v2 follow-up.
 2. **Auto-update** (`electron-updater`) — later; needs a signed release feed.
 3. Confirm the **HTTP-relay** approach (vs custom protocol) — recommended here.
 4. **macOS/Windows** are deferred to their own milestones (macOS is gated on
