@@ -7,12 +7,13 @@ import type { WorkItemComment } from '../api/types'
 import { useWorkItemDetail } from '../hooks/useWorkItemDetail'
 import { useWorkItemComments } from '../hooks/useWorkItemComments'
 import { useFieldMeta } from '../hooks/useFieldMeta'
-import { patchFields } from '../api/client'
+import { patchFields, postWorkItemComment } from '../api/client'
 import { isDemoActive } from '../demo/connection'
 import { StateCategoryContext } from '../theme/StateCategoryContext'
 
 vi.mock('../api/client', () => ({
   patchFields: vi.fn(),
+  postWorkItemComment: vi.fn(),
 }))
 vi.mock('../demo/connection', () => ({
   isDemoActive: vi.fn(() => false),
@@ -31,6 +32,7 @@ const mockedUseWorkItemDetail = vi.mocked(useWorkItemDetail)
 const mockedUseWorkItemComments = vi.mocked(useWorkItemComments)
 const mockedUseFieldMeta = vi.mocked(useFieldMeta)
 const mockedPatchFields = vi.mocked(patchFields)
+const mockedPostWorkItemComment = vi.mocked(postWorkItemComment)
 
 const NO_COMMENTS = {
   comments: [] as WorkItemComment[],
@@ -427,6 +429,63 @@ describe('TicketModal', () => {
 
       const button = screen.getByRole('button', { name: 'Loading…' })
       expect(button).toBeDisabled()
+    })
+
+    describe('posting a comment', () => {
+      it('posts the typed text for the item id and clears the draft', async () => {
+        mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
+        mockedPostWorkItemComment.mockResolvedValue({
+          id: 2,
+          text: '<div>the text</div>',
+          createdBy: { displayName: 'Jane Doe', uniqueName: 'jane@example.com' },
+          createdDate: '2025-07-03T09:00:00Z',
+        })
+        renderModal({ item, onClose: vi.fn() })
+
+        fireEvent.change(screen.getByRole('textbox', { name: 'Add a comment' }), {
+          target: { value: 'the text' },
+        })
+        fireEvent.click(screen.getByRole('button', { name: 'Post comment' }))
+
+        expect(mockedPostWorkItemComment).toHaveBeenCalledWith(819099, 'the text')
+        expect(await screen.findByRole('textbox', { name: 'Add a comment' })).toHaveValue('')
+      })
+
+      it('does not post empty or whitespace-only text', () => {
+        mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
+        renderModal({ item, onClose: vi.fn() })
+
+        fireEvent.click(screen.getByRole('button', { name: 'Post comment' }))
+        expect(mockedPostWorkItemComment).not.toHaveBeenCalled()
+
+        fireEvent.change(screen.getByRole('textbox', { name: 'Add a comment' }), {
+          target: { value: '   ' },
+        })
+        fireEvent.click(screen.getByRole('button', { name: 'Post comment' }))
+        expect(mockedPostWorkItemComment).not.toHaveBeenCalled()
+      })
+
+      it('shows an error message when posting fails', async () => {
+        mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
+        mockedPostWorkItemComment.mockRejectedValue(new Error('boom'))
+        renderModal({ item, onClose: vi.fn() })
+
+        fireEvent.change(screen.getByRole('textbox', { name: 'Add a comment' }), {
+          target: { value: 'the text' },
+        })
+        fireEvent.click(screen.getByRole('button', { name: 'Post comment' }))
+
+        expect(await screen.findByRole('alert')).toHaveTextContent('boom')
+      })
+
+      it('hides the composer in demo mode', () => {
+        vi.mocked(isDemoActive).mockReturnValueOnce(true)
+        mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
+        renderModal({ item, onClose: vi.fn() })
+
+        expect(screen.queryByRole('textbox', { name: 'Add a comment' })).not.toBeInTheDocument()
+        expect(screen.queryByRole('button', { name: 'Post comment' })).not.toBeInTheDocument()
+      })
     })
   })
 })

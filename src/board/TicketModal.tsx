@@ -5,7 +5,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import type { WorkItem } from '../api/types'
 import type { FieldPatch } from '../api/client'
-import { patchFields } from '../api/client'
+import { patchFields, postWorkItemComment } from '../api/client'
 import { isDemoActive } from '../demo/connection'
 import { adoWorkItemUrl, initialsOf } from './cardUtils'
 import { useWorkItemDetail } from '../hooks/useWorkItemDetail'
@@ -83,6 +83,10 @@ export function TicketModal({ item, onClose }: TicketModalProps) {
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
 
+  const [commentDraft, setCommentDraft] = useState('')
+  const [posting, setPosting] = useState(false)
+  const [postError, setPostError] = useState<string | null>(null)
+
   const runSave = async (patches: FieldPatch[], onSuccess?: (updated: WorkItem) => void) => {
     if (!item) return
     setSaving(true)
@@ -137,6 +141,23 @@ export function TicketModal({ item, onClose }: TicketModalProps) {
     void runSave([{ path: `/fields/${referenceName}`, value: DOMPurify.sanitize(fieldDraft) }])
     setEditingField(null)
     setFieldDraft('')
+  }
+
+  const submitComment = async () => {
+    if (!item) return
+    const text = commentDraft.trim()
+    if (!text) return
+    setPosting(true)
+    setPostError(null)
+    try {
+      await postWorkItemComment(item.id, text)
+      queryClient.invalidateQueries({ queryKey: ['workitem-comments', item.id] })
+      setCommentDraft('')
+    } catch (e) {
+      setPostError(e instanceof Error ? e.message : String(e))
+    } finally {
+      setPosting(false)
+    }
   }
 
   // Which fields to show is discovered, not hardcoded: the populated rich-text
@@ -494,6 +515,35 @@ export function TicketModal({ item, onClose }: TicketModalProps) {
                         </li>
                       ))}
                     </ul>
+                  )}
+
+                  {editable && (
+                    <div className="mt-3">
+                      <textarea
+                        aria-label="Add a comment"
+                        value={commentDraft}
+                        onChange={(e) => setCommentDraft(e.target.value)}
+                        rows={3}
+                        disabled={posting}
+                        className="w-full rounded-md border border-line bg-surface p-3 text-sm text-content disabled:opacity-60"
+                      />
+                      <div className="mt-1 flex items-center gap-2">
+                        <button
+                          type="button"
+                          aria-label="Post comment"
+                          onClick={() => void submitComment()}
+                          disabled={posting}
+                          className="rounded border border-line px-2 py-1 text-xs font-medium text-content-muted hover:bg-surface-raised disabled:opacity-60"
+                        >
+                          Post
+                        </button>
+                        {postError && (
+                          <p role="alert" className="text-sm text-danger">
+                            {postError}
+                          </p>
+                        )}
+                      </div>
+                    </div>
                   )}
 
                   {hasMoreComments && (
