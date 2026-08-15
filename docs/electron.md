@@ -69,40 +69,54 @@ The prod server is a self-starting script today (`server/index.mjs` ends in
 Keeping the local HTTP relay (rather than a custom `app://` scheme) avoids any
 custom-protocol/CORS work — the browser's `fetch('/api/ado/…')` keeps working.
 
-## File layout (proposed)
+## File layout
 
 ```
 electron/
   main.mjs          # app lifecycle: create server on ephemeral port, BrowserWindow, load URL
-  preload.cjs       # v1: absent/unused; v2: contextBridge IPC for the connection store
+  preload.cjs       # minimal contextBridge (`window.taskboard`) for the title-bar overlay
+src/titlebar/
+  TitleBar.tsx      # custom drag strip for the Window Controls Overlay (web app: no-op)
+  desktop.ts        # bridge typing + theme→overlay color helpers
 server/
   index.mjs         # CLI entry (calls createServer)
   createServer.mjs  # extracted: build the express app + proxy (no listen)
 scripts/
-  electron-smoke.mjs  # headed CDP smoke: launches the app, asserts the login screen renders
+  electron-smoke.mjs  # headed CDP smoke: launches the app, asserts login screen + titlebar
 package.json        # "main": "electron/main.mjs", "build": { electron-builder config }
 ```
-
-`server/createServer.mjs`, `electron/main.mjs`, and `scripts/electron-smoke.mjs`
-are implemented as of the v1 milestone; `preload.cjs` is intentionally absent
-until v2.
 
 ## Build & packaging
 
 - **Bundler:** `electron-builder`.
 - `"files"`: `dist/**`, `server/**`, `electron/**`, `package.json`.
-- **Targets (Linux first):** `AppImage` + `deb`. No code-signing required to
-  distribute (optional GPG signing only if we later publish to an apt repo).
+- **Targets (Linux first):** AppImage + pacman (Arch-native) locally; deb built
+  in CI. No code-signing required to distribute (optional GPG signing only if
+  we later publish to an apt repo).
 - **Later:** macOS `dmg` + `zip` (signed + notarized — needs an Apple Developer
   ID cert + `notarytool` credentials, **blocked**) and Windows `nsis`.
-- **CI:** a Linux GitHub Actions runner builds `AppImage`/`deb` (with `xvfb`
-  for any headed smoke); macOS/Windows artifacts from their own runners later.
+- **CI:** a Linux GitHub Actions runner builds AppImage/deb/pacman (with `xvfb`
+  for the headed smoke against the packaged build); macOS/Windows artifacts
+  from their own runners later.
 
 ## Security model (v1)
 
 Keep Electron defaults locked down: `contextIsolation: true`,
-`nodeIntegration: false`, `sandbox: true`. The web app needs no Node APIs in the
-renderer, so v1 ships with **no preload** (v2 adds one for the IPC bridge).
+`nodeIntegration: false`, `sandbox: true`. The preload exposes exactly one
+surface — `window.taskboard.setTitleBarOverlay` for theming the native
+title-bar overlay — and nothing else: the PAT stays in the renderer connection
+store and there is no connection-store IPC (that stays with v2's
+`safeStorage` milestone).
+
+## Custom title bar (Window Controls Overlay)
+
+`titleBarStyle: 'hidden'` + `titleBarOverlay` hide the OS title-bar text area
+while keeping the **native** min/max/close buttons (Linux support since
+Electron 30.2; this is Electron 43). The renderer's `TitleBar` renders a
+drag strip (`-webkit-app-region: drag`) in the freed space and themes the
+buttons by sending its theme's `--surface`/`--text-muted` colors (as `#rrggbb`)
+over the single IPC channel; it re-syncs when `data-theme` changes. In the
+plain web build the bridge is absent and `TitleBar` renders nothing.
 
 ## Dependencies
 
@@ -127,16 +141,19 @@ renderer, so v1 ships with **no preload** (v2 adds one for the IPC bridge).
 
 1. `npm run build` → `dist/`, then `npm run dev:electron` on Linux. ✅ verified
    on this machine.
-2. `npm run test:electron` asserts the login screen renders through the relay.
-   ✅ verified — and in CI against the **packaged** build
-   (`ELECTRON_SMOKE_BIN=release/linux-unpacked/ado-taskboard`) so packaging
-   regressions (e.g. dropped transitive deps) fail the build.
+2. `npm run test:electron` asserts the login screen renders through the relay —
+   and in desktop mode asserts `window.taskboard` (preload) + the custom
+   title-bar strip are present. ✅ verified — in CI against the **packaged**
+   build (`ELECTRON_SMOKE_BIN=release/linux-unpacked/ado-taskboard`) so
+   packaging regressions (e.g. dropped transitive deps) fail the build.
 3. Plain web app unchanged: `npm run serve` + the `createServer` unit tests
    (`server/createServer.test.mjs`) cover the relay. ✅ verified.
 4. `electron-builder --linux` → AppImage (✅ built and launched locally), pacman
    `ado-taskboard-*.pacman` (✅ built + packaged-app smoke passed locally —
    Arch-native), deb (✅ built in CI; a `.deb` is Debian-family only and needs
    `libcrypt.so.1`, which Arch lacks).
+5. Custom title bar verified on this machine (`dev:electron`): drag strip
+   renders, native min/max/close buttons stay, overlay colors follow the theme.
 
 > Local build gotcha: electron-builder's dependency collector runs `npm list`
 > against `node_modules`; a symlinked worktree `node_modules` makes it report

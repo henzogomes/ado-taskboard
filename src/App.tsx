@@ -31,6 +31,8 @@ import { LoginScreen } from './connections/LoginScreen'
 import { ConnectionSwitcher } from './connections/ConnectionSwitcher'
 import { DEMO_CONNECTION_ID } from './demo/connection'
 import { DemoBanner } from './demo/DemoBanner'
+import { TitleBar } from './titlebar/TitleBar'
+import { isDesktop } from './titlebar/desktop'
 
 function pickerValueToScope(value: string): BoardScope {
   if (value === 'all' || value === 'current') return value
@@ -206,8 +208,10 @@ function App() {
   if (active === null) {
     return (
       <div className="flex h-screen flex-col bg-app text-content">
+        {/* Desktop build: custom title-bar strip (Web app: nothing). */}
+        <TitleBar />
         <header className="flex items-center gap-3 border-b border-line bg-surface px-4 py-3">
-          <h1 className="text-lg font-semibold">ADO Taskboard</h1>
+          {!isDesktop() && <h1 className="text-lg font-semibold">ADO Taskboard</h1>}
           <div className="ml-auto">
             <ThemePicker />
           </div>
@@ -220,8 +224,10 @@ function App() {
   return (
     <StateCategoryContext.Provider value={stateCategory}>
       <div className="flex h-screen flex-col bg-app text-content">
+        {/* Desktop build: custom title-bar strip (Web app: nothing). */}
+        <TitleBar />
         <header className="flex flex-wrap items-center gap-3 border-b border-line bg-surface px-4 py-3">
-          <h1 className="text-lg font-semibold">ADO Taskboard</h1>
+          {!isDesktop() && <h1 className="text-lg font-semibold">ADO Taskboard</h1>}
 
           <ConnectionSwitcher
             onLogoutAll={() => {
