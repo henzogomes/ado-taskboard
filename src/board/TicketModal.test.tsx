@@ -7,9 +7,11 @@ import type { WorkItemComment } from '../api/types'
 import { useWorkItemDetail } from '../hooks/useWorkItemDetail'
 import { useWorkItemComments } from '../hooks/useWorkItemComments'
 import { useFieldMeta } from '../hooks/useFieldMeta'
+import { useWorkItemTypeStates } from '../hooks/useWorkItemTypeStates'
 import { patchFields, postWorkItemComment } from '../api/client'
 import { isDemoActive } from '../demo/connection'
 import { StateCategoryContext } from '../theme/StateCategoryContext'
+import * as store from '../connections/store'
 
 vi.mock('../api/client', () => ({
   patchFields: vi.fn(),
@@ -27,10 +29,14 @@ vi.mock('../hooks/useWorkItemComments', () => ({
 vi.mock('../hooks/useFieldMeta', () => ({
   useFieldMeta: vi.fn(),
 }))
+vi.mock('../hooks/useWorkItemTypeStates', () => ({
+  useWorkItemTypeStates: vi.fn(),
+}))
 
 const mockedUseWorkItemDetail = vi.mocked(useWorkItemDetail)
 const mockedUseWorkItemComments = vi.mocked(useWorkItemComments)
 const mockedUseFieldMeta = vi.mocked(useFieldMeta)
+const mockedUseWorkItemTypeStates = vi.mocked(useWorkItemTypeStates)
 const mockedPatchFields = vi.mocked(patchFields)
 const mockedPostWorkItemComment = vi.mocked(postWorkItemComment)
 
@@ -63,6 +69,12 @@ beforeEach(() => {
   mockedUseFieldMeta.mockReturnValue({ meta: META, isLoading: false })
   // Default: no comments (comments-specific tests override this).
   mockedUseWorkItemComments.mockReturnValue(NO_COMMENTS)
+  // Default: the work-item type's state→category map is loaded (quick-action
+  // tests override this).
+  mockedUseWorkItemTypeStates.mockReturnValue({
+    states: { New: 'Proposed', Active: 'InProgress', Closed: 'Completed' },
+    isLoading: false,
+  })
 })
 
 function renderModal(
@@ -94,6 +106,7 @@ const item: WorkItem = {
 describe('TicketModal', () => {
   afterEach(() => {
     vi.clearAllMocks()
+    vi.restoreAllMocks()
   })
 
   it('renders nothing when item is null', () => {
@@ -229,7 +242,7 @@ describe('TicketModal', () => {
     const onClose = vi.fn()
     renderModal({ item, onClose })
 
-    fireEvent.click(screen.getByRole('button', { name: 'Close' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Close dialog' }))
 
     expect(onClose).toHaveBeenCalledTimes(1)
   })
@@ -335,6 +348,76 @@ describe('TicketModal', () => {
       expect(screen.queryByRole('textbox', { name: 'Add tag' })).not.toBeInTheDocument()
       expect(screen.queryByRole('button', { name: 'Remove tag agentic' })).not.toBeInTheDocument()
       expect(screen.getByText('agentic')).toBeInTheDocument()
+    })
+  })
+
+  describe('Quick actions', () => {
+    it('closes by PATCHing System.State to the discovered Completed state', () => {
+      mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
+      mockedPatchFields.mockResolvedValue({ ...item, rev: 2, state: 'Closed' })
+      renderModal({ item, onClose: vi.fn() })
+
+      const button = screen.getByRole('button', { name: 'Close' })
+      fireEvent.click(button)
+
+      expect(mockedPatchFields).toHaveBeenCalledWith(819099, 1, [
+        { path: '/fields/System.State', value: 'Closed' },
+      ])
+    })
+
+    it('reopens by PATCHing System.State to the discovered Proposed state', () => {
+      mockedUseWorkItemTypeStates.mockReturnValue({
+        states: { New: 'Proposed', Closed: 'Completed' },
+        isLoading: false,
+      })
+      mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
+      mockedPatchFields.mockResolvedValue({ ...item, rev: 2, state: 'New' })
+      renderModal({ item: { ...item, state: 'Closed' }, onClose: vi.fn() })
+
+      const button = screen.getByRole('button', { name: 'Reopen' })
+      fireEvent.click(button)
+
+      expect(mockedPatchFields).toHaveBeenCalledWith(819099, 1, [
+        { path: '/fields/System.State', value: 'New' },
+      ])
+    })
+
+    it('assigns to the active connection identity when "Assign to me" is clicked', () => {
+      vi.spyOn(store, 'getActive').mockReturnValue({
+        id: '1',
+        label: 'x',
+        org: 'contoso',
+        project: 'P',
+        me: 'jane@example.com',
+        pat: '',
+      })
+      mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
+      mockedPatchFields.mockResolvedValue({
+        ...item,
+        rev: 2,
+        assignedTo: { displayName: 'jane@example.com', uniqueName: 'jane@example.com' },
+      })
+      renderModal({
+        item: { ...item, assignedTo: { displayName: 'Other', uniqueName: 'other@example.com' } },
+        onClose: vi.fn(),
+      })
+
+      const button = screen.getByRole('button', { name: 'Assign to me' })
+      fireEvent.click(button)
+
+      expect(mockedPatchFields).toHaveBeenCalledWith(819099, 1, [
+        { path: '/fields/System.AssignedTo', value: 'jane@example.com' },
+      ])
+    })
+
+    it('hides quick actions in demo mode', () => {
+      vi.mocked(isDemoActive).mockReturnValueOnce(true)
+      mockedUseWorkItemDetail.mockReturnValue({ detail: undefined, isLoading: false, error: null })
+      renderModal({ item, onClose: vi.fn() })
+
+      expect(screen.queryByRole('button', { name: 'Close' })).not.toBeInTheDocument()
+      expect(screen.queryByRole('button', { name: 'Reopen' })).not.toBeInTheDocument()
+      expect(screen.queryByRole('button', { name: 'Assign to me' })).not.toBeInTheDocument()
     })
   })
 

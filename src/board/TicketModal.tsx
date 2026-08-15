@@ -11,10 +11,12 @@ import { adoWorkItemUrl, initialsOf } from './cardUtils'
 import { useWorkItemDetail } from '../hooks/useWorkItemDetail'
 import { useWorkItemComments } from '../hooks/useWorkItemComments'
 import { useFieldMeta } from '../hooks/useFieldMeta'
+import { useWorkItemTypeStates } from '../hooks/useWorkItemTypeStates'
 import { richTextFields } from '../domain/detailFields'
 import { relationLabel } from './relationLabel'
 import { relativeTime } from './relativeTime'
 import { useStateColor } from '../theme/StateCategoryContext'
+import { CONFIG } from '../config'
 
 export interface TicketModalProps {
   item: WorkItem | null
@@ -61,9 +63,16 @@ export function TicketModal({ item, onClose }: TicketModalProps) {
     isFetchingNextPage: fetchingMoreComments,
   } = useWorkItemComments(item?.id ?? null)
   const { meta, isLoading: metaLoading } = useFieldMeta()
-  const color = useStateColor(item?.state ?? '')
+  const { states: typeStates, isLoading: statesLoading } = useWorkItemTypeStates(item?.type ?? null)
   const queryClient = useQueryClient()
   const editable = !isDemoActive()
+
+  // Local state for the two fields quick actions mutate (state + assignee),
+  // initialized from `item` so the open modal reflects a successful action
+  // immediately without waiting for a board refetch.
+  const [state, setState] = useState(item?.state ?? '')
+  const [assignedTo, setAssignedTo] = useState(item?.assignedTo ?? null)
+  const color = useStateColor(state)
 
   // Local edit state, reset per item (App keys the modal on the item id). The
   // `rev` is bumped from each patchFields response so consecutive saves send
@@ -188,6 +197,27 @@ export function TicketModal({ item, onClose }: TicketModalProps) {
 
   const stopPropagation = (event: MouseEvent) => event.stopPropagation()
 
+  // Quick-action targets are discovered from ADO, never hardcoded: the first
+  // Completed state closes, the first Proposed state reopens.
+  const closeState = Object.entries(typeStates).find(([, c]) => c === 'Completed')?.[0]
+  const reopenState = Object.entries(typeStates).find(([, c]) => c === 'Proposed')?.[0]
+  // Read the category from the LOCAL state so a successful Close flips the
+  // button to Reopen in the same open modal (item.state is the stale snapshot).
+  const currentCategory = typeStates[state]
+
+  const canClose =
+    closeState !== undefined &&
+    closeState !== state &&
+    currentCategory !== undefined &&
+    currentCategory !== 'Completed' &&
+    currentCategory !== 'Removed'
+  const canReopen =
+    reopenState !== undefined &&
+    reopenState !== state &&
+    (currentCategory === 'Completed' || currentCategory === 'Removed')
+  const canAssign =
+    CONFIG.me !== '' && assignedTo?.uniqueName?.toLowerCase() !== CONFIG.me.toLowerCase()
+
   return createPortal(
     <div
       data-testid="ticket-modal-backdrop"
@@ -229,7 +259,7 @@ export function TicketModal({ item, onClose }: TicketModalProps) {
               </a>
               <button
                 type="button"
-                aria-label="Close"
+                aria-label="Close dialog"
                 onClick={onClose}
                 className="rounded p-1 text-lg leading-none text-content-muted hover:bg-surface-raised"
               >
@@ -289,17 +319,17 @@ export function TicketModal({ item, onClose }: TicketModalProps) {
               <span
                 className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${color.pill}`}
               >
-                {item.state}
+                {state}
               </span>
-              {item.assignedTo && (
+              {assignedTo && (
                 <span className="inline-flex items-center gap-1 rounded-full bg-surface-muted px-2 py-0.5 text-[11px] font-medium text-content-muted">
                   <span
                     aria-hidden="true"
                     className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-accent-muted text-[9px] font-semibold text-accent"
                   >
-                    {initialsOf(item.assignedTo.displayName)}
+                    {initialsOf(assignedTo.displayName)}
                   </span>
-                  {item.assignedTo.displayName}
+                  {assignedTo.displayName}
                 </span>
               )}
               {item.parent != null && (
@@ -316,6 +346,57 @@ export function TicketModal({ item, onClose }: TicketModalProps) {
                 {iterationLeaf(item.iterationPath)}
               </span>
             </div>
+
+            {editable && !statesLoading && (canClose || canReopen || canAssign) && (
+              <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                {canClose && (
+                  <button
+                    type="button"
+                    aria-label="Close"
+                    disabled={saving}
+                    onClick={() =>
+                      void runSave([{ path: '/fields/System.State', value: closeState }], (u) =>
+                        setState(u.state),
+                      )
+                    }
+                    className="rounded border border-line px-2 py-1 text-xs font-medium text-content-muted hover:bg-surface-raised disabled:opacity-60"
+                  >
+                    Close
+                  </button>
+                )}
+                {canReopen && (
+                  <button
+                    type="button"
+                    aria-label="Reopen"
+                    disabled={saving}
+                    onClick={() =>
+                      void runSave([{ path: '/fields/System.State', value: reopenState }], (u) =>
+                        setState(u.state),
+                      )
+                    }
+                    className="rounded border border-line px-2 py-1 text-xs font-medium text-content-muted hover:bg-surface-raised disabled:opacity-60"
+                  >
+                    Reopen
+                  </button>
+                )}
+                {canAssign && (
+                  <button
+                    type="button"
+                    aria-label="Assign to me"
+                    disabled={saving}
+                    onClick={() =>
+                      void runSave(
+                        [{ path: '/fields/System.AssignedTo', value: CONFIG.me }],
+                        () => setAssignedTo({ displayName: CONFIG.me, uniqueName: CONFIG.me }),
+                      )
+                    }
+                    className="rounded border border-line px-2 py-1 text-xs font-medium text-content-muted hover:bg-surface-raised disabled:opacity-60"
+                  >
+                    Assign to me
+                  </button>
+                )}
+              </div>
+            )}
 
             {(tags.length > 0 || editable) && (
               <div className="mt-2 flex flex-wrap items-center gap-1">
