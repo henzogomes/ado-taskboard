@@ -97,6 +97,28 @@ describe('updateConnection', () => {
   })
 })
 
+describe('team override round-trip', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    vi.resetModules()
+  })
+
+  it('addConnection persists the team and getActive returns it', async () => {
+    const { addConnection, getActive } = await import('./store')
+    addConnection(conn('a', { team: 'My Team' }))
+    expect(getActive()?.team).toBe('My Team')
+  })
+
+  it('updateConnection keeps the team on the edited connection', async () => {
+    const { save, updateConnection, getActive } = await import('./store')
+    save({ connections: [conn('a', { team: 'Old Team' })], activeId: 'a' })
+
+    updateConnection(conn('a', { team: 'New Team' }))
+
+    expect(getActive()?.team).toBe('New Team')
+  })
+})
+
 // Regression coverage for a real bug caught live in the browser: load() used
 // to re-parse localStorage on every call, returning a fresh object reference
 // each time. useConnections.ts passes load as useSyncExternalStore's
