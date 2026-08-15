@@ -80,6 +80,7 @@ custom-protocol/CORS work — the browser's `fetch('/api/ado/…')` keeps workin
 electron/
   main.mjs          # app lifecycle: create server on fixed relay port, BrowserWindow, load URL
   preload.cjs       # minimal contextBridge (`window.taskboard`) for the title-bar overlay
+  zoom.mjs          # pure browser-style zoom mapping (keys + Ctrl+wheel), unit-tested
 src/titlebar/
   TitleBar.tsx      # custom drag strip for the Window Controls Overlay (web app: no-op)
   desktop.ts        # bridge typing + theme→overlay color helpers
@@ -159,6 +160,9 @@ plain web build the bridge is absent and `TitleBar` renders nothing.
    `libcrypt.so.1`, which Arch lacks).
 5. Custom title bar verified on this machine (`dev:electron`): drag strip
    renders, native min/max/close buttons stay, overlay colors follow the theme.
+6. Browser-style zoom verified on this machine: Ctrl/Cmd+= / Ctrl/Cmd+- /
+   Ctrl+0 and Ctrl+wheel zoom the page; the level survives relaunches (read
+   from `userData/zoom.json`, applied on load; unit-tested in `zoom.mjs`).
 
 > Local build gotcha: electron-builder's dependency collector runs `npm list`
 > against `node_modules`; a symlinked worktree `node_modules` makes it report
