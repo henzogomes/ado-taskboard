@@ -3,6 +3,7 @@ import { fetchWorkItems, patchState, fetchProjectIterations, getWorkItemDetail, 
 import * as store from '../connections/store'
 import * as demoConnection from '../demo/connection'
 import { AuthError } from './client'
+import { CONFIG } from '../config'
 
 const asResp = (json: unknown) => ({ ok: true, json: async () => json }) as Response
 
@@ -314,6 +315,41 @@ describe('api client', () => {
     expect(page.totalCount).toBe(5)
     expect(page.comments.length).toBe(3) // demo page size
     expect(page.continuationToken).toBe('3')
+  })
+})
+
+describe('resolveTeam', () => {
+  beforeEach(() => vi.restoreAllMocks())
+
+  it('returns the active connection team without issuing a fetch when set', async () => {
+    vi.spyOn(store, 'getActive').mockReturnValue({
+      id: '1', label: 'x', org: 'contoso', project: 'P', team: 'My Team', pat: 'tok',
+    })
+    const fetchMock = vi.fn()
+    vi.stubGlobal('fetch', fetchMock)
+
+    const team = await resolveTeam()
+
+    expect(fetchMock).not.toHaveBeenCalled()
+    expect(team).toBe('My Team')
+  })
+})
+
+describe('CONFIG.team', () => {
+  beforeEach(() => vi.restoreAllMocks())
+
+  it('reflects the active connection team', () => {
+    vi.spyOn(store, 'getActive').mockReturnValue({
+      id: '1', label: 'x', org: 'contoso', project: 'P', team: 'My Team', pat: 'tok',
+    })
+    expect(CONFIG.team).toBe('My Team')
+  })
+
+  it('is empty when the active connection has no team', () => {
+    vi.spyOn(store, 'getActive').mockReturnValue({
+      id: '1', label: 'x', org: 'contoso', project: 'P', pat: 'tok',
+    })
+    expect(CONFIG.team).toBe('')
   })
 })
 
