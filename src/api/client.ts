@@ -211,29 +211,33 @@ export async function queryWorkItemIds(wiql: string): Promise<number[]> {
 
 export async function fetchWorkItems(ids: number[]): Promise<WorkItem[]> {
   if (!ids.length) return []
-  const out: WorkItem[] = []
+  const batches = []
   for (let i = 0; i < ids.length; i += 200) {
-    const d = await j(`${CONFIG.baseUrl}/${CONFIG.project}/_apis/wit/workitemsbatch?${V}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ids: ids.slice(i, i + 200),
-        fields: [
-          'System.Id',
-          'System.WorkItemType',
-          'System.Title',
-          'System.State',
-          'System.BoardColumn',
-          'System.AssignedTo',
-          'System.Tags',
-          'System.Parent',
-          'System.IterationPath',
-        ],
+    batches.push(
+      j(`${CONFIG.baseUrl}/${CONFIG.project}/_apis/wit/workitemsbatch?${V}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ids: ids.slice(i, i + 200),
+          fields: [
+            'System.Id',
+            'System.WorkItemType',
+            'System.Title',
+            'System.State',
+            'System.BoardColumn',
+            'System.AssignedTo',
+            'System.Tags',
+            'System.Parent',
+            'System.IterationPath',
+          ],
+        }),
       }),
-    })
-    out.push(...d.value.map(toItem))
+    )
   }
-  return out
+  // Promise.all preserves input order, so flat() keeps items in id order even
+  // when a later batch resolves before an earlier one.
+  const results = await Promise.all(batches)
+  return results.flatMap((d) => d.value.map(toItem))
 }
 
 export function toBacklogLevels(raw: any): BacklogLevels {

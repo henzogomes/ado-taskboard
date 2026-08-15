@@ -46,6 +46,34 @@ describe('api client', () => {
     })
   })
 
+  it('returns items in original id order even when a later batch resolves first', async () => {
+    const ids = Array.from({ length: 250 }, (_, i) => i + 1)
+    const fetchMock = vi.fn(async (_url: string, init?: RequestInit) => {
+      const { ids: batchIds } = JSON.parse(String(init?.body)) as { ids: number[] }
+      // Delay the FIRST batch so the SECOND resolves first, proving order is
+      // restored by Promise.all's input-order guarantee rather than timing.
+      if (batchIds[0] === ids[0]) await new Promise((r) => setTimeout(r, 30))
+      return asResp({
+        value: batchIds.map((id) => ({
+          id,
+          rev: 1,
+          fields: {
+            'System.WorkItemType': 'Task',
+            'System.Title': `task ${id}`,
+            'System.State': 'New',
+            'System.IterationPath': 'P\\Sprint 1',
+          },
+        })),
+      })
+    })
+    vi.stubGlobal('fetch', fetchMock)
+
+    const items = await fetchWorkItems(ids)
+
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+    expect(items.map((it) => it.id)).toEqual(ids)
+  })
+
   it('patchState PATCHes json-patch to the work item', async () => {
     const spy = vi.fn(async () =>
       asResp({
