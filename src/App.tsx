@@ -325,7 +325,7 @@ function App() {
           <Toast message={dropToast.message} onDismiss={() => setDropToast(null)} />
         )}
 
-        <TicketModal item={openItem} onClose={() => setOpenItem(null)} />
+        <TicketModal key={openItem?.id ?? 'none'} item={openItem} onClose={() => setOpenItem(null)} />
       </div>
     </StateCategoryContext.Provider>
   )
