@@ -103,6 +103,13 @@ async function main() {
       await sleep(500);
     }
 
+    // Desktop-mode assertions: the preload bridge is present and the custom
+    // title-bar strip actually rendered (it only exists in the Electron build).
+    const desktop = await cdpEvaluate(
+      ws,
+      'Boolean(window.taskboard && window.taskboard.isDesktop && document.querySelector(\'[data-testid="titlebar"]\'))',
+    );
+
     ws.close();
 
     if (!bodyText || !bodyText.includes('View demo')) {
@@ -111,7 +118,12 @@ async function main() {
           (bodyText ? JSON.stringify(bodyText.slice(0, 300)) : '<empty>'),
       );
     }
-    console.log('PASS: Electron renderer loaded the app; login screen visible through the relay.');
+    if (!desktop) {
+      throw new Error('desktop bridge/titlebar not present — app not running in Electron mode');
+    }
+    console.log(
+      'PASS: Electron renderer loaded the app; login screen + custom title bar visible through the relay.',
+    );
   } finally {
     child.kill('SIGTERM');
   }
