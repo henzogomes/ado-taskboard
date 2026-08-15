@@ -48,6 +48,9 @@ function createWindow(url) {
       height: 32,
     },
     webPreferences,
+    // App icon: packaged `build/icon.png` ships inside the asar (listed in
+    // package.json "files"), so the same path works dev and packaged.
+    icon: path.join(__dirname, '..', 'build', 'icon.png'),
   });
   win.loadURL(url);
   return win;
