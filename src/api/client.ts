@@ -279,6 +279,30 @@ export async function fetchStates(types: string[]): Promise<Record<string, State
   return mergeStates(payloads)
 }
 
+export interface FieldPatch {
+  /** JSON Pointer to the field, e.g. '/fields/System.Title'. */
+  path: string
+  value: unknown
+}
+
+/**
+ * PATCHes one or more work-item fields with an optimistic-concurrency
+ * `test /rev` guard. Note: demo-mode handling for *field* edits is deferred to
+ * the UI slice — this has no demo branch yet because nothing calls it yet.
+ */
+export async function patchFields(id: number, rev: number, patches: FieldPatch[]): Promise<WorkItem> {
+  const ops: any[] = [
+    { op: 'test', path: '/rev', value: rev },
+    ...patches.map((p) => ({ op: 'add', path: p.path, value: p.value })),
+  ]
+  const d = await j(`${CONFIG.baseUrl}/${CONFIG.project}/_apis/wit/workitems/${id}?${V}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json-patch+json' },
+    body: JSON.stringify(ops),
+  })
+  return toItem(d)
+}
+
 export async function patchState(
   id: number,
   state: string,
@@ -288,15 +312,7 @@ export async function patchState(
   // Demo mode: mutate the in-memory item and resolve locally — nothing leaves
   // the browser, and the optimistic move sticks across the follow-up refresh.
   if (isDemoActive()) return demoApplyMove(id, state, rev)
-  const ops: any[] = [
-    { op: 'test', path: '/rev', value: rev },
-    { op: 'add', path: '/fields/System.State', value: state },
-  ]
-  if (boardColumn) ops.push({ op: 'add', path: '/fields/System.BoardColumn', value: boardColumn })
-  const d = await j(`${CONFIG.baseUrl}/${CONFIG.project}/_apis/wit/workitems/${id}?${V}`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json-patch+json' },
-    body: JSON.stringify(ops),
-  })
-  return toItem(d)
+  const patches: FieldPatch[] = [{ path: '/fields/System.State', value: state }]
+  if (boardColumn) patches.push({ path: '/fields/System.BoardColumn', value: boardColumn })
+  return patchFields(id, rev, patches)
 }

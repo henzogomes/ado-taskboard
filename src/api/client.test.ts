@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { fetchWorkItems, patchState, fetchProjectIterations, getWorkItemDetail, getWorkItemComments, fetchFields, resolveTeam, toBacklogLevels, mergeStates } from './client'
+import { fetchWorkItems, patchState, patchFields, fetchProjectIterations, getWorkItemDetail, getWorkItemComments, fetchFields, resolveTeam, toBacklogLevels, mergeStates } from './client'
 import * as store from '../connections/store'
 import * as demoConnection from '../demo/connection'
 import { AuthError } from './client'
@@ -106,6 +106,62 @@ describe('api client', () => {
         { op: 'add', path: '/fields/System.BoardColumn', value: 'In Development' },
       ]),
     )
+  })
+
+  it('patchFields PATCHes a single field with a test /rev guard', async () => {
+    const spy = vi.fn(async () =>
+      asResp({
+        id: 1,
+        rev: 6,
+        fields: {
+          'System.WorkItemType': 'Task',
+          'System.Title': 'New title',
+          'System.State': 'New',
+          'System.IterationPath': 'P',
+        },
+      }),
+    )
+    vi.stubGlobal('fetch', spy)
+    const item = await patchFields(1, 5, [{ path: '/fields/System.Title', value: 'New title' }])
+    const [url, opts] = spy.mock.calls[0] as unknown as [
+      string,
+      { method: string; headers: HeadersInit; body: string },
+    ]
+    expect(String(url)).toContain('/_apis/wit/workitems/1')
+    expect(opts.method).toBe('PATCH')
+    expect(new Headers(opts.headers).get('Content-Type')).toBe('application/json-patch+json')
+    expect(JSON.parse(opts.body)).toEqual([
+      { op: 'test', path: '/rev', value: 5 },
+      { op: 'add', path: '/fields/System.Title', value: 'New title' },
+    ])
+    expect(item.title).toBe('New title')
+  })
+
+  it('patchFields supports multiple patches in one call after the test /rev', async () => {
+    const spy = vi.fn(async () =>
+      asResp({
+        id: 1,
+        rev: 6,
+        fields: {
+          'System.WorkItemType': 'Task',
+          'System.Title': 'New title',
+          'System.State': 'New',
+          'System.Tags': 'a; b',
+          'System.IterationPath': 'P',
+        },
+      }),
+    )
+    vi.stubGlobal('fetch', spy)
+    await patchFields(1, 5, [
+      { path: '/fields/System.Title', value: 'New title' },
+      { path: '/fields/System.Tags', value: 'a; b' },
+    ])
+    const [, opts] = spy.mock.calls[0] as unknown as [string, { body: string }]
+    expect(JSON.parse(opts.body)).toEqual([
+      { op: 'test', path: '/rev', value: 5 },
+      { op: 'add', path: '/fields/System.Title', value: 'New title' },
+      { op: 'add', path: '/fields/System.Tags', value: 'a; b' },
+    ])
   })
 
   it('fetchProjectIterations flattens classification nodes, normalizes paths, and excludes the root', async () => {
