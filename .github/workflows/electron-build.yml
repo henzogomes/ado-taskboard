@@ -49,7 +49,10 @@ jobs:
         run: npm run build
 
       - name: Build Linux packages (AppImage + deb + pacman)
-        run: npx electron-builder --linux
+        # `--publish never`: with CI detected, electron-builder otherwise
+        # attempts an implicit GitHub release that needs a GH_TOKEN (and we
+        # don't publish releases from this build).
+        run: npx electron-builder --linux --publish never
 
       # Smoke the PACKAGED app (not `electron .`), so a broken dependency
       # collection / packaging regression fails the build instead of passing.
