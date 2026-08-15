@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { fetchWorkItems, patchState, patchFields, fetchProjectIterations, getWorkItemDetail, getWorkItemComments, fetchFields, resolveTeam, toBacklogLevels, mergeStates } from './client'
+import { fetchWorkItems, patchState, patchFields, fetchProjectIterations, getWorkItemDetail, getWorkItemComments, postWorkItemComment, fetchFields, resolveTeam, toBacklogLevels, mergeStates } from './client'
 import * as store from '../connections/store'
 import * as demoConnection from '../demo/connection'
 import { AuthError } from './client'
@@ -371,6 +371,39 @@ describe('api client', () => {
     expect(page.totalCount).toBe(5)
     expect(page.comments.length).toBe(3) // demo page size
     expect(page.continuationToken).toBe('3')
+  })
+
+  it('postWorkItemComment POSTs JSON text to the preview comments endpoint and maps the created comment', async () => {
+    const spy = vi.fn(async () =>
+      asResp({
+        id: 7,
+        text: '<div>new comment</div>',
+        createdBy: { displayName: 'Jane Doe', uniqueName: 'jane@x' },
+        createdDate: '2025-07-04T09:00:00Z',
+      }),
+    )
+    vi.stubGlobal('fetch', spy)
+
+    const comment = await postWorkItemComment(819099, '<div>new comment</div>')
+
+    const [url, opts] = spy.mock.calls[0] as unknown as [
+      string,
+      { method: string; headers: HeadersInit; body: string },
+    ]
+    expect(String(url)).toContain('/api/ado/')
+    expect(String(url)).toContain('/_apis/wit/workItems/819099/comments')
+    expect(String(url)).toContain('api-version=7.1-preview.4')
+    expect(opts.method).toBe('POST')
+    expect(new Headers(opts.headers).get('Content-Type')).toBe('application/json')
+    expect(JSON.parse(opts.body)).toEqual({ text: '<div>new comment</div>' })
+
+    expect(comment).toEqual({
+      id: 7,
+      text: '<div>new comment</div>',
+      createdBy: { displayName: 'Jane Doe', uniqueName: 'jane@x' },
+      createdDate: '2025-07-04T09:00:00Z',
+      modifiedDate: undefined,
+    })
   })
 })
 

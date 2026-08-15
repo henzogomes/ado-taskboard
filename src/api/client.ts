@@ -98,6 +98,21 @@ export async function getWorkItemComments(id: number, continuationToken?: string
 }
 
 /**
+ * POSTs a new discussion comment and returns the created comment (mapped
+ * through the same `toComment` shape as a list entry). No demo branch — demo
+ * posting is gated in the UI (`TicketModal` hides the composer unless
+ * `!isDemoActive()`), matching how field edits are gated.
+ */
+export async function postWorkItemComment(id: number, text: string): Promise<WorkItemComment> {
+  const d = await j(`${CONFIG.baseUrl}/${CONFIG.project}/_apis/wit/workItems/${id}/comments?api-version=7.1-preview.4`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text }),
+  })
+  return toComment(d)
+}
+
+/**
  * The project's field catalog: reference name → display name + data type
  * (`html`, `plainText`, `string`, `dateTime`, …). Discovered once and cached
  * (TanStack, long stale) — the modal intersects an item's populated fields
