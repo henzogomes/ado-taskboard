@@ -56,63 +56,109 @@ function createWindow(url) {
   return win;
 }
 
-// Boot the relay on an ephemeral 127.0.0.1 port. dist/ ships beside
-// electron/ (and server/) in the packaged app, so resolve it relative to this
-// module — works both unpackaged and inside the asar.
+// Fixed relay port. The renderer's origin (scheme+host+port) is what
+// localStorage is partitioned by, so an ephemeral port meant a fresh origin —
+// and empty storage — on every launch (connection store/PAT, theme, and query
+// cache all reset). A stable port keeps them across launches. If the port is
+// taken (stray process, another instance racing the lock), fall back to an
+// ephemeral port: the app still works, it just won't persist that session.
+const RELAY_HOST = '127.0.0.1';
+const RELAY_PORT = 5320;
+
+function listen(server, port) {
+  return new Promise((resolve, reject) => {
+    const listener = server.listen(port, RELAY_HOST);
+    listener.once('listening', () => resolve(listener));
+    listener.once('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        listener.close();
+        reject(err);
+      } else {
+        reject(err);
+      }
+    });
+  });
+}
+
+// Boot the relay on the fixed localhost port (see RELAY_PORT above), falling
+// back to an ephemeral port if it's unavailable. dist/ ships beside electron/
+// (and server/) in the packaged app, so resolve it relative to this module —
+// works both unpackaged and inside the asar.
 async function bootstrap() {
   const distDir = path.join(__dirname, '..', 'dist');
   const server = createServer({ distDir });
 
-  const listener = server.listen(0, '127.0.0.1');
-  await new Promise((resolve, reject) => {
-    listener.once('listening', resolve);
-    listener.once('error', reject);
-  });
+  let listener;
+  try {
+    listener = await listen(server, RELAY_PORT);
+  } catch (err) {
+    console.warn(
+      `[electron] relay port ${RELAY_PORT} unavailable (${err.code}); ` +
+        'falling back to an ephemeral port — this session will not persist ' +
+        'credentials/theme/cache',
+    );
+    listener = await listen(server, 0);
+  }
 
   const { port } = listener.address();
   httpServer = listener;
-  return `http://127.0.0.1:${port}`;
+  return `http://${RELAY_HOST}:${port}`;
 }
 
-app.whenReady().then(async () => {
-  // No menu bar (File/Edit/View/Window): the taskboard is a single-window app
-  // with no native-menu affordances — the in-app UI covers everything. Kept
-  // removed across platforms; a minimal macOS app menu is deferred with the
-  // macOS milestone.
-  Menu.setApplicationMenu(null);
-
-  // Keep the native title-bar buttons in sync with the active app theme. The
-  // renderer sends `#rrggbb` values only (validated), resolved from its theme
-  // tokens; there is no other renderer→main channel.
-  ipcMain.handle('window:set-title-bar-overlay', (event, opts) => {
-    const win = BrowserWindow.fromWebContents(event.sender);
-    if (!win) return;
-    if (
-      typeof opts !== 'object' ||
-      opts === null ||
-      typeof opts.color !== 'string' ||
-      !HEX_COLOR_RE.test(opts.color) ||
-      typeof opts.symbolColor !== 'string' ||
-      !HEX_COLOR_RE.test(opts.symbolColor)
-    ) {
-      return;
+if (!app.requestSingleInstanceLock()) {
+  app.quit();
+} else {
+  // Second launch: focus the existing window instead of starting a duplicate
+  // (which would otherwise race for the fixed relay port and land on an
+  // ephemeral one). Standard single-window desktop behaviour.
+  app.on('second-instance', () => {
+    const win = BrowserWindow.getAllWindows()[0];
+    if (win) {
+      if (win.isMinimized()) win.restore();
+      win.focus();
     }
-    win.setTitleBarOverlay({ color: opts.color, symbolColor: opts.symbolColor });
   });
 
-  const url = await bootstrap();
-  createWindow(url);
+  app.whenReady().then(async () => {
+    // No menu bar (File/Edit/View/Window): the taskboard is a single-window app
+    // with no native-menu affordances — the in-app UI covers everything. Kept
+    // removed across platforms; a minimal macOS app menu is deferred with the
+    // macOS milestone.
+    Menu.setApplicationMenu(null);
 
-  // macOS convention: re-create a window when the dock icon is clicked.
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow(url);
+    // Keep the native title-bar buttons in sync with the active app theme. The
+    // renderer sends `#rrggbb` values only (validated), resolved from its theme
+    // tokens; there is no other renderer→main channel.
+    ipcMain.handle('window:set-title-bar-overlay', (event, opts) => {
+      const win = BrowserWindow.fromWebContents(event.sender);
+      if (!win) return;
+      if (
+        typeof opts !== 'object' ||
+        opts === null ||
+        typeof opts.color !== 'string' ||
+        !HEX_COLOR_RE.test(opts.color) ||
+        typeof opts.symbolColor !== 'string' ||
+        !HEX_COLOR_RE.test(opts.symbolColor)
+      ) {
+        return;
+      }
+      win.setTitleBarOverlay({ color: opts.color, symbolColor: opts.symbolColor });
+    });
+
+    const url = await bootstrap();
+    createWindow(url);
+
+    // macOS convention: re-create a window when the dock icon is clicked.
+    app.on('activate', () => {
+      if (BrowserWindow.getAllWindows().length === 0) createWindow(url);
+    });
   });
-});
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
-});
+  app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') app.quit();
+  });
 
-app.on('will-quit', () => {
-  if (httpServer) httpServer.close();
-});
+  app.on('will-quit', () => {
+    if (httpServer) httpServer.close();
+  });
+}
