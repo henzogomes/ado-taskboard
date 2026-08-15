@@ -1,7 +1,8 @@
 // scripts/electron-smoke.mjs
 //
-// Headed smoke test for the Electron build: launches the packaged-style app
-// (`electron .`) with a remote-debugging port, connects over the DevTools
+// Headed smoke test for the Electron build: launches the app (the unpackaged
+// `electron .` build by default, or any binary via $ELECTRON_SMOKE_BIN, e.g. a
+// packaged build) with a remote-debugging port, connects over the DevTools
 // Protocol, and asserts the renderer loads the in-app login screen through the
 // local relay. Exits non-zero on failure.
 //
@@ -16,7 +17,8 @@ if (typeof WebSocket === 'undefined') {
 }
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const electronBin = path.join(root, 'node_modules', 'electron', 'dist', 'electron');
+const electronBin =
+  process.env.ELECTRON_SMOKE_BIN || path.join(root, 'node_modules', 'electron', 'dist', 'electron');
 const DEBUG_PORT = 9333;
 
 function sleep(ms) {
@@ -74,7 +76,11 @@ function cdpEvaluate(ws, expression) {
 }
 
 async function main() {
-  const args = [root, `--remote-debugging-port=${DEBUG_PORT}`];
+  // The unpackaged electron binary takes the app dir as its first arg; a
+  // packaged binary (ELECTRON_SMOKE_BIN) takes none.
+  const args = process.env.ELECTRON_SMOKE_BIN
+    ? [`--remote-debugging-port=${DEBUG_PORT}`]
+    : [root, `--remote-debugging-port=${DEBUG_PORT}`];
   // Chromium's setuid sandbox fails when running as root (e.g. some CI/container
   // setups); relax only then. The window itself keeps sandbox: true.
   if (typeof process.getuid === 'function' && process.getuid() === 0) args.push('--no-sandbox');

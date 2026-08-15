@@ -115,7 +115,10 @@ renderer, so v1 ships with **no preload** (v2 adds one for the IPC bridge).
 ## Scripts
 
 - `dev:electron` — `npm run build && electron .` (launch the desktop app).
-- `build:electron` — `npm run build && electron-builder --linux` (AppImage + deb).
+- `build:electron` — `npm run build && electron-builder --linux AppImage pacman`
+  (the two formats that run on Arch — this project's primary dev host).
+- `build:electron:deb` — `npm run build && electron-builder --linux deb`
+  (Debian/Ubuntu; built from CI, which has the `libcrypt` the bundled fpm needs).
 - `pack:electron` — `npm run build && electron-builder --dir` (unpacked, fast).
 - `test:electron` — headed smoke (`scripts/electron-smoke.mjs`); run under
   `xvfb-run` in CI.
@@ -125,11 +128,20 @@ renderer, so v1 ships with **no preload** (v2 adds one for the IPC bridge).
 1. `npm run build` → `dist/`, then `npm run dev:electron` on Linux. ✅ verified
    on this machine.
 2. `npm run test:electron` asserts the login screen renders through the relay.
-   ✅ verified.
+   ✅ verified — and in CI against the **packaged** build
+   (`ELECTRON_SMOKE_BIN=release/linux-unpacked/ado-taskboard`) so packaging
+   regressions (e.g. dropped transitive deps) fail the build.
 3. Plain web app unchanged: `npm run serve` + the `createServer` unit tests
    (`server/createServer.test.mjs`) cover the relay. ✅ verified.
-4. `electron-builder --linux` → AppImage (✅ built and launched locally) + deb
-   (✅ built in CI; local Arch box lacks `libcrypt.so.1` for the bundled fpm).
+4. `electron-builder --linux` → AppImage (✅ built and launched locally), pacman
+   `ado-taskboard-*.pacman` (✅ built + packaged-app smoke passed locally —
+   Arch-native), deb (✅ built in CI; a `.deb` is Debian-family only and needs
+   `libcrypt.so.1`, which Arch lacks).
+
+> Local build gotcha: electron-builder's dependency collector runs `npm list`
+> against `node_modules`; a symlinked worktree `node_modules` makes it report
+> broken/versionless entries and silently drop transitive deps. Build packages
+> from a real install (`npm ci`) — CI always does.
 
 ## Open decisions / blockers
 
@@ -139,6 +151,8 @@ renderer, so v1 ships with **no preload** (v2 adds one for the IPC bridge).
 3. Confirm the **HTTP-relay** approach (vs custom protocol) — recommended here.
 4. **macOS/Windows** are deferred to their own milestones (macOS is gated on
    Apple signing credentials).
+5. **Icon** — electron-builder uses the default Electron icon; a real app icon
+   is a follow-up (needs an SVG/PNG asset).
 
 Linux has no signing blocker, so this is no longer `needs-refinement` for the
 Linux target — implementation can proceed and be verified on this machine.
