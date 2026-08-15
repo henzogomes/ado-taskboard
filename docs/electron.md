@@ -4,9 +4,14 @@ Status: **spec only** (no implementation yet). Tracks issue #3.
 
 ## Goal
 
-Ship a standalone desktop build of the taskboard: macOS `.dmg` first, then
-Linux (`AppImage`/`.deb`) and Windows (`nsis`). The app must behave identically
-to the web app — same board, same drag-and-drop, same connection flow.
+Ship a standalone desktop build of the taskboard. **Linux first** (`AppImage` +
+`.deb`), then macOS (`.dmg`) and Windows (`nsis`) as follow-ups. The app must
+behave identically to the web app — same board, same drag-and-drop, same
+connection flow.
+
+Linux-first is the pragmatic call: it needs no code-signing/notarization, so it
+can be built and verified on this machine (Linux) end-to-end — no Apple
+credential blocker.
 
 ## The one hard decision: who holds the PAT
 
@@ -76,14 +81,12 @@ package.json        # "main": "electron/main.mjs", "build": { electron-builder c
 
 - **Bundler:** `electron-builder`.
 - `"files"`: `dist/**`, `server/**`, `electron/**`, `package.json`.
-- **Targets:** `mac` → `dmg` + `zip` (signed + notarized); later `linux`
-  (`AppImage`, `deb`) and `win` (`nsis`).
-- **Signing/notarization (macOS):** requires an Apple Developer ID Application
-  cert + `notarytool` credentials (`APPLE_ID`, team id, app-specific password).
-  **Blocked on credentials** — this is a hard external dependency.
-- **CI:** a macOS GitHub Actions runner builds the `.dmg`; signing secrets via
-  repo/org secrets; Windows/Linux artifacts from their own runners (or
-  `electron-builder`'s cross-build where supported).
+- **Targets (Linux first):** `AppImage` + `deb`. No code-signing required to
+  distribute (optional GPG signing only if we later publish to an apt repo).
+- **Later:** macOS `dmg` + `zip` (signed + notarized — needs an Apple Developer
+  ID cert + `notarytool` credentials, **blocked**) and Windows `nsis`.
+- **CI:** a Linux GitHub Actions runner builds `AppImage`/`deb` (with `xvfb`
+  for any headed smoke); macOS/Windows artifacts from their own runners later.
 
 ## Security model (v1)
 
@@ -102,25 +105,26 @@ renderer, so v1 ships with **no preload** (v2 adds one for the IPC bridge).
 ## Scripts (proposed)
 
 - `dev:electron` — build once, then launch Electron against the dev server.
-- `build:electron` — `npm run build && electron-builder --mac` (per-OS flag).
+- `build:electron` — `npm run build && electron-builder --linux` (per-OS flag
+  for later targets).
 
 ## Verification plan
 
-1. `npm run build` → `dist/`, then `npx electron .` on the target OS.
+1. `npm run build` → `dist/`, then `npx electron .` on Linux.
 2. Manual smoke with a throwaway PAT: login screen → connect → board loads →
    drag a card → Move menu → edit title/tags → post a comment → demo mode.
 3. Assert the app still works as a plain web app (`npm run serve`) — no
    regression from the `createServer` extraction.
-4. Packaged `.dmg` opens and runs on a clean macOS machine (Gatekeeper pass
-   depends on notarization).
+4. `electron-builder --linux` produces an `AppImage` + `.deb`; launch the
+   `AppImage` on a clean Linux box to confirm it runs standalone.
 
-## Open decisions / blockers (why it's still `needs-refinement`)
+## Open decisions / blockers
 
 1. **A vs B** (renderer-PAT vs `safeStorage`/main-PAT) — recommend A then B.
-2. **Apple signing + notarization credentials** — not available; blocks a
-   distributable `.dmg`.
-3. **Auto-update** (`electron-updater`) — later; needs a signed release feed.
-4. Confirm the **HTTP-relay** approach (vs custom protocol) — recommended here.
+2. **Auto-update** (`electron-updater`) — later; needs a signed release feed.
+3. Confirm the **HTTP-relay** approach (vs custom protocol) — recommended here.
+4. **macOS/Windows** are deferred to their own milestones (macOS is gated on
+   Apple signing credentials).
 
-No code has been written; this spec is the "refinement" needed before
-implementation can be verified end-to-end on a real macOS machine.
+Linux has no signing blocker, so this is no longer `needs-refinement` for the
+Linux target — implementation can proceed and be verified on this machine.
