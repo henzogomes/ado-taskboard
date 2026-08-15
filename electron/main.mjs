@@ -8,7 +8,7 @@
 // app — its own login/connection flow and demo mode included.
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Menu } from 'electron';
 import { createServer } from '../server/createServer.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -52,6 +52,12 @@ async function bootstrap() {
 }
 
 app.whenReady().then(async () => {
+  // No menu bar (File/Edit/View/Window): the taskboard is a single-window app
+  // with no native-menu affordances — the in-app UI covers everything. Kept
+  // removed across platforms; a minimal macOS app menu is deferred with the
+  // macOS milestone.
+  Menu.setApplicationMenu(null);
+
   const url = await bootstrap();
   createWindow(url);
 
