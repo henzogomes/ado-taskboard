@@ -1,9 +1,11 @@
 name: Electron Linux build
 
-# Builds the packaged Electron desktop app for Linux (AppImage + deb) and runs
-# the headed smoke (test:electron) under xvfb. This is the only place the deb
-# target is built — some local Linux distros (e.g. Arch) lack the libcrypt
-# library electron-builder's bundled fpm needs, but ubuntu-latest provides it.
+# Builds the packaged Electron desktop app for Linux (AppImage + deb + pacman)
+# and runs the headed smoke (test:electron) under xvfb. This is the only place
+# the deb target is built — some local Linux distros (e.g. Arch) lack the
+# libcrypt library electron-builder's bundled fpm needs, and a .deb wouldn't
+# install there anyway; ubuntu-latest provides libcrypt and the pacman package
+# is built natively by electron-builder regardless of the host.
 
 on:
   workflow_dispatch:
@@ -40,11 +42,13 @@ jobs:
       - name: Build web app
         run: npm run build
 
-      - name: Build Linux packages (AppImage + deb)
+      - name: Build Linux packages (AppImage + deb + pacman)
         run: npx electron-builder --linux
 
-      - name: Run headed Electron smoke
-        run: xvfb-run -a npm run test:electron
+      # Smoke the PACKAGED app (not `electron .`), so a broken dependency
+      # collection / packaging regression fails the build instead of passing.
+      - name: Run headed Electron smoke on the packaged build
+        run: xvfb-run -a env ELECTRON_SMOKE_BIN=release/linux-unpacked/ado-taskboard npm run test:electron
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -53,4 +57,5 @@ jobs:
           path: |
             release/*.AppImage
             release/*.deb
+            release/*.pacman
           if-no-files-found: error

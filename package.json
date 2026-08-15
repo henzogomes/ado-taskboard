@@ -6,6 +6,7 @@
   "description": "Local, live Azure DevOps board taskboard (drag-and-drop + dropdown moves back to ADO).",
   "homepage": "https://github.com/henzogomes/ado-taskboard",
   "main": "electron/main.mjs",
+  "desktopName": "ado-taskboard.desktop",
   "author": {
     "name": "ado-taskboard contributors",
     "email": "dev@example.com"
@@ -16,7 +17,8 @@
     "start": "node server/index.mjs",
     "serve": "npm run build && node server/index.mjs",
     "dev:electron": "npm run build && electron .",
-    "build:electron": "npm run build && electron-builder --linux",
+    "build:electron": "npm run build && electron-builder --linux AppImage pacman",
+    "build:electron:deb": "npm run build && electron-builder --linux deb",
     "pack:electron": "npm run build && electron-builder --dir",
     "lint": "oxlint",
     "typecheck": "tsc -b --noEmit",
@@ -43,9 +45,11 @@
     "linux": {
       "target": [
         "AppImage",
-        "deb"
+        "deb",
+        "pacman"
       ],
-      "category": "Development"
+      "category": "Development",
+      "syncDesktopName": true
     }
   },
   "dependencies": {
@@ -88,6 +92,5 @@
       "oxlint",
       "bash -c 'npm run typecheck'"
     ]
-  },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  }
 }
