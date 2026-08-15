@@ -1,10 +1,12 @@
 # Electron desktop app — design spec
 
 Status: **v1 (Linux) implemented and verified** — Option A (renderer holds the
-PAT). `electron/main.mjs` boots the existing relay on an ephemeral port; the
-headed smoke (`npm run test:electron`) confirms the login screen renders
-through it. AppImage + deb build via `electron-builder` (deb verified in CI).
-macOS/Windows remain deferred. Tracks issue #3.
+PAT). `electron/main.mjs` boots the existing relay on a **fixed localhost port**
+(5320, ephemeral fallback if taken) so the renderer origin — and with it the
+persisted connection store/PAT, theme, and query cache — stays stable across
+launches; the headed smoke (`npm run test:electron`) confirms the login screen
+renders through it. AppImage + deb build via `electron-builder` (deb verified
+in CI). macOS/Windows remain deferred. Tracks issue #3.
 
 ## Goal
 
@@ -62,9 +64,12 @@ The prod server is a self-starting script today (`server/index.mjs` ends in
 1. Extract `createServer({ distDir })` from `server/index.mjs` (returns the
    Express app, no `listen`); keep `index.mjs` as a thin CLI entry that calls it.
    This is a no-behavior-change refactor and also makes the server unit-testable.
-2. Electron main imports `createServer`, listens on an **ephemeral port**
-   (`listen(0)` → `server.address().port`), and `loadURL`s that address. No child
-   process, clean shutdown on `app.quit()`.
+2. Electron main imports `createServer`, listens on a **fixed port** (5320;
+   ephemeral fallback if taken). localStorage is partitioned by the renderer's
+   origin (scheme+host+port), so a stable port is what makes the connection
+   store/PAT, theme, and query cache persist between launches. A
+   single-instance lock stops a second launch from racing the port. `loadURL`s
+   that address. No child process, clean shutdown on `app.quit()`.
 
 Keeping the local HTTP relay (rather than a custom `app://` scheme) avoids any
 custom-protocol/CORS work — the browser's `fetch('/api/ado/…')` keeps working.
@@ -73,7 +78,7 @@ custom-protocol/CORS work — the browser's `fetch('/api/ado/…')` keeps workin
 
 ```
 electron/
-  main.mjs          # app lifecycle: create server on ephemeral port, BrowserWindow, load URL
+  main.mjs          # app lifecycle: create server on fixed relay port, BrowserWindow, load URL
   preload.cjs       # minimal contextBridge (`window.taskboard`) for the title-bar overlay
 src/titlebar/
   TitleBar.tsx      # custom drag strip for the Window Controls Overlay (web app: no-op)

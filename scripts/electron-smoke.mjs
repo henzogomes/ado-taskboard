@@ -103,12 +103,16 @@ async function main() {
       await sleep(500);
     }
 
-    // Desktop-mode assertions: the preload bridge is present and the custom
-    // title-bar strip actually rendered (it only exists in the Electron build).
+    // Desktop-mode assertions: the preload bridge is present, the custom
+    // title-bar strip actually rendered (only exists in the Electron build),
+    // and the relay is on the fixed port — that stable origin is what lets
+    // localStorage (connection store/PAT, theme, cache) survive relaunches.
+    // Keep RELAY_PORT in sync with electron/main.mjs.
     const desktop = await cdpEvaluate(
       ws,
       'Boolean(window.taskboard && window.taskboard.isDesktop && document.querySelector(\'[data-testid="titlebar"]\'))',
     );
+    const relayPort = await cdpEvaluate(ws, 'location.port');
 
     ws.close();
 
@@ -121,8 +125,11 @@ async function main() {
     if (!desktop) {
       throw new Error('desktop bridge/titlebar not present — app not running in Electron mode');
     }
+    if (relayPort !== '5320') {
+      throw new Error(`relay not on the stable origin (port ${relayPort}) — persistence broken`);
+    }
     console.log(
-      'PASS: Electron renderer loaded the app; login screen + custom title bar visible through the relay.',
+      'PASS: Electron renderer loaded the app; login screen + custom title bar visible, relay on stable port.',
     );
   } finally {
     child.kill('SIGTERM');
