@@ -2,19 +2,25 @@
 //
 // Electron main process — v1 of the desktop build ("renderer holds the PAT").
 // Serves the built web app through the exact same Express relay as the prod
-// server (createServer from server/createServer.mjs) on an ephemeral localhost
-// port, then loads it in a locked-down BrowserWindow. No custom protocol, no
-// Node APIs in the renderer: the app runs identically to the web app — its own
-// login/connection flow and demo mode included.
+// server (createServer from server/createServer.mjs) on a fixed localhost port
+// (stable origin ⇒ localStorage persists across launches), then loads it in a
+// locked-down BrowserWindow. No custom protocol, no Node APIs in the renderer:
+// the app runs identically to the web app — its own login/connection flow and
+// demo mode included.
 //
 // Custom title bar via the Window Controls Overlay: the OS title-bar content
 // is hidden but the NATIVE min/max/close buttons stay, and the renderer draws
 // its own drag strip (TitleBar) in the freed space. The only IPC is the
 // renderer telling the overlay's native controls which theme colors to use.
+//
+// Browser-style zoom (Ctrl/Cmd+=, Ctrl/Cmd+-, Ctrl+0, Ctrl+wheel) is handled
+// in the main process and the level persists across launches — see zoom.mjs.
+import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { app, BrowserWindow, ipcMain, Menu } from 'electron';
 import { createServer } from '../server/createServer.mjs';
+import { clampZoomLevel, zoomDeltaForInput, zoomDeltaForWheel } from './zoom.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -33,7 +39,42 @@ let httpServer = null;
 // `#rrggbb` only — the only input the renderer may send for overlay theming.
 const HEX_COLOR_RE = /^#[0-9a-f]{6}$/i;
 
-function createWindow(url) {
+// Zoom level persistence: a tiny JSON next to the app's profile data (not the
+// web app's localStorage, which is renderer-scoped and reset on wipe). Written
+// debounced on change, read once at startup and re-applied on each load.
+function zoomFile() {
+  return path.join(app.getPath('userData'), 'zoom.json');
+}
+
+let zoomSaveTimer = null;
+function persistZoomLevel(level) {
+  clearTimeout(zoomSaveTimer);
+  zoomSaveTimer = setTimeout(() => {
+    try {
+      fs.writeFileSync(zoomFile(), JSON.stringify({ level }));
+    } catch (err) {
+      console.warn('[electron] failed to persist zoom level:', err.message);
+    }
+  }, 400);
+}
+
+function loadZoomLevel() {
+  try {
+    const { level } = JSON.parse(fs.readFileSync(zoomFile(), 'utf8'));
+    if (typeof level === 'number' && Number.isFinite(level)) return clampZoomLevel(level);
+  } catch {
+    // Missing/corrupt file: fall through to the default zoom.
+  }
+  return 0;
+}
+
+function applyZoom(win, level) {
+  const clamped = clampZoomLevel(level);
+  win.webContents.setZoomLevel(clamped);
+  persistZoomLevel(clamped);
+}
+
+function createWindow(url, initialZoomLevel) {
   const win = new BrowserWindow({
     width: 1440,
     height: 900,
@@ -52,6 +93,31 @@ function createWindow(url) {
     // package.json "files"), so the same path works dev and packaged.
     icon: path.join(__dirname, '..', 'build', 'icon.png'),
   });
+
+  // Browser-style zoom. Keyboard: Ctrl/Cmd+= / Ctrl/Cmd+- / Ctrl+0. Wheel:
+  // Ctrl+scroll zooms instead of scrolling the page. Both map through the pure
+  // helpers in zoom.mjs, which return null when the input is not a zoom
+  // gesture — only then is the event left alone. Only keyDown counts: reacting
+  // to keyUp too would double-step every press.
+  win.webContents.on('before-input-event', (event, input) => {
+    let delta = null;
+    if (input.type === 'mouseWheel') {
+      delta = zoomDeltaForWheel(input);
+    } else if (input.type === 'keyDown') {
+      delta = zoomDeltaForInput(input);
+    }
+    if (delta === null) return;
+    event.preventDefault();
+    const level = delta === 0 ? 0 : win.webContents.getZoomLevel() + delta;
+    applyZoom(win, level);
+  });
+
+  // Re-apply the persisted level once the page is ready (covers the initial
+  // load and any in-app navigation that resets zoom).
+  win.webContents.on('did-finish-load', () => {
+    win.webContents.setZoomLevel(initialZoomLevel);
+  });
+
   win.loadURL(url);
   return win;
 }
@@ -146,11 +212,12 @@ if (!app.requestSingleInstanceLock()) {
     });
 
     const url = await bootstrap();
-    createWindow(url);
+    const initialZoomLevel = loadZoomLevel();
+    createWindow(url, initialZoomLevel);
 
     // macOS convention: re-create a window when the dock icon is clicked.
     app.on('activate', () => {
-      if (BrowserWindow.getAllWindows().length === 0) createWindow(url);
+      if (BrowserWindow.getAllWindows().length === 0) createWindow(url, initialZoomLevel);
     });
   });
 

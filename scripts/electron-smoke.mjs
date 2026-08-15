@@ -3,8 +3,9 @@
 // Headed smoke test for the Electron build: launches the app (the unpackaged
 // `electron .` build by default, or any binary via $ELECTRON_SMOKE_BIN, e.g. a
 // packaged build) with a remote-debugging port, connects over the DevTools
-// Protocol, and asserts the renderer loads the in-app login screen through the
-// local relay. Exits non-zero on failure.
+// Protocol, and asserts the renderer actually loads the app through the local
+// relay — either the login screen (fresh profile) or the board (a profile that
+// already has a persisted connection). Exits non-zero on failure.
 //
 // Needs a display — run under `xvfb-run` in CI. Uses only Node built-ins
 // (global WebSocket), no Playwright.
@@ -94,12 +95,15 @@ async function main() {
       ws.addEventListener('error', reject, { once: true });
     });
 
-    // The login screen renders after React mounts; poll briefly for it.
+    // The app renders after React mounts; poll briefly. Two valid end states:
+    // a fresh profile shows the login screen ("View demo"), while a profile
+    // with a persisted connection boots straight into the board ("Current
+    // sprint" header). Either proves the relay + app loaded.
     const deadline = Date.now() + 15000;
     let bodyText = '';
     while (Date.now() < deadline) {
       bodyText = await cdpEvaluate(ws, 'document.body && document.body.innerText');
-      if (bodyText && bodyText.includes('View demo')) break;
+      if (bodyText && (bodyText.includes('View demo') || bodyText.includes('Current sprint'))) break;
       await sleep(500);
     }
 
@@ -116,9 +120,9 @@ async function main() {
 
     ws.close();
 
-    if (!bodyText || !bodyText.includes('View demo')) {
+    if (!bodyText || !(bodyText.includes('View demo') || bodyText.includes('Current sprint'))) {
       throw new Error(
-        'login screen not found in renderer body: ' +
+        'app did not render (no login screen and no board) in renderer body: ' +
           (bodyText ? JSON.stringify(bodyText.slice(0, 300)) : '<empty>'),
       );
     }
@@ -129,7 +133,8 @@ async function main() {
       throw new Error(`relay not on the stable origin (port ${relayPort}) — persistence broken`);
     }
     console.log(
-      'PASS: Electron renderer loaded the app; login screen + custom title bar visible, relay on stable port.',
+      'PASS: Electron renderer loaded the app (login screen or persisted board); ' +
+        'custom title bar visible, relay on stable port.',
     );
   } finally {
     child.kill('SIGTERM');
