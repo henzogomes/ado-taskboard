@@ -12,7 +12,9 @@ name: Electron Linux build
 # workflow_dispatch) — not on every commit to main. Bring main into release
 # when you want a packaged build. (No `paths` filter here: on the first push
 # of a new branch GitHub compares against the default branch, so an identical
-# branch would be silently skipped.)
+# branch would be silently skipped.) On success it also creates/updates a
+# GitHub Release (tagged with the app version) carrying the AppImage, deb and
+# pacman as separate downloadable assets.
 
 on:
   workflow_dispatch:
@@ -22,6 +24,10 @@ on:
 jobs:
   build-linux:
     runs-on: ubuntu-latest
+    # Publishing the GitHub Release (attaching the deb/pacman/AppImage assets)
+    # needs write access to contents via the GITHUB_TOKEN.
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -42,9 +48,9 @@ jobs:
         run: npm run build
 
       - name: Build Linux packages (AppImage + deb + pacman)
-        # `--publish never`: with CI detected, electron-builder otherwise
-        # attempts an implicit GitHub release that needs a GH_TOKEN (and we
-        # don't publish releases from this build).
+        # `--publish never`: with CI detected, electron-builder would otherwise
+        # attempt an implicit GitHub release needing a GH_TOKEN. Packaging stays
+        # pure here; publishing is done explicitly by the release step below.
         run: npx electron-builder --linux --publish never
 
       # Smoke the PACKAGED app (not `electron .`), so a broken dependency
@@ -61,3 +67,25 @@ jobs:
             release/*.deb
             release/*.pacman
           if-no-files-found: error
+
+      - name: Read app version
+        run: echo "APP_VERSION=v$(node -p \"require('./package.json').version\")" >> "$GITHUB_ENV"
+
+      # Create (or update, if the tag already exists) a GitHub Release tagged
+      # with the app version, with each package as a separate downloadable
+      # asset. Bump package.json's version to get a new tag/release next build.
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.APP_VERSION }}
+          name: ado-taskboard ${{ env.APP_VERSION }}
+          body: |
+            Packaged Linux build of ado-taskboard.
+            - AppImage — portable; run anywhere (double-click needs FUSE2).
+            - deb — Debian/Ubuntu.
+            - pacman — Arch.
+          files: |
+            release/*.AppImage
+            release/*.deb
+            release/*.pacman
+          fail_on_unmatched_files: true

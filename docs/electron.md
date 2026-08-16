@@ -105,6 +105,24 @@ package.json        # "main": "electron/main.mjs", "build": { electron-builder c
   for the headed smoke against the packaged build); macOS/Windows artifacts
   from their own runners later.
 
+### Release flow
+
+- The **Electron Linux build** workflow runs only on pushes to the `release`
+  branch (or on demand via the "Run workflow" / `workflow_dispatch` trigger) —
+  commits to `main` are CI-silent. To produce a packaged build, bring main in:
+
+  ```
+  git push origin main:release
+  ```
+
+- On success the workflow **creates or updates a GitHub Release** tagged with
+  the app version (e.g. `v0.0.0` today, read from `package.json`), with the
+  AppImage, deb and pacman attached as **separate downloadable assets**. Bump
+  `version` in `package.json` to get a new tag/release on the next build.
+- The `--publish never` flag keeps `electron-builder` packaging-only; the
+  release itself is published explicitly by a dedicated step
+  (`softprops/action-gh-release`) with `permissions: contents: write`.
+
 ## Security model (v1)
 
 Keep Electron defaults locked down: `contextIsolation: true`,
@@ -157,7 +175,9 @@ plain web build the bridge is absent and `TitleBar` renders nothing.
 4. `electron-builder --linux` → AppImage (✅ built and launched locally), pacman
    `ado-taskboard-*.pacman` (✅ built + packaged-app smoke passed locally —
    Arch-native), deb (✅ built in CI; a `.deb` is Debian-family only and needs
-   `libcrypt.so.1`, which Arch lacks).
+   `libcrypt.so.1`, which Arch lacks). CI is green end-to-end; a successful
+   `release`-branch build also publishes all three as a GitHub Release with
+   separate download links (✅ verified).
 5. Custom title bar verified on this machine (`dev:electron`): drag strip
    renders, native min/max/close buttons stay, overlay colors follow the theme.
 6. Browser-style zoom verified on this machine: Ctrl/Cmd+= / Ctrl/Cmd+- /
