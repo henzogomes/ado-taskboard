@@ -69,7 +69,7 @@ jobs:
           if-no-files-found: error
 
       - name: Read app version
-        run: echo "APP_VERSION=v$(node -p \"require('./package.json').version\")" >> "$GITHUB_ENV"
+        run: echo "APP_VERSION=v$(node -p 'require("./package.json").version')" >> "$GITHUB_ENV"
 
       # Create (or update, if the tag already exists) a GitHub Release tagged
       # with the app version, with each package as a separate downloadable
