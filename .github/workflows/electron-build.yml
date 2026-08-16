@@ -7,18 +7,16 @@ name: Electron Linux build
 # install there anyway; ubuntu-latest provides libcrypt and the pacman package
 # is built natively by electron-builder regardless of the host. (fpm's pacman
 # backend shells out to `bsdtar`, which Ubuntu ships in libarchive-tools.)
+#
+# Runs only on pushes to the `release` branch (or on demand via
+# workflow_dispatch) — not on every commit to main. Bring main into release
+# when you want a packaged build; the path filter keeps README/docs-only
+# merges from rebuilding.
 
 on:
   workflow_dispatch:
-  pull_request:
-    paths:
-      - 'electron/**'
-      - 'server/**'
-      - 'scripts/electron-smoke.mjs'
-      - 'package.json'
-      - 'package-lock.json'
   push:
-    branches: [main]
+    branches: [release]
     paths:
       - 'electron/**'
       - 'server/**'
