@@ -82,9 +82,17 @@ async function main() {
   const args = process.env.ELECTRON_SMOKE_BIN
     ? [`--remote-debugging-port=${DEBUG_PORT}`]
     : [root, `--remote-debugging-port=${DEBUG_PORT}`];
-  // Chromium's setuid sandbox fails when running as root (e.g. some CI/container
-  // setups); relax only then. The window itself keeps sandbox: true.
-  if (typeof process.getuid === 'function' && process.getuid() === 0) args.push('--no-sandbox');
+  // Chromium's setuid sandbox fails in environments that can't use it — when
+  // running as root, or in CI containers where the chrome-sandbox SUID helper
+  // can't be configured (GitHub Actions, Docker without user namespaces).
+  // Relax only there; the shipped app and local runs keep the sandbox on, and
+  // the window itself still sets sandbox: true.
+  if (
+    (typeof process.getuid === 'function' && process.getuid() === 0) ||
+    process.env.CI
+  ) {
+    args.push('--no-sandbox');
+  }
 
   const child = spawn(electronBin, args, { stdio: 'inherit' });
   try {
