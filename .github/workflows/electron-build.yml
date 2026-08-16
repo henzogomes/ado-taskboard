@@ -10,19 +10,14 @@ name: Electron Linux build
 #
 # Runs only on pushes to the `release` branch (or on demand via
 # workflow_dispatch) — not on every commit to main. Bring main into release
-# when you want a packaged build; the path filter keeps README/docs-only
-# merges from rebuilding.
+# when you want a packaged build. (No `paths` filter here: on the first push
+# of a new branch GitHub compares against the default branch, so an identical
+# branch would be silently skipped.)
 
 on:
   workflow_dispatch:
   push:
     branches: [release]
-    paths:
-      - 'electron/**'
-      - 'server/**'
-      - 'scripts/electron-smoke.mjs'
-      - 'package.json'
-      - 'package-lock.json'
 
 jobs:
   build-linux:
