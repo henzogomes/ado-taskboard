@@ -134,7 +134,7 @@ package.json        # "main": "electron/main.mjs", "build": { electron-builder c
   ```
 
 - On success the workflow **creates or updates a GitHub Release** tagged with
-  the app version (e.g. `v0.0.0` today, read from `package.json`), with the
+  the app version (e.g. `v0.1.0`, read from `package.json`), with the
   AppImage, deb and pacman attached as **separate downloadable assets**. Bump
   `version` in `package.json` to get a new tag/release on the next build.
 - The `--publish never` flag keeps `electron-builder` packaging-only; the
