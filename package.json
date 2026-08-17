@@ -21,6 +21,7 @@
     "build:electron:deb": "npm run build && electron-builder --linux deb",
     "build:electron:mac": "npm run build && electron-builder --mac --publish never",
     "build:electron:mac:unsigned": "npm run build && CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac --publish never",
+    "build:electron:win": "npm run build && electron-builder --win nsis --publish never",
     "pack:electron": "npm run build && electron-builder --dir",
     "lint": "oxlint",
     "typecheck": "tsc -b --noEmit",
@@ -64,6 +65,12 @@
       "icon": "build/icon.icns",
       "hardenedRuntime": true,
       "gatekeeperAssess": false
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "build/icon.ico"
     }
   },
   "dependencies": {
