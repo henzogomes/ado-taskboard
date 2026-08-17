@@ -1,19 +1,21 @@
 # Electron desktop app — design spec
 
-Status: **v1 (Linux) implemented and verified** — Option A (renderer holds the
-PAT). `electron/main.mjs` boots the existing relay on a **fixed localhost port**
-(5320, ephemeral fallback if taken) so the renderer origin — and with it the
-persisted connection store/PAT, theme, and query cache — stays stable across
-launches; the headed smoke (`npm run test:electron`) confirms the login screen
-renders through it. AppImage + deb build via `electron-builder` (deb verified
-in CI). macOS/Windows remain deferred. Tracks issue #3.
+Status: **v1 (Linux) + v1 (macOS, unsigned) implemented and verified** — Option A
+(renderer holds the PAT). `electron/main.mjs` boots the existing relay on a
+**fixed localhost port** (5320, ephemeral fallback if taken) so the renderer
+origin — and with it the persisted connection store/PAT, theme, and query cache
+— stays stable across launches; the headed smoke (`npm run test:electron`)
+confirms the login screen renders through it. AppImage + deb build via
+`electron-builder` (deb verified in CI); macOS dmg + zip build unsigned on this
+Mac (arm64) and in CI — signing/notarization gated on Apple credentials.
+Windows remains deferred. Tracks issue #3.
 
 ## Goal
 
 Ship a standalone desktop build of the taskboard. **Linux first** (`AppImage` +
-`.deb`), then macOS (`.dmg`) and Windows (`nsis`) as follow-ups. The app must
-behave identically to the web app — same board, same drag-and-drop, same
-connection flow.
+`.deb` + pacman), then macOS (`.dmg` + `.zip` — ✅ done, unsigned) and Windows
+(`nsis`) as a follow-up. The app must behave identically to the web app — same
+board, same drag-and-drop, same connection flow.
 
 Linux-first is the pragmatic call: it needs no code-signing/notarization, so it
 can be built and verified on this machine (Linux) end-to-end — no Apple
@@ -89,6 +91,11 @@ server/
   createServer.mjs  # extracted: build the express app + proxy (no listen)
 scripts/
   electron-smoke.mjs  # headed CDP smoke: launches the app, asserts login screen + titlebar
+build/
+  icon.svg          # transparent rounded-tile source (Linux icon + runtime window icon)
+  icon.png          # 1024² raster of icon.svg
+  icon-mac.svg      # full-bleed gradient source (macOS squircle-masks the icon)
+  icon.icns         # macOS bundle icon (full-bleed; avoids the "floating tile" look)
 package.json        # "main": "electron/main.mjs", "build": { electron-builder config }
 ```
 
@@ -99,11 +106,17 @@ package.json        # "main": "electron/main.mjs", "build": { electron-builder c
 - **Targets (Linux first):** AppImage + pacman (Arch-native) locally; deb built
   in CI. No code-signing required to distribute (optional GPG signing only if
   we later publish to an apt repo).
-- **Later:** macOS `dmg` + `zip` (signed + notarized — needs an Apple Developer
-  ID cert + `notarytool` credentials, **blocked**) and Windows `nsis`.
+- **macOS:** dmg + zip, **unsigned** (dev + CI). Distribution needs signing +
+  notarization — an Apple Developer ID cert (`CSC_LINK`/`CSC_KEY_PASSWORD` or a
+  keychain identity) + `notarytool` credentials (`APPLE_ID`/
+  `APPLE_APP_SPECIFIC_PASSWORD`/`APPLE_TEAM_ID`, or an App Store Connect API
+  key), wired into CI via secrets (**blocked**). Until then Gatekeeper flags the
+  app on other Macs (right-click → Open to launch).
+- **Windows:** `nsis` later.
 - **CI:** a Linux GitHub Actions runner builds AppImage/deb/pacman (with `xvfb`
-  for the headed smoke against the packaged build); macOS/Windows artifacts
-  from their own runners later.
+  for the headed smoke against the packaged build); a macOS runner (`macos-15`,
+  after the Linux job) builds unsigned dmg + zip and attaches both to the same
+  GitHub Release.
 
 ### Release flow
 
@@ -135,12 +148,20 @@ store and there is no connection-store IPC (that stays with v2's
 ## Custom title bar (Window Controls Overlay)
 
 `titleBarStyle: 'hidden'` + `titleBarOverlay` hide the OS title-bar text area
-while keeping the **native** min/max/close buttons (Linux support since
-Electron 30.2; this is Electron 43). The renderer's `TitleBar` renders a
-drag strip (`-webkit-app-region: drag`) in the freed space and themes the
-buttons by sending its theme's `--surface`/`--text-muted` colors (as `#rrggbb`)
-over the single IPC channel; it re-syncs when `data-theme` changes. In the
-plain web build the bridge is absent and `TitleBar` renders nothing.
+while keeping the **native** window buttons (Linux support since Electron 30.2;
+this is Electron 43). The renderer's `TitleBar` renders a drag strip
+(`-webkit-app-region: drag`) in the freed space and themes the buttons by
+sending its theme's `--surface`/`--text-muted` colors (as `#rrggbb`) over the
+single IPC channel; it re-syncs when `data-theme` changes. In the plain web
+build the bridge is absent and `TitleBar` renders nothing.
+
+macOS difference: the traffic lights sit **top-left** (Windows/Linux put the
+window buttons top-right), so `TitleBar` reads `platform` from the preload
+bridge and applies a left inset (`pl-20`) on darwin to clear them. The app menu
+is also macOS-specific: Linux/Windows keep no menu bar
+(`Menu.setApplicationMenu(null)`), while macOS gets the minimal standard
+template (`appMenu` + `editMenu` + `windowMenu`) so Cmd+C/V, Cmd+Q and
+Cmd+M/W keep working.
 
 ## Dependencies
 
@@ -157,9 +178,13 @@ plain web build the bridge is absent and `TitleBar` renders nothing.
   (the two formats that run on Arch — this project's primary dev host).
 - `build:electron:deb` — `npm run build && electron-builder --linux deb`
   (Debian/Ubuntu; built from CI, which has the `libcrypt` the bundled fpm needs).
+- `build:electron:mac` — `npm run build && electron-builder --mac --publish never`
+  (dmg + zip; signs if a Developer ID identity is in the keychain, else unsigned).
+- `build:electron:mac:unsigned` — same, but forces `CSC_IDENTITY_AUTO_DISCOVERY=false`
+  (deterministic unsigned; what CI runs).
 - `pack:electron` — `npm run build && electron-builder --dir` (unpacked, fast).
 - `test:electron` — headed smoke (`scripts/electron-smoke.mjs`); run under
-  `xvfb-run` in CI.
+  `xvfb-run` in CI on Linux, plain on macOS.
 
 ## Verification plan
 
@@ -183,6 +208,11 @@ plain web build the bridge is absent and `TitleBar` renders nothing.
 6. Browser-style zoom verified on this machine: Ctrl/Cmd+= / Ctrl/Cmd+- /
    Ctrl+0 and Ctrl+wheel zoom the page; the level survives relaunches (read
    from `userData/zoom.json`, applied on load; unit-tested in `zoom.mjs`).
+7. **macOS** (`build:electron:mac:unsigned` on this Mac, arm64): dmg + zip
+   built; the headed smoke passes against the packaged
+   `release/mac-arm64/ado-taskboard.app`; the app menu (appMenu/editMenu/
+   windowMenu) and the traffic-light left inset render as expected. ✅ verified
+   locally; CI builds + smokes it on a macOS runner.
 
 > Local build gotcha: electron-builder's dependency collector runs `npm list`
 > against `node_modules`; a symlinked worktree `node_modules` makes it report
@@ -195,12 +225,16 @@ plain web build the bridge is absent and `TitleBar` renders nothing.
    (`safeStorage`/main-PAT) is the v2 follow-up.
 2. **Auto-update** (`electron-updater`) — later; needs a signed release feed.
 3. Confirm the **HTTP-relay** approach (vs custom protocol) — recommended here.
-4. **macOS/Windows** are deferred to their own milestones (macOS is gated on
-   Apple signing credentials).
+4. **Windows** deferred to its own milestone. **macOS signing/notarization**
+   still gated on Apple signing credentials — the unsigned dmg/zip build is
+   shipped (dev + CI), but until a Developer ID cert + `notarytool` creds are
+   wired into CI secrets, macOS releases hit Gatekeeper on other Macs.
 5. **Icon** — **resolved**: `build/icon.svg` (kanban-mark on an indigo→violet
-   rounded tile) is rasterized to `build/icon.png` (512²); electron-builder
+   rounded tile) is rasterized to `build/icon.png` (1024²); electron-builder
    picks it up for AppImage/deb/pacman (`linux.icon`) and `main.mjs` sets it on
-   the BrowserWindow (bundled in the asar via `build` "files").
+   the BrowserWindow (bundled in the asar via `build` "files"). macOS uses the
+   full-bleed `build/icon.icns` (rasterized from `build/icon-mac.svg`) so the
+   system's squircle mask applies cleanly.
 
 Linux has no signing blocker, so this is no longer `needs-refinement` for the
 Linux target — implementation can proceed and be verified on this machine.

@@ -186,18 +186,29 @@ if (!app.requestSingleInstanceLock()) {
   });
 
   app.whenReady().then(async () => {
-    // No menu bar (File/Edit/View/Window): the taskboard is a single-window app
-    // with no native-menu affordances — the in-app UI covers everything. Kept
-    // removed across platforms; a minimal macOS app menu is deferred with the
-    // macOS milestone.
-    Menu.setApplicationMenu(null);
+    // Application menu. The taskboard is a single-window app with no native-menu
+    // affordances — the in-app UI covers everything — so on Linux/Windows there
+    // is no menu bar at all. On macOS, however, removing the menu entirely also
+    // removes the app menu (About/Hide/Quit) and the Edit/Window menus that own
+    // Cmd+C/V/X, Cmd+Q, Cmd+M/W — so give macOS the minimal standard template
+    // (roles fill in the app name, standard shortcuts, and window commands).
+    const isMac = process.platform === 'darwin';
+    if (isMac) {
+      Menu.setApplicationMenu(
+        Menu.buildFromTemplate([{ role: 'appMenu' }, { role: 'editMenu' }, { role: 'windowMenu' }]),
+      );
+    } else {
+      Menu.setApplicationMenu(null);
+    }
 
     // Keep the native title-bar buttons in sync with the active app theme. The
     // renderer sends `#rrggbb` values only (validated), resolved from its theme
     // tokens; there is no other renderer→main channel.
     ipcMain.handle('window:set-title-bar-overlay', (event, opts) => {
       const win = BrowserWindow.fromWebContents(event.sender);
-      if (!win) return;
+      // macOS has no Window Controls Overlay: its traffic lights are native and
+      // unthemeable, so `setTitleBarOverlay` does not exist there — no-op.
+      if (!win || typeof win.setTitleBarOverlay !== 'function') return;
       if (
         typeof opts !== 'object' ||
         opts === null ||
