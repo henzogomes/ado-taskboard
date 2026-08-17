@@ -135,9 +135,11 @@ jobs:
       # Smoke the PACKAGED app (not `electron .`), so a broken dependency
       # collection / packaging regression fails the build instead of passing.
       # macOS runners have a WindowServer, so no xvfb. The glob `mac*` covers
-      # the arch directory (mac/ vs mac-arm64/) whichever the runner is.
+      # the arch directory (mac/ vs mac-arm64/) whichever the runner is — note
+      # the `$(echo …)` expansion: bash does NOT glob-expand a prefix assignment
+      # (`VAR=release/mac*/… cmd` keeps the literal `mac*`).
       - name: Run headed Electron smoke on the packaged build
-        run: ELECTRON_SMOKE_BIN=release/mac*/ado-taskboard.app/Contents/MacOS/ado-taskboard npm run test:electron
+        run: ELECTRON_SMOKE_BIN="$(echo release/mac*/ado-taskboard.app/Contents/MacOS/ado-taskboard)" npm run test:electron
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -201,10 +203,10 @@ jobs:
       # bash is available on GitHub Windows runners; the smoke's `--no-sandbox`
       # CI branch applies (process.getuid is undefined on Windows). The glob
       # `win*` covers the unpacked dir (win-unpacked/ vs win-arm64-unpacked/)
-      # whichever the runner is.
+      # whichever the runner is — expanded via `$(echo …)` (see build-macos).
       - name: Run headed Electron smoke on the packaged build
         shell: bash
-        run: ELECTRON_SMOKE_BIN=release/win*-unpacked/ado-taskboard.exe npm run test:electron
+        run: ELECTRON_SMOKE_BIN="$(echo release/win*-unpacked/ado-taskboard.exe)" npm run test:electron
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
