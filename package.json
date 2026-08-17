@@ -1,7 +1,7 @@
 {
   "name": "ado-taskboard",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "description": "Local, live Azure DevOps board taskboard (drag-and-drop + dropdown moves back to ADO).",
   "homepage": "https://github.com/henzogomes/ado-taskboard",
