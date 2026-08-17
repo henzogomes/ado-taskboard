@@ -1,21 +1,21 @@
 # Electron desktop app — design spec
 
-Status: **v1 (Linux) + v1 (macOS, unsigned) implemented and verified** — Option A
-(renderer holds the PAT). `electron/main.mjs` boots the existing relay on a
-**fixed localhost port** (5320, ephemeral fallback if taken) so the renderer
-origin — and with it the persisted connection store/PAT, theme, and query cache
-— stays stable across launches; the headed smoke (`npm run test:electron`)
-confirms the login screen renders through it. AppImage + deb build via
-`electron-builder` (deb verified in CI); macOS dmg + zip build unsigned on this
-Mac (arm64) and in CI — signing/notarization gated on Apple credentials.
-Windows remains deferred. Tracks issue #3.
+Status: **v1 (Linux) + v1 (macOS, unsigned) + v1 (Windows, unsigned)
+implemented** — Option A (renderer holds the PAT). `electron/main.mjs` boots the
+existing relay on a **fixed localhost port** (5320, ephemeral fallback if taken)
+so the renderer origin — and with it the persisted connection store/PAT, theme,
+and query cache — stays stable across launches; the headed smoke
+(`npm run test:electron`) confirms the login screen renders through it.
+AppImage + deb build via `electron-builder` (deb verified in CI); macOS dmg +
+zip and Windows NSIS exe build unsigned in CI. Cross-platform signing/notarization
+remains gated on Apple/Microsoft credentials. Tracks issue #3.
 
 ## Goal
 
 Ship a standalone desktop build of the taskboard. **Linux first** (`AppImage` +
 `.deb` + pacman), then macOS (`.dmg` + `.zip` — ✅ done, unsigned) and Windows
-(`nsis`) as a follow-up. The app must behave identically to the web app — same
-board, same drag-and-drop, same connection flow.
+(`nsis` — ✅ done, unsigned). The app must behave identically to the web app —
+same board, same drag-and-drop, same connection flow.
 
 Linux-first is the pragmatic call: it needs no code-signing/notarization, so it
 can be built and verified on this machine (Linux) end-to-end — no Apple
@@ -96,6 +96,7 @@ build/
   icon.png          # 1024² raster of icon.svg
   icon-mac.svg      # full-bleed gradient source (macOS squircle-masks the icon)
   icon.icns         # macOS bundle icon (full-bleed; avoids the "floating tile" look)
+  icon.ico          # Windows multi-size icon (16→256; uses the transparent tile)
 package.json        # "main": "electron/main.mjs", "build": { electron-builder config }
 ```
 
@@ -112,11 +113,15 @@ package.json        # "main": "electron/main.mjs", "build": { electron-builder c
   `APPLE_APP_SPECIFIC_PASSWORD`/`APPLE_TEAM_ID`, or an App Store Connect API
   key), wired into CI via secrets (**blocked**). Until then Gatekeeper flags the
   app on other Macs (right-click → Open to launch).
-- **Windows:** `nsis` later.
+- **Windows:** NSIS installer (`build:electron:win`), **unsigned**. Distribution
+  needs an Authenticode cert (`CSC_LINK`/`CSC_KEY_PASSWORD`); until then
+  SmartScreen warns on other machines. electron-builder cross-builds nsis from
+  macOS (verified locally); CI runs it on `windows-latest` so the headed smoke
+  exercises the real Windows binary.
 - **CI:** a Linux GitHub Actions runner builds AppImage/deb/pacman (with `xvfb`
-  for the headed smoke against the packaged build); a macOS runner (`macos-15`,
-  after the Linux job) builds unsigned dmg + zip and attaches both to the same
-  GitHub Release.
+  for the headed smoke against the packaged build); macOS (`macos-15`) and
+  Windows (`windows-latest`) runners follow it and attach their unsigned
+  artifacts to the same GitHub Release.
 
 ### Release flow
 
@@ -182,6 +187,8 @@ Cmd+M/W keep working.
   (dmg + zip; signs if a Developer ID identity is in the keychain, else unsigned).
 - `build:electron:mac:unsigned` — same, but forces `CSC_IDENTITY_AUTO_DISCOVERY=false`
   (deterministic unsigned; what CI runs).
+- `build:electron:win` — `npm run build && electron-builder --win nsis --publish never`
+  (NSIS installer; cross-builds from macOS too).
 - `pack:electron` — `npm run build && electron-builder --dir` (unpacked, fast).
 - `test:electron` — headed smoke (`scripts/electron-smoke.mjs`); run under
   `xvfb-run` in CI on Linux, plain on macOS.
@@ -213,6 +220,11 @@ Cmd+M/W keep working.
    `release/mac-arm64/ado-taskboard.app`; the app menu (appMenu/editMenu/
    windowMenu) and the traffic-light left inset render as expected. ✅ verified
    locally; CI builds + smokes it on a macOS runner.
+8. **Windows** (`build:electron:win`): NSIS installer built + smokes against the
+   packaged `release/win-unpacked/ado-taskboard.exe` in CI on `windows-latest`.
+   The custom title bar / Window Controls Overlay and the smoke's
+   platform-correct binary resolution are already cross-platform; no code
+   change was needed beyond the `win` config + `.ico`.
 
 > Local build gotcha: electron-builder's dependency collector runs `npm list`
 > against `node_modules`; a symlinked worktree `node_modules` makes it report
@@ -225,10 +237,11 @@ Cmd+M/W keep working.
    (`safeStorage`/main-PAT) is the v2 follow-up.
 2. **Auto-update** (`electron-updater`) — later; needs a signed release feed.
 3. Confirm the **HTTP-relay** approach (vs custom protocol) — recommended here.
-4. **Windows** deferred to its own milestone. **macOS signing/notarization**
-   still gated on Apple signing credentials — the unsigned dmg/zip build is
-   shipped (dev + CI), but until a Developer ID cert + `notarytool` creds are
-   wired into CI secrets, macOS releases hit Gatekeeper on other Macs.
+4. **macOS + Windows signing** still gated on Apple/Microsoft credentials — the
+   unsigned macOS dmg/zip and Windows NSIS exe are shipped (CI), but until a
+   Developer ID cert + `notarytool` creds (macOS) and an Authenticode cert
+   (Windows) are wired into CI secrets, releases hit Gatekeeper/SmartScreen on
+   other machines.
 5. **Icon** — **resolved**: `build/icon.svg` (kanban-mark on an indigo→violet
    rounded tile) is rasterized to `build/icon.png` (1024²); electron-builder
    picks it up for AppImage/deb/pacman (`linux.icon`) and `main.mjs` sets it on
