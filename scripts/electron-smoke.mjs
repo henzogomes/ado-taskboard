@@ -12,14 +12,17 @@
 import { spawn } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import electronBinary from 'electron';
 
 if (typeof WebSocket === 'undefined') {
   throw new Error('global WebSocket is required — run with Node 22 or newer');
 }
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const electronBin =
-  process.env.ELECTRON_SMOKE_BIN || path.join(root, 'node_modules', 'electron', 'dist', 'electron');
+// Default to the platform-correct Electron binary (the `electron` package
+// resolves `dist/electron` on Linux and `Electron.app/.../Electron` on macOS);
+// override with $ELECTRON_SMOKE_BIN to smoke a packaged build instead.
+const electronBin = process.env.ELECTRON_SMOKE_BIN || electronBinary;
 const DEBUG_PORT = 9333;
 
 function sleep(ms) {

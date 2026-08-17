@@ -1,20 +1,28 @@
-name: Electron Linux build
+name: Electron build
 
-# Builds the packaged Electron desktop app for Linux (AppImage + deb + pacman)
-# and runs the headed smoke (test:electron) under xvfb. This is the only place
-# the deb target is built — some local Linux distros (e.g. Arch) lack the
-# libcrypt library electron-builder's bundled fpm needs, and a .deb wouldn't
-# install there anyway; ubuntu-latest provides libcrypt and the pacman package
-# is built natively by electron-builder regardless of the host. (fpm's pacman
-# backend shells out to `bsdtar`, which Ubuntu ships in libarchive-tools.)
+# Builds the packaged Electron desktop app and runs the headed smoke
+# (test:electron) against the packaged build. Two jobs:
+#
+#   build-linux — AppImage + deb + pacman, headed smoke under xvfb. This is the
+#     only place the deb target is built — some local Linux distros (e.g. Arch)
+#     lack the libcrypt library electron-builder's bundled fpm needs, and a .deb
+#     wouldn't install there anyway; ubuntu-latest provides libcrypt and the
+#     pacman package is built natively by electron-builder regardless of the
+#     host. (fpm's pacman backend shells out to `bsdtar`, which Ubuntu ships in
+#     libarchive-tools.)
+#
+#   build-macos  — dmg + zip on macOS (unsigned: no Apple credentials in CI).
+#     Runs after build-linux so both jobs attach their assets to the same GitHub
+#     Release without racing the same tag. macOS runners have a WindowServer, so
+#     the headed smoke runs without xvfb.
 #
 # Runs only on pushes to the `release` branch (or on demand via
 # workflow_dispatch) — not on every commit to main. Bring main into release
 # when you want a packaged build. (No `paths` filter here: on the first push
 # of a new branch GitHub compares against the default branch, so an identical
-# branch would be silently skipped.) On success it also creates/updates a
-# GitHub Release (tagged with the app version) carrying the AppImage, deb and
-# pacman as separate downloadable assets.
+# branch would be silently skipped.) On success the Linux job also creates or
+# updates a GitHub Release (tagged with the app version) carrying the AppImage,
+# deb, pacman, dmg and zip as separate downloadable assets.
 
 on:
   workflow_dispatch:
@@ -88,4 +96,67 @@ jobs:
             release/*.AppImage
             release/*.deb
             release/*.pacman
+          fail_on_unmatched_files: true
+
+  build-macos:
+    # Unsigned build (no Apple credentials in CI): sets CSC_IDENTITY_AUTO_DISCOVERY
+    # false so electron-builder doesn't hunt for a signing identity. Gatekeeper
+    # will flag the app on other Macs (right-click → Open) until signing +
+    # notarization are wired in via secrets.
+    runs-on: macos-15
+    # Run after the Linux job so the two jobs attach their assets to the same
+    # GitHub Release without racing the same tag.
+    needs: build-linux
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # test:electron uses the global WebSocket (Node 22+).
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build web app
+        run: npm run build
+
+      - name: Build macOS packages (dmg + zip, unsigned)
+        run: npx electron-builder --mac --publish never
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+
+      # Smoke the PACKAGED app (not `electron .`), so a broken dependency
+      # collection / packaging regression fails the build instead of passing.
+      # macOS runners have a WindowServer, so no xvfb. The glob `mac*` covers
+      # the arch directory (mac/ vs mac-arm64/) whichever the runner is.
+      - name: Run headed Electron smoke on the packaged build
+        run: ELECTRON_SMOKE_BIN=release/mac*/ado-taskboard.app/Contents/MacOS/ado-taskboard npm run test:electron
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ado-taskboard-macos
+          path: |
+            release/*.dmg
+            release/*-mac.zip
+          if-no-files-found: error
+
+      - name: Read app version
+        run: echo "APP_VERSION=v$(node -p 'require("./package.json").version')" >> "$GITHUB_ENV"
+
+      # Attach the dmg + zip to the Release the Linux job created. The tag
+      # already exists by now (`needs: build-linux`), so `update_release_body:
+      # false` keeps the Linux job's description intact and just adds the macOS
+      # assets.
+      - name: Publish macOS assets to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.APP_VERSION }}
+          update_release_body: false
+          files: |
+            release/*.dmg
+            release/*-mac.zip
           fail_on_unmatched_files: true

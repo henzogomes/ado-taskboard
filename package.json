@@ -19,6 +19,8 @@
     "dev:electron": "npm run build && electron .",
     "build:electron": "npm run build && electron-builder --linux AppImage pacman",
     "build:electron:deb": "npm run build && electron-builder --linux deb",
+    "build:electron:mac": "npm run build && electron-builder --mac --publish never",
+    "build:electron:mac:unsigned": "npm run build && CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac --publish never",
     "pack:electron": "npm run build && electron-builder --dir",
     "lint": "oxlint",
     "typecheck": "tsc -b --noEmit",
@@ -52,6 +54,16 @@
       "category": "Development",
       "syncDesktopName": true,
       "icon": "build/icon.png"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.developer-tools",
+      "icon": "build/icon.icns",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false
     }
   },
   "dependencies": {

@@ -7,6 +7,8 @@
 /** The single bridge the Electron preload exposes to the renderer. */
 export interface TaskboardBridge {
   isDesktop: boolean
+  /** `process.platform` — the renderer uses it to lay out around the macOS traffic lights. */
+  platform?: string
   /** Tell the native title-bar buttons to use the given colors (`#rrggbb`). */
   setTitleBarOverlay: (opts: { color: string; symbolColor: string }) => void
 }

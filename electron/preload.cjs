@@ -9,5 +9,6 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('taskboard', {
   isDesktop: true,
+  platform: process.platform,
   setTitleBarOverlay: (opts) => ipcRenderer.invoke('window:set-title-bar-overlay', opts),
 });

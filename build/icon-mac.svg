@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#a855f7"/>
+    </linearGradient>
+  </defs>
+  <!-- Full-bleed gradient: macOS masks the icon into a squircle, so the
+       corners stay opaque here (no rounded rect, no transparency). -->
+  <rect x="0" y="0" width="1024" height="1024" fill="url(#bg)"/>
+  <!-- Three board columns -->
+  <g fill="#ffffff" opacity="0.55">
+    <rect x="304" y="372" width="104" height="300" rx="20"/>
+    <rect x="460" y="372" width="104" height="300" rx="20"/>
+    <rect x="616" y="372" width="104" height="300" rx="20"/>
+  </g>
+  <!-- Task cards sitting on the columns -->
+  <g fill="#ffffff">
+    <rect x="304" y="420" width="104" height="52" rx="16"/>
+    <rect x="460" y="420" width="104" height="52" rx="16"/>
+    <rect x="460" y="508" width="104" height="52" rx="16"/>
+    <rect x="616" y="420" width="104" height="52" rx="16"/>
+  </g>
+</svg>

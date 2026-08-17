@@ -35,10 +35,17 @@ export function TitleBar() {
 
   if (!isDesktop()) return null
 
+  // macOS traffic lights sit top-left and float over this strip; clear them
+  // with a left inset (Windows/Linux put their window buttons top-right, so the
+  // plain left padding is enough there).
+  const isMac = bridge?.platform === 'darwin'
+
   return (
     <div
       data-testid="titlebar"
-      className="flex h-8 shrink-0 select-none items-center border-b border-line bg-surface px-3 [-webkit-app-region:drag]"
+      className={`flex h-8 shrink-0 select-none items-center border-b border-line bg-surface ${
+        isMac ? 'pl-20 pr-3' : 'px-3'
+      } [-webkit-app-region:drag]`}
     >
       <span className="text-xs font-medium text-content-muted">ADO Taskboard</span>
     </div>
